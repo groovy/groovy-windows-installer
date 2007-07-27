@@ -5,7 +5,7 @@
 
 Name Groovy
 
-!define InstallerVersion 0.3
+!define InstallerVersion 0.4
 
 # Set the compression level
 SetCompressor /SOLID lzma
@@ -152,6 +152,9 @@ no_smgroup:
     Pop $R0
 SectionEnd
 
+!define RUSSELOPTION "Russel-option detected: Now reformatting the disc. \
+Press ok to install Ubuntu and Groovy as an Ubuntu package."
+
 # Installer functions
 Function .onInit
     InitPluginsDir
@@ -159,6 +162,16 @@ Function .onInit
     File /oname=$PLUGINSDIR\variables.ini variables.ini
     File /oname=$PLUGINSDIR\nativelauncher.ini nativelauncher.ini
     File /oname=$PLUGINSDIR\fileassociation.ini fileassociation.ini
+      
+    Push $CMDLINE
+    Push "-russel"
+    Call StrStr
+    Pop $R0
+  
+    ${If} $R0 != '-1'
+      MessageBox MB_ICONEXCLAMATION|MB_OK "${RUSSELOPTION}"
+    ${EndIf}
+    
 FunctionEnd
 
 
@@ -195,7 +208,7 @@ If you know better, please set the checkbox to checked.\r\n\r\n\
 NB: The uninstaller won't restore old values (yet)."
 LangString VField05 ${LANG_GERMAN} "Wenn eine Referenz zu groovy im Pfad entdeckt wird, \
 wird die Checkbox für das Hinzufügen von GROOVY_HOME ausgeschaltet.\
-Wenn Sie GROOVY_HOME trotzdem zum Pfad hinzufügen möchten, wählen sie sie wieder an.\r\n\r\n\
+Wenn Sie GROOVY_HOME trotzdem zum Pfad hinzufügen möchten, wählen Sie sie wieder an.\r\n\r\n\
 Achtung: Der Uninstaller merkt sich keine alten Werte (noch nicht)."
 LangString VField05 ${LANG_SPANISH} "Si alguna referencia a Groovy es detectada en la ruta, \
 el botón para agregar GROOVY_HOME a la ruta aparecerá deseleccionado. \
@@ -424,6 +437,31 @@ LangString FAField02 ${LANG_GERMAN}  "Füge Dateiassoziation hinzu"
 LangString FAField02 ${LANG_SPANISH} "Agregar Asociación de Ficheros"
 LangString FAField02 ${LANG_FRENCH}  "Ajouter une association fichier"
 
+# FAField 03
+LangString FAField03 ${LANG_ENGLISH} "PATHEXT is an environment variable telling cmd.exe \
+which files are executable. If Groovy-Files are already referenced, this checkbox \
+is unchecked.  If you know better, please set the checkbox to checked."
+
+LangString FAField03 ${LANG_GERMAN}  "PATHEXT ist eine Umgebungsvariable, die cmd.exe \
+mitteilt, welche Dateien ausführbar sind. Wenn Groovy-Dateien schon referenziert \
+sind, ist die Checkbox nicht ausgewählt. \
+Wenn Sie Groovy trotzdem hinzufügen wollen, wählen Sie sie wieder an."
+
+LangString FAField03 ${LANG_SPANISH} "PATHEXT is an environment variable telling cmd.exe \
+which files are executable. If Groovy-Files are already referenced, this checkbox \
+is unchecked.  If you know better, please set the checkbox to checked."
+
+LangString FAField03 ${LANG_FRENCH}  "PATHEXT is an environment variable telling cmd.exe \
+which files are executable. If Groovy-Files are already referenced, this checkbox \
+is unchecked.  If you know better, please set the checkbox to checked."
+
+
+# FAField 04
+LangString FAField04 ${LANG_ENGLISH} "Add to PATHEXT"
+LangString FAField04 ${LANG_GERMAN}  "Füge zu PATHEXT hinzu"
+LangString FAField04 ${LANG_SPANISH} "Agregar a PATHEXT"
+LangString FAField04 ${LANG_FRENCH}  "Ajouter à PATHEXT"
+
 Function ReadFileAssociation
   Push $R0
 
@@ -431,6 +469,21 @@ Function ReadFileAssociation
   #MessageBox MB_ICONEXCLAMATION|MB_OK "Result. $(Field10)"
   WriteINIStr $PLUGINSDIR\fileassociation.ini "Field 1" "Text" $(FAField01)
   WriteINIStr $PLUGINSDIR\fileassociation.ini "Field 2" "Text" $(FAField02)
+  WriteINIStr $PLUGINSDIR\fileassociation.ini "Field 3" "Text" $(FAField03)
+  WriteINIStr $PLUGINSDIR\fileassociation.ini "Field 4" "Text" $(FAField04)
+  
+  
+    # Check for groovy in path
+  ReadEnvStr $R0 "PATHEXT"
+  Push $R0
+  Push ".groovy"   # seems to be case-insensitive
+  Call StrStr
+  Pop $R0
+  
+  # set GROOVY_HOME checkbox to unchecked if groovy is in path
+  ${If} $R0 != '-1'
+    WriteINIStr $PLUGINSDIR\variables.ini "Field 4" "state" "0"
+  ${EndIf}
     
   InstallOptions::dialog $PLUGINSDIR\fileassociation.ini
 
@@ -455,15 +508,26 @@ Function SetFileAssociation
     StrCmp $0 "" 0 "${Index}-Skip"
       WriteRegStr HKCR "Groovy" "" "Groovy.groovy"
       WriteRegStr HKCR "Groovy\shell" "" "open"
-      WriteRegStr HKCR "Groovy\DefaultIcon" "" '"$INSTDIR\bin\groovyw.exe",0'
+      WriteRegStr HKCR "Groovy\DefaultIcon" "" '"$INSTDIR\bin\groovy.exe",0'
     "${Index}-Skip:"
-    WriteRegStr HKCR "Groovy\shell\open\command" "" '"$INSTDIR\bin\groovyw.exe" "%1"'
+    WriteRegStr HKCR "Groovy\shell\open\command" "" '"$INSTDIR\bin\groovy.exe" "%1"'
     #WriteRegStr HKCR "Groovy\shell\edit" "" "Edit Options File"
     #WriteRegStr HKCR "Groovy\shell\edit\command" "" '$INSTDIR\execute.exe "%1"'
  
     System::Call 'Shell32::SHChangeNotify(i 0x8000000, i 0, i 0, i 0)'
     !undef Index
   ${EndIf}
+
+  # Set PATHEXT if the user checked the resp. checkbox
+  ReadINIStr $R0 "$PLUGINSDIR\fileassociation.ini" "Field 4" "State"
+  ${If} $R0 == '1'
+    ReadEnvStr $R0 "PATHEXT"
+    StrCpy $R0 "$R0;.groovy;.gy"
+    Push "PATHEXT"
+    Push $R0
+    Call WriteEnvStr
+  ${EndIf}
+
 
   Pop $R0
 
