@@ -441,19 +441,19 @@ LangString FAField02 ${LANG_FRENCH}  "Ajouter une association fichier"
 LangString FAField03 ${LANG_ENGLISH} "PATHEXT is an environment variable telling cmd.exe \
 which files are executable. If Groovy-Files are already referenced, this checkbox \
 is unchecked.  If you know better, please set the checkbox to checked."
-
 LangString FAField03 ${LANG_GERMAN}  "PATHEXT ist eine Umgebungsvariable, die cmd.exe \
 mitteilt, welche Dateien ausführbar sind. Wenn Groovy-Dateien schon referenziert \
 sind, ist die Checkbox nicht ausgewählt. \
 Wenn Sie Groovy trotzdem hinzufügen wollen, wählen Sie sie wieder an."
-
-LangString FAField03 ${LANG_SPANISH} "PATHEXT is an environment variable telling cmd.exe \
-which files are executable. If Groovy-Files are already referenced, this checkbox \
-is unchecked.  If you know better, please set the checkbox to checked."
+LangString FAField03 ${LANG_SPANISH} "PATHEXT es una variable de entorno que le indica \
+a cmd.exe cuales ficheros son de tipo ejecutable. Si Groovy-Files ya esta referenciado, \
+este botón aparecerá deseleccionado. Puede dejar el botón seleccionado si lo \
+desea."
 
 LangString FAField03 ${LANG_FRENCH}  "PATHEXT is an environment variable telling cmd.exe \
 which files are executable. If Groovy-Files are already referenced, this checkbox \
 is unchecked.  If you know better, please set the checkbox to checked."
+
 
 
 # FAField 04
