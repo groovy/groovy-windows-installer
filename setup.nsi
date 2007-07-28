@@ -581,7 +581,7 @@ Function ReadAdditionalPackages
   # Localization
   WriteINIStr $PLUGINSDIR\additionalpackages.ini "Field 1" "Text" $(APField01)
   WriteINIStr $PLUGINSDIR\additionalpackages.ini "Field 2" "Text" $(APField02)
-  WriteINIStr $PLUGINSDIR\additionalpackages.ini "Field 2" "Text" $(APField03)
+  WriteINIStr $PLUGINSDIR\additionalpackages.ini "Field 3" "Text" $(APField03)
     
   InstallOptions::dialog $PLUGINSDIR\additionalpackages.ini
 
@@ -604,7 +604,7 @@ Function InstallAdditionalPackages
   ${EndIf}
 
   # If set, then install Scriptom
-  ReadINIStr $R0 "$PLUGINSDIR\additionalpackages.ini" "Field 2" "State"
+  ReadINIStr $R0 "$PLUGINSDIR\additionalpackages.ini" "Field 3" "State"
   ${If} $R0 == '1'
     SetOutPath $INSTDIR
     File  /r ${SCRIPTOM_DIR}\*
