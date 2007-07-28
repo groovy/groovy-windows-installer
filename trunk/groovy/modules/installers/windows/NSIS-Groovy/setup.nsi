@@ -449,12 +449,10 @@ LangString FAField03 ${LANG_SPANISH} "PATHEXT es una variable de entorno que le 
 a cmd.exe cuales ficheros son de tipo ejecutable. Si Groovy-Files ya esta referenciado, \
 este botón aparecerá deseleccionado. Puede dejar el botón seleccionado si lo \
 desea."
-
-LangString FAField03 ${LANG_FRENCH}  "PATHEXT is an environment variable telling cmd.exe \
-which files are executable. If Groovy-Files are already referenced, this checkbox \
-is unchecked.  If you know better, please set the checkbox to checked."
-
-
+LangString FAField03 ${LANG_FRENCH}  "PATHEXT est une variable d'environnement indiquant \
+à la commande cmd.exe \
+quels fichiers sont des exécutables. Si les fichiers groovy sont déjà référencés, \
+la boite à cocher est décochée. Si vous voulez en savoir plus, cochez-là svp."
 
 # FAField 04
 LangString FAField04 ${LANG_ENGLISH} "Add to PATHEXT"
