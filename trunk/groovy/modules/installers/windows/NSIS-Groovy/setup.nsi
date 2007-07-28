@@ -2,6 +2,8 @@
 # SOURCE_VERSION defines the version of the release
 # SOURCE_DIR     is the full path to the groovy install directory
 # NATIVE_DIR     is the full path to the native launcher
+# SCRIPTOM_DIR   is the full path to the scriptom module
+# GANT_DIR       is the full path to the gant module
 
 Name Groovy
 
@@ -64,6 +66,7 @@ Var UserOrSystem "current"
 !insertmacro MUI_PAGE_INSTFILES
 Page custom ReadVariables SetVariables
 Page custom ReadNativeLauncher InstallNativeLauncher
+Page custom ReadAdditionalPackages InstallAdditionalPackages
 Page custom ReadFileAssociation SetFileAssociation
 !insertmacro MUI_PAGE_FINISH
 !insertmacro MUI_UNPAGE_CONFIRM
@@ -162,6 +165,7 @@ Function .onInit
     File /oname=$PLUGINSDIR\variables.ini variables.ini
     File /oname=$PLUGINSDIR\nativelauncher.ini nativelauncher.ini
     File /oname=$PLUGINSDIR\fileassociation.ini fileassociation.ini
+    File /oname=$PLUGINSDIR\additionalpackages.ini additionalpackages.ini
       
     Push $CMDLINE
     Push "-russel"
@@ -530,6 +534,100 @@ Function SetFileAssociation
   Pop $R0
 
 FunctionEnd
+
+
+
+#################################################################################################
+
+### Additional Packages
+
+#################################################################################################
+
+# APField 01
+LangString APField01 ${LANG_ENGLISH} "Additional Modules are not strictly necessary, \
+but we recommend installing them anyway."
+LangString APField01 ${LANG_GERMAN}  "Zusätzliche Module sind nicht unbedingt notwendig, \
+wir empfehlen aber, sie trotzdem zu installieren."
+
+LangString APField01 ${LANG_SPANISH} "Additional Modules are not strictly necessary, \
+but we recommend installing them anyway."
+LangString APField01 ${LANG_FRENCH}  "Additional Modules are not strictly necessary, \
+but we recommend installing them anyway."
+
+# APField 02
+LangString APField02 ${LANG_ENGLISH} "Gant - a build tool for scripting Ant tasks \
+with Groovy"
+LangString APField02 ${LANG_GERMAN}  "Gant - Ein Werkzeug, um Ant Tasks mit Groovy \
+zu programmieren"
+LangString APField02 ${LANG_SPANISH} "Gant - a build tool for scripting Ant tasks \
+with Groovy"
+LangString APField02 ${LANG_FRENCH}  "Gant - a build tool for scripting Ant tasks \
+with Groovy"
+
+# APField 03
+LangString APField03 ${LANG_ENGLISH} "Scriptom - script ActiveX or COM components \
+with Groovy"
+LangString APField03 ${LANG_GERMAN}  "Scriptom - Programmieren von ActiveX und COM-\
+Komponenten mit Groovy"
+LangString APField03 ${LANG_SPANISH} "Scriptom - script ActiveX or COM components \
+with Groovy"
+LangString APField03 ${LANG_FRENCH}  "Scriptom - script ActiveX or COM components \
+with Groovy"
+
+
+Function ReadAdditionalPackages
+  Push $R0
+
+  # Localization
+  WriteINIStr $PLUGINSDIR\additionalpackages.ini "Field 1" "Text" $(APField01)
+  WriteINIStr $PLUGINSDIR\additionalpackages.ini "Field 2" "Text" $(APField02)
+  WriteINIStr $PLUGINSDIR\additionalpackages.ini "Field 2" "Text" $(APField03)
+    
+  InstallOptions::dialog $PLUGINSDIR\additionalpackages.ini
+
+  Pop $R0
+FunctionEnd
+
+Function InstallAdditionalPackages
+  Push $R0
+
+  # If set, then install Gant
+  ReadINIStr $R0 "$PLUGINSDIR\additionalpackages.ini" "Field 2" "State"
+  ${If} $R0 == '1'
+    SetOutPath $INSTDIR\bin
+    File  /r ${GANT_DIR}\bin\gant*
+
+    SetOutPath $INSTDIR\lib
+    File  /r ${GANT_DIR}\lib\gant*.jar
+    File  /nonfatal /r ${GANT_DIR}\lib\ivy*.jar
+    File  /nonfatal /r ${GANT_DIR}\lib\maven*.jar
+  ${EndIf}
+
+  # If set, then install Scriptom
+  ReadINIStr $R0 "$PLUGINSDIR\additionalpackages.ini" "Field 2" "State"
+  ${If} $R0 == '1'
+    SetOutPath $INSTDIR
+    File  /r ${SCRIPTOM_DIR}\*
+  ${EndIf}
+
+  Pop $R0
+
+FunctionEnd
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

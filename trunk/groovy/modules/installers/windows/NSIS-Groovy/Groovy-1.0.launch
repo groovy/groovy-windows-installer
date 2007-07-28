@@ -11,9 +11,11 @@
 <booleanAttribute key="hdrInfo" value="false"/>
 <intAttribute key="processPriority" value="-1"/>
 <listAttribute key="symbols">
-<listEntry value="SOURCE_DIR­C:\Programme\Groovy\outofthebox\groovy-1.0"/>
+<listEntry value="SOURCE_DIR­D:\NSIS\NSIS-Groovy\Data\1.0\groovy-1.0"/>
 <listEntry value="SOURCE_VERSION­1.0"/>
-<listEntry value="NATIVE_DIR­C:\Programme\Groovy\outofthebox\native\1.1"/>
+<listEntry value="NATIVE_DIR­D:\NSIS\NSIS-Groovy\Data\native"/>
+<listEntry value="SCRIPTOM_DIR­D:\NSIS\NSIS-Groovy\Data\Scriptom-1.2"/>
+<listEntry value="GANT_DIR­D:\NSIS\NSIS-Groovy\Data\1.0\gant-0.3.1_groovy-1.0"/>
 </listAttribute>
 <booleanAttribute key="solidCompression" value="false"/>
 <stringAttribute key="pluginVersion" value="0.9.5.1"/>
