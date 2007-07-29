@@ -548,31 +548,30 @@ LangString APField01 ${LANG_ENGLISH} "Additional Modules are not strictly necess
 but we recommend installing them anyway."
 LangString APField01 ${LANG_GERMAN}  "Zusätzliche Module sind nicht unbedingt notwendig, \
 wir empfehlen aber, sie trotzdem zu installieren."
-
-LangString APField01 ${LANG_SPANISH} "Additional Modules are not strictly necessary, \
-but we recommend installing them anyway."
-LangString APField01 ${LANG_FRENCH}  "Additional Modules are not strictly necessary, \
-but we recommend installing them anyway."
+LangString APField01 ${LANG_SPANISH} "Los Módulos Adicionales no son estrictamente \
+necesarios, pero recomendamos que se instalen de todas formas."
+LangString APField01 ${LANG_FRENCH}  "Les Modules aditionnels sont optionnels, \
+nous vous recommendons cependant de les installer"
 
 # APField 02
 LangString APField02 ${LANG_ENGLISH} "Gant - a build tool for scripting Ant tasks \
 with Groovy"
 LangString APField02 ${LANG_GERMAN}  "Gant - Ein Werkzeug, um Ant Tasks mit Groovy \
 zu programmieren"
-LangString APField02 ${LANG_SPANISH} "Gant - a build tool for scripting Ant tasks \
-with Groovy"
-LangString APField02 ${LANG_FRENCH}  "Gant - a build tool for scripting Ant tasks \
-with Groovy"
+LangString APField02 ${LANG_SPANISH} "Gant - una herramienta que facilita el \
+'scripting' the tareas de Ant con Groovy"
+LangString APField02 ${LANG_FRENCH}  "Gant - Outil de build permettant de manipuler \
+les tâches Ant avec Groovy"
 
 # APField 03
 LangString APField03 ${LANG_ENGLISH} "Scriptom - script ActiveX or COM components \
 with Groovy"
 LangString APField03 ${LANG_GERMAN}  "Scriptom - Programmieren von ActiveX und COM-\
 Komponenten mit Groovy"
-LangString APField03 ${LANG_SPANISH} "Scriptom - script ActiveX or COM components \
-with Groovy"
-LangString APField03 ${LANG_FRENCH}  "Scriptom - script ActiveX or COM components \
-with Groovy"
+LangString APField03 ${LANG_SPANISH} "Scriptom - permite acceder y configurar \
+components ActiveX y/o COM con Groovy"
+LangString APField03 ${LANG_FRENCH}  "Scriptom - Manipulation d'ActiveX ou composants \
+COM avec Groovy"
 
 
 Function ReadAdditionalPackages
