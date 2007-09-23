@@ -221,7 +221,7 @@ NB: El proceso de desinstalación no restaurará valores anteriores."
 LangString VField05 ${LANG_FRENCH} "Si une référence vers groovy \
 est détectée dans le chemin d'accès, \
 la boite  à cocher d'ajout de GROOVY_HOME au chemin d'accès est décochée. \
-Si vous voulez en savoir plus, cochez-la svp.\r\n\r\n\
+Si vous êtes expert, cochez ici svp.\r\n\r\n\
 NB: Le désinstalleur ne restaurera pas les anciennes valeurs (pas pour le moment)."
 
 # VField 6
@@ -456,7 +456,7 @@ desea."
 LangString FAField03 ${LANG_FRENCH}  "PATHEXT est une variable d'environnement indiquant \
 à la commande cmd.exe \
 quels fichiers sont des exécutables. Si les fichiers groovy sont déjà référencés, \
-la boite à cocher est décochée. Si vous voulez en savoir plus, cochez-là svp."
+la boite à cocher est décochée. Si vous êtes expert, cochez ici svp."
 
 # FAField 04
 LangString FAField04 ${LANG_ENGLISH} "Add to PATHEXT"
