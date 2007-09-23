@@ -4,16 +4,20 @@
 # NATIVE_DIR     is the full path to the native launcher
 # SCRIPTOM_DIR   is the full path to the scriptom module
 # GANT_DIR       is the full path to the gant module
+# GRAPHICS_B     is the full path to the graphicsbuilder module !!!
+# SWINGX_B       is the full path to the swingxbuilder module   !!!
+# VERSION_TXT    is the full path to the installed_versions.txt !!!
+# DOC_DIR        is the full path to the doc directory
 
 Name Groovy
 
-!define InstallerVersion 0.4
+!define InstallerVersion 0.5
 
 # Set the compression level
 SetCompressor /SOLID lzma
 
 # The source of the Groovy installation
-!define SOURCEDIR ${SOURCE_DIR}
+!define SOURCEDIR "${SOURCE_DIR}"
 
 # Defines
 !define REGKEY "SOFTWARE\$(^Name)"
@@ -98,7 +102,8 @@ ShowUninstDetails show
 Section -Main SEC0000
     SetOutPath $INSTDIR
     SetOverwrite on
-    File /r ${SOURCEDIR}\*
+    File /r "${SOURCEDIR}\*"
+    File "${VERSION_TXT}"
     WriteRegStr HKLM "${REGKEY}\Components" Main 1
 SectionEnd
 
@@ -141,6 +146,11 @@ SectionEnd
 Section un.post UNSEC0001
     DeleteRegKey HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)"
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(^UninstallLink).lnk"
+    Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(^HTMLLink).lnk"
+    Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(^APILink).lnk"
+    Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(^GAPILink).lnk"
+    Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(^PDFLink).lnk"
+
     Delete /REBOOTOK $INSTDIR\uninstall.exe
     DeleteRegValue HKLM "${REGKEY}" StartMenuGroup
     DeleteRegValue HKLM "${REGKEY}" Path
@@ -424,14 +434,14 @@ un programa (en este caso Groovy) se ejecute al realizar \
 doble click con el puntero sobre un fichero. Esto significa \
 que usted podrá ejecutar programas Groovy directamente desde el Explorador de Windows. \
 Para ello se requiere entonces del Lanzador Nativo.\
-\r\n\r\nComo beneficio adicional habrá un ícono Groovy asociado a \
+\r\nComo beneficio adicional habrá un ícono Groovy asociado a \
 ficheros de tipo Groovy."
 LangString FAField01 ${LANG_FRENCH}  "L'association fichier vous permet de définir \
 un programme (dans notre cas groovy) pour exécuter un fichier groovy \
 par simple double-click sur ce dernier. Ceci signifie que vous pouvez \
 exécuter vos programmes groovy directement à partir d'un explorateur windows. \
 Vous avez besoin du lanceur natif pour cela. \
-\r\n\r\nUn bénéfice supplémentaire est que l'icone \
+\r\nUn bénéfice supplémentaire est que l'icone \
 groovy est associée à tout fichier de type groovy."
 
 
@@ -573,6 +583,27 @@ components ActiveX y/o COM con Groovy"
 LangString APField03 ${LANG_FRENCH}  "Scriptom - Manipulation d'ActiveX ou composants \
 COM avec Groovy"
 
+# APField 04
+LangString APField04 ${LANG_ENGLISH} "GraphicsBuilder - 2D Graphics with Groovy"
+LangString APField04 ${LANG_GERMAN}  "GraphicsBuilder - 2D Graphics mit Groovy"
+LangString APField04 ${LANG_SPANISH} "GraphicsBuilder - Gráficas 2D con Groovy"
+LangString APField04 ${LANG_FRENCH}  "GraphicsBuilder - Graphiques 2D avec Groovy"
+
+# APField 05
+LangString APField05 ${LANG_ENGLISH} "SwingXBuilder - The SwingX Components for Groovy"
+LangString APField05 ${LANG_GERMAN}  "SwingXBuilder - Die SwingX-Komponenten für Groovy"
+LangString APField05 ${LANG_SPANISH} "SwingXBuilder - Componentes SwingX para Groovy"
+LangString APField05 ${LANG_FRENCH}  "SwingXBuilder - Les composants SwingX pour Groovy"
+
+# APField 06
+LangString APField06 ${LANG_ENGLISH} "Groovy Documentation - including  a \
+PDF Snapshot of the Wiki (ca. 900 pages)"
+LangString APField06 ${LANG_GERMAN}  "Groovy-Dokumentation - inkl. \
+PDF-Abzug des Wiki (ca. 900 Seiten)"
+LangString APField06 ${LANG_SPANISH} "Documentación de Groovy - incluye copia \
+del wiki en PDF (aprox. 900 páginas)"
+LangString APField06 ${LANG_FRENCH}  "Documentation de Groovy - dont un PDF \
+du wiki (900 pages)"
 
 Function ReadAdditionalPackages
   Push $R0
@@ -581,6 +612,9 @@ Function ReadAdditionalPackages
   WriteINIStr $PLUGINSDIR\additionalpackages.ini "Field 1" "Text" $(APField01)
   WriteINIStr $PLUGINSDIR\additionalpackages.ini "Field 2" "Text" $(APField02)
   WriteINIStr $PLUGINSDIR\additionalpackages.ini "Field 3" "Text" $(APField03)
+  WriteINIStr $PLUGINSDIR\additionalpackages.ini "Field 4" "Text" $(APField04)
+  WriteINIStr $PLUGINSDIR\additionalpackages.ini "Field 5" "Text" $(APField05)
+  WriteINIStr $PLUGINSDIR\additionalpackages.ini "Field 6" "Text" $(APField06)
     
   InstallOptions::dialog $PLUGINSDIR\additionalpackages.ini
 
@@ -594,19 +628,46 @@ Function InstallAdditionalPackages
   ReadINIStr $R0 "$PLUGINSDIR\additionalpackages.ini" "Field 2" "State"
   ${If} $R0 == '1'
     SetOutPath $INSTDIR\bin
-    File  /r ${GANT_DIR}\bin\gant*
+    File  /r "${GANT_DIR}\bin\gant*"
 
     SetOutPath $INSTDIR\lib
-    File  /r ${GANT_DIR}\lib\gant*.jar
-    File  /nonfatal /r ${GANT_DIR}\lib\ivy*.jar
-    File  /nonfatal /r ${GANT_DIR}\lib\maven*.jar
+    File  /r "${GANT_DIR}\lib\gant*.jar"
+    # ask Russel whether this could be removed
+    File  /nonfatal /r "${GANT_DIR}\lib\ivy*.jar"
+    File  /nonfatal /r "${GANT_DIR}\lib\maven*.jar"
   ${EndIf}
 
   # If set, then install Scriptom
   ReadINIStr $R0 "$PLUGINSDIR\additionalpackages.ini" "Field 3" "State"
   ${If} $R0 == '1'
     SetOutPath $INSTDIR
-    File  /r ${SCRIPTOM_DIR}\*
+    File  /r "${SCRIPTOM_DIR}\*"
+  ${EndIf}
+
+  # If set, then install GraphicsBuilder
+  ReadINIStr $R0 "$PLUGINSDIR\additionalpackages.ini" "Field 4" "State"
+  ${If} $R0 == '1'
+    SetOutPath $INSTDIR
+    File  /r "${GRAPHICS_B}\*"
+  ${EndIf}
+
+  # If set, then install SwingXBuilder
+  ReadINIStr $R0 "$PLUGINSDIR\additionalpackages.ini" "Field 5" "State"
+  ${If} $R0 == '1'
+    SetOutPath $INSTDIR
+    File  /r "${SWINGX_B}\*"
+  ${EndIf}
+
+  # If set, then install Documentation
+  ReadINIStr $R0 "$PLUGINSDIR\additionalpackages.ini" "Field 6" "State"
+  ${If} $R0 == '1'
+    SetOutPath $INSTDIR
+    File  /r "${DOC_DIR}\*"
+    # @TODO Link to PDF, HTML Index
+    CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^HTMLLink).lnk" $INSTDIR\html\groovy-jdk.html
+    CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^APILink).lnk" $INSTDIR\html\api\index.html
+    CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^GAPILink).lnk" $INSTDIR\html\gapi\index.html
+    CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^PDFLink).lnk" $INSTDIR\pdf\wiki-snapshot.pdf    
   ${EndIf}
 
   Pop $R0
@@ -614,24 +675,7 @@ Function InstallAdditionalPackages
 FunctionEnd
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# Installer Language Strings
+# Links in Start Menu
 # TODO Update the Language Strings with the appropriate translations.
 
 LangString ^UninstallLink ${LANG_ENGLISH} "Uninstall $(^Name)"
@@ -639,6 +683,25 @@ LangString ^UninstallLink ${LANG_GERMAN} "Uninstall $(^Name)"
 LangString ^UninstallLink ${LANG_SPANISH} "Uninstall $(^Name)"
 LangString ^UninstallLink ${LANG_FRENCH} "Uninstall $(^Name)"
 
+LangString ^PDFLink ${LANG_ENGLISH} "PDF Documentation"
+LangString ^PDFLink ${LANG_GERMAN} "PDF-Dokumentation"
+LangString ^PDFLink ${LANG_SPANISH} "Documentación en PDF"
+LangString ^PDFLink ${LANG_FRENCH} "Documentation PDF"
+
+LangString ^HTMLLink ${LANG_ENGLISH} "GDK Documentation"
+LangString ^HTMLLink ${LANG_GERMAN} "GDK-Dokumentation"
+LangString ^HTMLLink ${LANG_SPANISH} "Documentación del GDK"
+LangString ^HTMLLink ${LANG_FRENCH} "Documentation du GDK"
+
+LangString ^APILink ${LANG_ENGLISH} "API Documentation"
+LangString ^APILink ${LANG_GERMAN} "API-Dokumentation"
+LangString ^APILink ${LANG_SPANISH} "Documentación del API"
+LangString ^APILink ${LANG_FRENCH} "Documentation de l'API"
+
+LangString ^GAPILink ${LANG_ENGLISH} "GAPI Documentation"
+LangString ^GAPILink ${LANG_GERMAN} "GAPI-Dokumentation"
+LangString ^GAPILink ${LANG_SPANISH} "Documentación del GAPI"
+LangString ^GAPILink ${LANG_FRENCH} "Documentation de la GAPI"
 
 ;====================================================
 ; get_NT_environment 
