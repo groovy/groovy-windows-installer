@@ -1,0 +1,43 @@
+Installed Versions
+------------------
+This file contains the versions (or dates) of all the components installed by the Windows Installer.
+It is worth mentioning that the following JRE constraints exist
+1.4+ graphicsbuilder, graphicsbuilder-ext-svg
+1.5+ graphicsbuilder-ext-swingx
+1.6+ graphicsbuilder-ext-jdk6, graphicsbuilder-demo
+
+Groovy
+------
+Binary Version: 1.1-beta-3
+Doc Version:    1.1-beta-3
+
+Gant (exec in bin, jar in lib)
+------------------------------
+gant-0.3.2_groovy-1.1
+
+GraphicsBuilder (all in lib)
+----------------------------
+batik-awt-util-1.6-1.jar
+batik-ext-1.6-1.jar
+batik-gui-util-1.6-1.jar
+batik-util-1.6-1.jar
+graphicsbuilder-1.0-SNAPSHOT.jar
+graphicsbuilder-ext-jdk6-1.0-SNAPSHOT.jar
+graphicsbuilder-ext-svg-1.0-SNAPSHOT.jar
+graphicsbuilder-ext-swingx-1.0-SNAPSHOT.jar
+swingx-2007_09_16.jar
+
+SwingXBuilder (all in lib)
+--------------------------
+swingxbuilder-0.1
+swingx-2007_09_16.jar
+
+Scriptom-1.2 (dll in bin, jars in lib)
+--------------------------------------
+jacob.dll Version 1.10.1
+jacob.lib Version 1.10.1
+scriptom.jar 1.2
+
+If you have any questions, feel free to ask me personally or on the mailing lists.
+
+Joachim Baumann
