@@ -29,7 +29,7 @@ swingx-2007_09_16.jar
 
 SwingXBuilder (all in lib)
 --------------------------
-swingxbuilder-0.1
+swingxbuilder-0.1.1
 swingx-2007_09_16.jar
 
 Scriptom-1.2 (dll in bin, jars in lib)
