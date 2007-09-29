@@ -4,14 +4,14 @@
 # NATIVE_DIR     is the full path to the native launcher
 # SCRIPTOM_DIR   is the full path to the scriptom module
 # GANT_DIR       is the full path to the gant module
-# GRAPHICS_B     is the full path to the graphicsbuilder module !!!
-# SWINGX_B       is the full path to the swingxbuilder module   !!!
-# VERSION_TXT    is the full path to the installed_versions.txt !!!
+# GRAPHICS_B     is the full path to the graphicsbuilder module
+# SWINGX_B       is the full path to the swingxbuilder module
+# VERSION_TXT    is the full path to the installed_versions.txt
 # DOC_DIR        is the full path to the doc directory
 
 Name Groovy
 
-!define InstallerVersion 0.5
+!define InstallerVersion 0.5.5
 
 # Set the compression level
 SetCompressor /SOLID lzma
