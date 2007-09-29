@@ -81,6 +81,7 @@ Page custom ReadFileAssociation SetFileAssociation
 !insertmacro MUI_LANGUAGE German
 !insertmacro MUI_LANGUAGE Spanish
 !insertmacro MUI_LANGUAGE French
+!insertmacro MUI_LANGUAGE PortugueseBR
 
 # Installer attributes
 OutFile "groovy${SOURCE_VERSION}-installer.exe"
@@ -114,6 +115,7 @@ Section -post SEC0001
     !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
     SetOutPath $SMPROGRAMS\$StartMenuGroup
     CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^UninstallLink).lnk" $INSTDIR\uninstall.exe
+    CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^GroovyConsoleLink).lnk" $INSTDIR\bin\GroovyConsole.bat
     !insertmacro MUI_STARTMENU_WRITE_END
     WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" DisplayName "$(^Name)"
     WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" DisplayVersion "${VERSION}"
@@ -146,6 +148,7 @@ SectionEnd
 Section un.post UNSEC0001
     DeleteRegKey HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)"
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(^UninstallLink).lnk"
+    Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(^GroovyConsoleLink).lnk"
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(^HTMLLink).lnk"
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(^APILink).lnk"
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(^GAPILink).lnk"
@@ -208,12 +211,14 @@ LangString VField01 ${LANG_ENGLISH} "Create GROOVY_HOME"
 LangString VField01 ${LANG_GERMAN}  "Erzeuge GROOVY_HOME"
 LangString VField01 ${LANG_SPANISH} "Crear GROOVY_HOME"
 LangString VField01 ${LANG_FRENCH}  "Créer GROOVY_HOME"
+LangString VField01 ${LANG_PortugueseBR}  "Criar GROOVY_HOME"
 
 # VField 02
 LangString VField02 ${LANG_ENGLISH} "Add to Path"
 LangString VField02 ${LANG_GERMAN}  "Zum Pfad hinzufügen"
 LangString VField02 ${LANG_SPANISH} "Agregar a la Ruta"
 LangString VField02 ${LANG_FRENCH}  "Ajouter au chemin d'accès/au Path"
+LangString VField02 ${LANG_PortugueseBR}  "Adicionar ao Path"
 
 # VField 5
 LangString VField05 ${LANG_ENGLISH} "If a reference to groovy is detected in the path, \
@@ -233,30 +238,39 @@ est détectée dans le chemin d'accès, \
 la boite  à cocher d'ajout de GROOVY_HOME au chemin d'accès est décochée. \
 Si vous êtes expert, cochez ici svp.\r\n\r\n\
 NB: Le désinstalleur ne restaurera pas les anciennes valeurs (pas pour le moment)."
+LangString VField05 ${LANG_PortugueseBR} "Se uma referência ao Groovy foi detectada, \
+o checkbox para adicionar o GROOVY_HOME ao Path estará desmarcada. \
+Se você preferir, por favor marque esse checkbox.\r\n\r\n\
+NB: O desinstalador não irá restaurar os antigos valores (por enquanto)."
 
 # VField 6
 LangString VField06 ${LANG_ENGLISH} "User Environment or\r\nSystem Environment"
 LangString VField06 ${LANG_GERMAN}  "Benutzerumgebung oder\r\nSystemumgebung"
 LangString VField06 ${LANG_SPANISH} "Entorno de Usuario o\r\nEntorno de Sistema"
 LangString VField06 ${LANG_FRENCH}  "Environnement utilisateur ou\r\nenvironnement système"
+LangString VField06 ${LANG_PortugueseBR}  "Apenas para esse usuário\r\nPara todos os usuários"
+
 
 # VField 7
 LangString VField07 ${LANG_ENGLISH} "Add to System Environment"
 LangString VField07 ${LANG_GERMAN}  "Systemumgebung wählen"
 LangString VField07 ${LANG_SPANISH} "Agregar a Entorno de Sistema"
 LangString VField07 ${LANG_FRENCH}  "Ajouter à l'environnement système"
+LangString VField07 ${LANG_PortugueseBR}  "Adicionar às variáveis do sistema"
 
 # VField 8
 LangString VField08 ${LANG_ENGLISH} "Path to Groovy Home"
 LangString VField08 ${LANG_GERMAN}  "Pfad zu Groovy Home"
 LangString VField08 ${LANG_SPANISH} "Ruta a Groovy Home"
 LangString VField08 ${LANG_FRENCH}  "Chemins d'accès au répertoire standard Groovy"
+LangString VField08 ${LANG_PortugueseBR}  "Caminho para o diretório raiz do Groovy"
 
 # VField 9
 LangString VField09 ${LANG_ENGLISH} "Path Extension"
 LangString VField09 ${LANG_GERMAN}  "Erweiterung des Pfades"
 LangString VField09 ${LANG_SPANISH} "Extensión de Rutas"
 LangString VField09 ${LANG_FRENCH}  "Extension du chemin d'accès"
+LangString VField09 ${LANG_PortugueseBR}  "Extensão do Path"
 
 # JavaHomeWarning
 LangString JavaHomeWarning ${LANG_ENGLISH} "JAVA_HOME is not set. Please set it \
@@ -267,6 +281,8 @@ LangString JavaHomeWarning ${LANG_SPANISH} "JAVA_HOME no está definido. Por favo
 hacia la instalación de Java, de lo contrario Groovy no podrá funcionar correctamente."
 LangString JavaHomeWarning ${LANG_FRENCH}  "JAVA_HOME n'est pas positionné sur le répertoire \
 d'installation Java. Dans le cas contraire groovy ne fonctionnera pas."
+LangString JavaHomeWarning ${LANG_PortugueseBR}  "JAVA_HOME não está configurada. Por favor, configure \
+para o diretório de instalação do Java, caso contrário o Groovy não funcionará."
 
 
 #Additional Page for setting GROOVY_HOME and system path
@@ -373,12 +389,19 @@ un lancement par scripts. Si vous voulez une association fichier, \
 il est nécessaire d'utiliser le lanceur natif.\
 \r\n\r\nSi vous ne savez pas de quoi il s'agit, alors laissez \
 la boite à cocher dans l'état coché."
+LangString NLField01 ${LANG_PortugueseBR}  "O Native Launcher é um executável que, \
+na maioria dos casos, é melhor do que executar \
+scripts normalmente. Se você quer associação de arquivos, \
+então você deve instalar o Native Launcher.\
+\r\n\r\nSe você não sabe o que é isso, \
+então deixe o checkbox marcado."
 
 # NLField 02
 LangString NLField02 ${LANG_ENGLISH} "Install Native Launcher"
 LangString NLField02 ${LANG_GERMAN}  "Installiere Native Launcher"
 LangString NLField02 ${LANG_SPANISH} "Instalar el Lanzador Nativo"
 LangString NLField02 ${LANG_FRENCH}  "Installer le lanceur natif"
+LangString NLField02 ${LANG_PortugueseBR}  "Instalar o Native Launcher"
 
 Function ReadNativeLauncher
   Push $R0
@@ -443,13 +466,20 @@ exécuter vos programmes groovy directement à partir d'un explorateur windows. \
 Vous avez besoin du lanceur natif pour cela. \
 \r\nUn bénéfice supplémentaire est que l'icone \
 groovy est associée à tout fichier de type groovy."
-
+LangString FAField01 ${LANG_PortugueseBR}  "Associação de arquivos nos permite definir \
+um programa (no caso groovy) que executa com \
+um duplo clique no arquivo. Isso significa que você pode \
+executar seus programas escritos em Groovy diretamente do explorer. \
+Você precisa do Native Launcher para isso.\
+\r\n\r\nUm benefício adicional é que o icone do Groovy \
+será associado aos arquivos .groovy."
 
 # FAField 02
 LangString FAField02 ${LANG_ENGLISH} "Add File Association"
 LangString FAField02 ${LANG_GERMAN}  "Füge Dateiassoziation hinzu"
 LangString FAField02 ${LANG_SPANISH} "Agregar Asociación de Ficheros"
 LangString FAField02 ${LANG_FRENCH}  "Ajouter une association fichier"
+LangString FAField02 ${LANG_PortugueseBR}  "Adicionar associação de arquivos"
 
 # FAField 03
 LangString FAField03 ${LANG_ENGLISH} "PATHEXT is an environment variable telling cmd.exe \
@@ -467,12 +497,16 @@ LangString FAField03 ${LANG_FRENCH}  "PATHEXT est une variable d'environnement i
 à la commande cmd.exe \
 quels fichiers sont des exécutables. Si les fichiers groovy sont déjà référencés, \
 la boite à cocher est décochée. Si vous êtes expert, cochez ici svp."
+LangString FAField03 ${LANG_PortugueseBR}  "PATHEXT é uma variável de ambiente que indica ao cmd.exe \
+quais arquivos são executáveis. Se os arquivos Groovy já estão referenciados, este checkbox \
+estará desmarcado. Se você preferir, por favor marque esse checkbox."
 
 # FAField 04
 LangString FAField04 ${LANG_ENGLISH} "Add to PATHEXT"
 LangString FAField04 ${LANG_GERMAN}  "Füge zu PATHEXT hinzu"
 LangString FAField04 ${LANG_SPANISH} "Agregar a PATHEXT"
 LangString FAField04 ${LANG_FRENCH}  "Ajouter à PATHEXT"
+LangString FAField04 ${LANG_PortugueseBR}  "Adicionar ao PATHEXT"
 
 Function ReadFileAssociation
   Push $R0
@@ -562,6 +596,8 @@ LangString APField01 ${LANG_SPANISH} "Los Módulos Adicionales no son estrictamen
 necesarios, pero recomendamos que se instalen de todas formas."
 LangString APField01 ${LANG_FRENCH}  "Les Modules aditionnels sont optionnels, \
 nous vous recommendons cependant de les installer"
+LangString APField01 ${LANG_PortugueseBR}  "Módulos adicionais não são estritamente necessários, \
+mesmo assim recomendamos que sejam instalados."
 
 # APField 02
 LangString APField02 ${LANG_ENGLISH} "Gant - a build tool for scripting Ant tasks \
@@ -572,6 +608,8 @@ LangString APField02 ${LANG_SPANISH} "Gant - una herramienta que facilita el \
 'scripting' the tareas de Ant con Groovy"
 LangString APField02 ${LANG_FRENCH}  "Gant - Outil de build permettant de manipuler \
 les tâches Ant avec Groovy"
+LangString APField02 ${LANG_PortugueseBR}  "Gant - uma ferramenta de build para criar tarefas do Ant \
+com scripts Groovy"
 
 # APField 03
 LangString APField03 ${LANG_ENGLISH} "Scriptom - script ActiveX or COM components \
@@ -582,18 +620,22 @@ LangString APField03 ${LANG_SPANISH} "Scriptom - permite acceder y configurar \
 components ActiveX y/o COM con Groovy"
 LangString APField03 ${LANG_FRENCH}  "Scriptom - Manipulation d'ActiveX ou composants \
 COM avec Groovy"
+LangString APField03 ${LANG_PortugueseBR}  "Scriptom - acesse componentes ActiveX ou COM \
+com Groovy"
 
 # APField 04
 LangString APField04 ${LANG_ENGLISH} "GraphicsBuilder - 2D Graphics with Groovy"
 LangString APField04 ${LANG_GERMAN}  "GraphicsBuilder - 2D Graphics mit Groovy"
 LangString APField04 ${LANG_SPANISH} "GraphicsBuilder - Gráficas 2D con Groovy"
 LangString APField04 ${LANG_FRENCH}  "GraphicsBuilder - Graphiques 2D avec Groovy"
+LangString APField04 ${LANG_PortugueseBR}  "GraphicsBuilder - Gráficos 2D com Groovy"
 
 # APField 05
 LangString APField05 ${LANG_ENGLISH} "SwingXBuilder - The SwingX Components for Groovy"
 LangString APField05 ${LANG_GERMAN}  "SwingXBuilder - Die SwingX-Komponenten für Groovy"
 LangString APField05 ${LANG_SPANISH} "SwingXBuilder - Componentes SwingX para Groovy"
 LangString APField05 ${LANG_FRENCH}  "SwingXBuilder - Les composants SwingX pour Groovy"
+LangString APField05 ${LANG_PortugueseBR}  "SwingXBuilder - Os Componentes SwingX para Groovy"
 
 # APField 06
 LangString APField06 ${LANG_ENGLISH} "Groovy Documentation - including  a \
@@ -604,6 +646,8 @@ LangString APField06 ${LANG_SPANISH} "Documentación de Groovy - incluye copia \
 del wiki en PDF (aprox. 900 páginas)"
 LangString APField06 ${LANG_FRENCH}  "Documentation de Groovy - dont un PDF \
 du wiki (900 pages)"
+LangString APField06 ${LANG_PortugueseBR}  "Groovy Documentation - incluindo um \
+PDF extraido da Wiki (aprox. 900 páginas)"
 
 Function ReadAdditionalPackages
   Push $R0
@@ -663,7 +707,6 @@ Function InstallAdditionalPackages
   ${If} $R0 == '1'
     SetOutPath $INSTDIR
     File  /r "${DOC_DIR}\*"
-    # @TODO Link to PDF, HTML Index
     CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^HTMLLink).lnk" $INSTDIR\html\groovy-jdk.html
     CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^APILink).lnk" $INSTDIR\html\api\index.html
     CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^GAPILink).lnk" $INSTDIR\html\gapi\index.html
@@ -682,26 +725,37 @@ LangString ^UninstallLink ${LANG_ENGLISH} "Uninstall $(^Name)"
 LangString ^UninstallLink ${LANG_GERMAN} "Uninstall $(^Name)"
 LangString ^UninstallLink ${LANG_SPANISH} "Uninstall $(^Name)"
 LangString ^UninstallLink ${LANG_FRENCH} "Uninstall $(^Name)"
+LangString ^UninstallLink ${LANG_PortugueseBR} "Desinstalar $(^Name)"
 
 LangString ^PDFLink ${LANG_ENGLISH} "PDF Documentation"
 LangString ^PDFLink ${LANG_GERMAN} "PDF-Dokumentation"
 LangString ^PDFLink ${LANG_SPANISH} "Documentación en PDF"
 LangString ^PDFLink ${LANG_FRENCH} "Documentation PDF"
+LangString ^PDFLink ${LANG_PortugueseBR} "Documentação em PDF"
 
 LangString ^HTMLLink ${LANG_ENGLISH} "GDK Documentation"
 LangString ^HTMLLink ${LANG_GERMAN} "GDK-Dokumentation"
 LangString ^HTMLLink ${LANG_SPANISH} "Documentación del GDK"
 LangString ^HTMLLink ${LANG_FRENCH} "Documentation du GDK"
+LangString ^HTMLLink ${LANG_PortugueseBR} "Documentação do GDK"
 
 LangString ^APILink ${LANG_ENGLISH} "API Documentation"
 LangString ^APILink ${LANG_GERMAN} "API-Dokumentation"
 LangString ^APILink ${LANG_SPANISH} "Documentación del API"
 LangString ^APILink ${LANG_FRENCH} "Documentation de l'API"
+LangString ^APILink ${LANG_PortugueseBR} "Documentação da API"
 
 LangString ^GAPILink ${LANG_ENGLISH} "GAPI Documentation"
 LangString ^GAPILink ${LANG_GERMAN} "GAPI-Dokumentation"
 LangString ^GAPILink ${LANG_SPANISH} "Documentación del GAPI"
 LangString ^GAPILink ${LANG_FRENCH} "Documentation de la GAPI"
+LangString ^GAPILink ${LANG_PortugueseBR} "Documentação da GAPI"
+
+LangString ^GroovyConsoleLink ${LANG_ENGLISH} "Start GroovyConsole"
+LangString ^GroovyConsoleLink ${LANG_GERMAN} "Starte GroovyConsole"
+LangString ^GroovyConsoleLink ${LANG_SPANISH} "Start GroovyConsole"
+LangString ^GroovyConsoleLink ${LANG_FRENCH} "Start GroovyConsole"
+LangString ^GroovyConsoleLink ${LANG_PortugueseBR} "Iniciar GroovyConsole"
 
 ;====================================================
 ; get_NT_environment 
