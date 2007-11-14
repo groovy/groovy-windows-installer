@@ -556,7 +556,7 @@ Function SetFileAssociation
       WriteRegStr HKCR "Groovy\shell" "" "open"
       WriteRegStr HKCR "Groovy\DefaultIcon" "" '"$INSTDIR\bin\groovy.exe",0'
     "${Index}-Skip:"
-    WriteRegStr HKCR "Groovy\shell\open\command" "" '"$INSTDIR\bin\groovy.exe" "%1"'
+    WriteRegStr HKCR "Groovy\shell\open\command" "" '"$INSTDIR\bin\groovy.exe" "%1" %*'
     #WriteRegStr HKCR "Groovy\shell\edit" "" "Edit Options File"
     #WriteRegStr HKCR "Groovy\shell\edit\command" "" '$INSTDIR\execute.exe "%1"'
  
@@ -722,7 +722,7 @@ FunctionEnd
 # TODO Update the Language Strings with the appropriate translations.
 
 LangString ^UninstallLink ${LANG_ENGLISH} "Uninstall $(^Name)"
-LangString ^UninstallLink ${LANG_GERMAN} "Uninstall $(^Name)"
+LangString ^UninstallLink ${LANG_GERMAN} "Deinstalliere $(^Name)"
 LangString ^UninstallLink ${LANG_SPANISH} "Uninstall $(^Name)"
 LangString ^UninstallLink ${LANG_FRENCH} "Uninstall $(^Name)"
 LangString ^UninstallLink ${LANG_PortugueseBR} "Desinstalar $(^Name)"
