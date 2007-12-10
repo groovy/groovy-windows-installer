@@ -6,6 +6,7 @@
 # GANT_DIR       is the full path to the gant module
 # GRAPHICS_B     is the full path to the graphicsbuilder module
 # SWINGX_B       is the full path to the swingxbuilder module
+# JIDE_B         is the full path to the jidebuilder module
 # VERSION_TXT    is the full path to the installed_versions.txt
 # DOC_DIR        is the full path to the doc directory
 
@@ -631,11 +632,11 @@ LangString APField04 ${LANG_FRENCH}  "GraphicsBuilder - Graphiques 2D avec Groov
 LangString APField04 ${LANG_PortugueseBR}  "GraphicsBuilder - Gráficos 2D com Groovy"
 
 # APField 05
-LangString APField05 ${LANG_ENGLISH} "SwingXBuilder - The SwingX Components for Groovy"
-LangString APField05 ${LANG_GERMAN}  "SwingXBuilder - Die SwingX-Komponenten für Groovy"
-LangString APField05 ${LANG_SPANISH} "SwingXBuilder - Componentes SwingX para Groovy"
-LangString APField05 ${LANG_FRENCH}  "SwingXBuilder - Les composants SwingX pour Groovy"
-LangString APField05 ${LANG_PortugueseBR}  "SwingXBuilder - Os Componentes SwingX para Groovy"
+LangString APField05 ${LANG_ENGLISH} "SwingXBuilder, JideBuilder - The SwingX and Jide Components for Groovy"
+LangString APField05 ${LANG_GERMAN}  "SwingXBuilder, JideBuilder - Die SwingX- und Jide-Komponenten für Groovy"
+LangString APField05 ${LANG_SPANISH} "SwingXBuilder, JideBuilder - Componentes SwingX y/o Jide para Groovy"
+LangString APField05 ${LANG_FRENCH}  "SwingXBuilder, JideBuilder - Les composants SwingX et Jide pour Groovy"
+LangString APField05 ${LANG_PortugueseBR}  "SwingXBuilder, JideBuilder - Os Componentes SwingX ou Jide para Groovy"
 
 # APField 06
 LangString APField06 ${LANG_ENGLISH} "Groovy Documentation - including  a \
@@ -700,6 +701,7 @@ Function InstallAdditionalPackages
   ${If} $R0 == '1'
     SetOutPath $INSTDIR
     File  /r "${SWINGX_B}\*"
+    File  /r "${JIDE_B}\*"
   ${EndIf}
 
   # If set, then install Documentation
