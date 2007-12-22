@@ -150,6 +150,7 @@ Section un.post UNSEC0001
     DeleteRegKey HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)"
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(^UninstallLink).lnk"
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(^GroovyConsoleLink).lnk"
+    Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(^GraphicsPadLink).lnk"
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(^HTMLLink).lnk"
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(^APILink).lnk"
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(^GAPILink).lnk"
@@ -694,6 +695,7 @@ Function InstallAdditionalPackages
   ${If} $R0 == '1'
     SetOutPath $INSTDIR
     File  /r "${GRAPHICS_B}\*"
+    CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^GraphicsPadLink).lnk" $INSTDIR\bin\GraphicsPad.bat
   ${EndIf}
 
   # If set, then install SwingXBuilder
@@ -758,6 +760,12 @@ LangString ^GroovyConsoleLink ${LANG_GERMAN} "Starte GroovyConsole"
 LangString ^GroovyConsoleLink ${LANG_SPANISH} "Start GroovyConsole"
 LangString ^GroovyConsoleLink ${LANG_FRENCH} "Start GroovyConsole"
 LangString ^GroovyConsoleLink ${LANG_PortugueseBR} "Iniciar GroovyConsole"
+
+LangString ^GraphicsPadLink ${LANG_ENGLISH} "Start GraphicsPad"
+LangString ^GraphicsPadLink ${LANG_GERMAN} "Starte GraphicsPad"
+LangString ^GraphicsPadLink ${LANG_SPANISH} "Start GraphicsPad"
+LangString ^GraphicsPadLink ${LANG_FRENCH} "Start GraphicsPad"
+LangString ^GraphicsPadLink ${LANG_PortugueseBR} "Iniciar GraphicsPad"
 
 ;====================================================
 ; get_NT_environment 

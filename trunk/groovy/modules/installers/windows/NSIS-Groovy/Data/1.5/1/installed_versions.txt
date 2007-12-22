@@ -1,0 +1,86 @@
+Installed Versions
+------------------
+This file contains the versions (or dates) of all the components installed by the 
+Windows Installer.
+
+
+Groovy
+------
+Binary Version: 1.5.1
+Doc Version:    1.5.1
+
+
+Native Launcher (all in bin)
+----------------------------
+version built on 10th dec 2007
+groovy.exe
+groovyw.exe
+
+
+Gant 1.0.2 (scripts in bin, jar in lib)
+---------------------------------------
+bin:
+    gant
+    gant.bat
+lib:
+    gant-1.0.2.jar
+
+
+GraphicsBuilder 0.4.2 (scripts in bin, jars in lib)
+---------------------------------------------------
+bin:
+    graphicsPad
+    graphicsPad.bat
+lib:
+    batik-awt-util-1.6-1.jar
+    batik-ext-1.6-1.jar
+    batik-gui-util-1.6-1.jar
+    batik-util-1.6-1.jar
+    graphicsbuilder-0.4.2.jar
+    graphicsbuilder-ext-jdk6-0.4.2.jar
+    graphicsbuilder-ext-svg-0.4.2.jar
+    graphicsbuilder-ext-swingx-0.4.2.jar
+    swingx-0.9.1.jar
+
+It is worth mentioning that the following JRE constraints exist
+JRE 1.4+ graphicsbuilder, graphicsbuilder-ext-svg
+JRE 1.5+ graphicsbuilder-ext-swingx
+JRE 1.6+ graphicsbuilder-ext-jdk6
+
+SwingXBuilder 0.1.5 (all in lib)
+--------------------------------
+swingxbuilder-0.1.5
+swingx-0.9.1.jar
+
+
+JideBuilder 1.0 (all in lib)
+----------------------------
+jide-oss-2.2.1.05.jar
+jidebuilder-1.0.jar
+svg-salamander-1.0.jar
+
+
+Scriptom-1.5 (dlls in bin, jars in lib)
+---------------------------------------
+bin:
+    msvcr80.dll
+    scriptom-1.5.0b10-32.dll
+    scriptom-1.5.0b10-64.dll
+lib:
+    scriptom-1.5.0b10.jar
+supplementary/Scriptom:
+    examples.zip  tlbinf32.zip
+
+Additionally you find the directory scriptom in supplementary. This directory contains
+the zipped examples and the type-library information. If you are using a 64-bit version
+of Windows and Java, you might need to install the respective runtime libraries.
+
+This version of scriptom is found to be quite stable by the developers and the
+scriptom-1.5.0b10.dll has been thoroughly tested. This version of scriptom needs Java 1.5.
+
+
+Final Words
+-----------
+If you have any questions, feel free to ask me personally or on the mailing lists.
+
+Joachim Baumann
