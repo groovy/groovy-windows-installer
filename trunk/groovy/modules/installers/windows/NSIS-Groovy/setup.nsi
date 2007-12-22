@@ -1,14 +1,15 @@
 # We assume the following commandline parameters for the compilation
+# DIR_PREFIX     is the full path to the directory containing the different modules
 # SOURCE_VERSION defines the version of the release
-# SOURCE_DIR     is the full path to the groovy install directory
-# NATIVE_DIR     is the full path to the native launcher
-# SCRIPTOM_DIR   is the full path to the scriptom module
-# GANT_DIR       is the full path to the gant module
-# GRAPHICS_B     is the full path to the graphicsbuilder module
-# SWINGX_B       is the full path to the swingxbuilder module
-# JIDE_B         is the full path to the jidebuilder module
-# VERSION_TXT    is the full path to the installed_versions.txt
-# DOC_DIR        is the full path to the doc directory
+# SOURCE_DIR     is the relative path to the groovy install directory
+# NATIVE_DIR     is the relative path to the native launcher
+# SCRIPTOM_DIR   is the relative path to the scriptom module
+# GANT_DIR       is the relative path to the gant module
+# GRAPHICS_B     is the relative path to the graphicsbuilder module
+# SWINGX_B       is the relative path to the swingxbuilder module
+# JIDE_B         is the relative path to the jidebuilder module
+# VERSION_TXT    is the relative path to the installed_versions.txt
+# DOC_DIR        is the relative path to the doc directory
 
 Name Groovy
 
@@ -18,7 +19,7 @@ Name Groovy
 SetCompressor /SOLID lzma
 
 # The source of the Groovy installation
-!define SOURCEDIR "${SOURCE_DIR}"
+!define SOURCEDIR "${DIR_PREFIX}\${SOURCE_DIR}"
 
 # Defines
 !define REGKEY "SOFTWARE\$(^Name)"
@@ -85,8 +86,8 @@ Page custom ReadFileAssociation SetFileAssociation
 !insertmacro MUI_LANGUAGE PortugueseBR
 
 # Installer attributes
-OutFile "groovy${SOURCE_VERSION}-installer.exe"
-InstallDir $PROGRAMFILES\Groovy
+OutFile "groovy-${SOURCE_VERSION}-installer.exe"
+InstallDir "$PROGRAMFILES\$(^Name)\$(^Name)-${VERSION}"
 CRCCheck on
 XPStyle on
 ShowInstDetails show
@@ -105,7 +106,7 @@ Section -Main SEC0000
     SetOutPath $INSTDIR
     SetOverwrite on
     File /r "${SOURCEDIR}\*"
-    File "${VERSION_TXT}"
+    File "${DIR_PREFIX}\${VERSION_TXT}"
     WriteRegStr HKLM "${REGKEY}\Components" Main 1
 SectionEnd
 
@@ -425,7 +426,7 @@ Function InstallNativeLauncher
   ReadINIStr $R0 "$PLUGINSDIR\nativelauncher.ini" "Field 2" "State"
   ${If} $R0 == '1'
     SetOutPath $INSTDIR\bin
-    File  /r ${NATIVE_DIR}\*
+    File  /r "${DIR_PREFIX}\${NATIVE_DIR}\*"
   ${EndIf}
 
   Pop $R0
@@ -674,27 +675,27 @@ Function InstallAdditionalPackages
   ReadINIStr $R0 "$PLUGINSDIR\additionalpackages.ini" "Field 2" "State"
   ${If} $R0 == '1'
     SetOutPath $INSTDIR\bin
-    File  /r "${GANT_DIR}\bin\gant*"
+    File  /r "${DIR_PREFIX}\${GANT_DIR}\bin\gant*"
 
     SetOutPath $INSTDIR\lib
-    File  /r "${GANT_DIR}\lib\gant*.jar"
+    File  /r "${DIR_PREFIX}\${GANT_DIR}\lib\gant*.jar"
     # ask Russel whether this could be removed
-    File  /nonfatal /r "${GANT_DIR}\lib\ivy*.jar"
-    File  /nonfatal /r "${GANT_DIR}\lib\maven*.jar"
+    File  /nonfatal /r "${DIR_PREFIX}\${GANT_DIR}\lib\ivy*.jar"
+    File  /nonfatal /r "${DIR_PREFIX}\${GANT_DIR}\lib\maven*.jar"
   ${EndIf}
 
   # If set, then install Scriptom
   ReadINIStr $R0 "$PLUGINSDIR\additionalpackages.ini" "Field 3" "State"
   ${If} $R0 == '1'
     SetOutPath $INSTDIR
-    File  /r "${SCRIPTOM_DIR}\*"
+    File  /r "${DIR_PREFIX}\${SCRIPTOM_DIR}\*"
   ${EndIf}
 
   # If set, then install GraphicsBuilder
   ReadINIStr $R0 "$PLUGINSDIR\additionalpackages.ini" "Field 4" "State"
   ${If} $R0 == '1'
     SetOutPath $INSTDIR
-    File  /r "${GRAPHICS_B}\*"
+    File  /r "${DIR_PREFIX}\${GRAPHICS_B}\*"
     CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^GraphicsPadLink).lnk" $INSTDIR\bin\GraphicsPad.bat
   ${EndIf}
 
@@ -702,15 +703,15 @@ Function InstallAdditionalPackages
   ReadINIStr $R0 "$PLUGINSDIR\additionalpackages.ini" "Field 5" "State"
   ${If} $R0 == '1'
     SetOutPath $INSTDIR
-    File  /r "${SWINGX_B}\*"
-    File  /r "${JIDE_B}\*"
+    File  /r "${DIR_PREFIX}\${SWINGX_B}\*"
+    File  /r "${DIR_PREFIX}\${JIDE_B}\*"
   ${EndIf}
 
   # If set, then install Documentation
   ReadINIStr $R0 "$PLUGINSDIR\additionalpackages.ini" "Field 6" "State"
   ${If} $R0 == '1'
     SetOutPath $INSTDIR
-    File  /r "${DOC_DIR}\*"
+    File  /r "${DIR_PREFIX}\${DOC_DIR}\*"
     CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^HTMLLink).lnk" $INSTDIR\html\groovy-jdk.html
     CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^APILink).lnk" $INSTDIR\html\api\index.html
     CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^GAPILink).lnk" $INSTDIR\html\gapi\index.html
