@@ -61,9 +61,7 @@ SetCompressor /SOLID lzma
 
 # Variables
 Var StartMenuGroup
-Var UserOrSystem "current"
-
-
+Var UserOrSystem 
 
 # Installer pages
 !insertmacro MUI_PAGE_WELCOME
@@ -117,7 +115,6 @@ Section -post SEC0001
     !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
     SetOutPath $SMPROGRAMS\$StartMenuGroup
     CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^UninstallLink).lnk" $INSTDIR\uninstall.exe
-    CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^GroovyConsoleLink).lnk" $INSTDIR\bin\GroovyConsole.bat
     !insertmacro MUI_STARTMENU_WRITE_END
     WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" DisplayName "$(^Name)"
     WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" DisplayVersion "${VERSION}"
@@ -324,10 +321,11 @@ FunctionEnd
 Function SetVariables
   Push $R0
 
+  # default is current
+  StrCpy $UserOrSystem "current"
   # If set, then the system environment is used
   ReadINIStr $R0 "$PLUGINSDIR\variables.ini" "Field 7" "State"
   ${If} $R0 == '1'
-    # default is current
     StrCpy $UserOrSystem "all"
   ${Else}
     StrCpy $UserOrSystem "current"
@@ -426,7 +424,18 @@ Function InstallNativeLauncher
   ReadINIStr $R0 "$PLUGINSDIR\nativelauncher.ini" "Field 2" "State"
   ${If} $R0 == '1'
     SetOutPath $INSTDIR\bin
-    File  /r "${DIR_PREFIX}\${NATIVE_DIR}\*"
+    File /oname=groovy.exe "${DIR_PREFIX}\${NATIVE_DIR}\groovy.exe"
+    File /oname=groovyc.exe "${DIR_PREFIX}\${NATIVE_DIR}\groovy.exe"
+    File /oname=groovysh.exe "${DIR_PREFIX}\${NATIVE_DIR}\groovy.exe"
+    File /oname=java2groovy.exe "${DIR_PREFIX}\${NATIVE_DIR}\groovy.exe"
+
+    File /oname=groovyw.exe "${DIR_PREFIX}\${NATIVE_DIR}\groovyw.exe"
+    File /oname=groovyConsole.exe "${DIR_PREFIX}\${NATIVE_DIR}\groovyw.exe"
+    
+    CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^GroovyConsoleLink).lnk" $INSTDIR\bin\GroovyConsole.exe
+    
+  ${Else}
+    CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^GroovyConsoleLink).lnk" $INSTDIR\bin\GroovyConsole.bat
   ${EndIf}
 
   Pop $R0
@@ -682,6 +691,16 @@ Function InstallAdditionalPackages
     # ask Russel whether this could be removed
     File  /nonfatal /r "${DIR_PREFIX}\${GANT_DIR}\lib\ivy*.jar"
     File  /nonfatal /r "${DIR_PREFIX}\${GANT_DIR}\lib\maven*.jar"
+    
+    Push $R0
+
+    # If set, then install the native launcher
+    ReadINIStr $R0 "$PLUGINSDIR\nativelauncher.ini" "Field 2" "State"
+    ${If} $R0 == '1'
+        SetOutPath $INSTDIR\bin
+        File /oname=gant.exe "${DIR_PREFIX}\${NATIVE_DIR}\groovy.exe"
+    ${EndIf}
+    Pop $R0  
   ${EndIf}
 
   # If set, then install Scriptom
@@ -696,7 +715,19 @@ Function InstallAdditionalPackages
   ${If} $R0 == '1'
     SetOutPath $INSTDIR
     File  /r "${DIR_PREFIX}\${GRAPHICS_B}\*"
-    CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^GraphicsPadLink).lnk" $INSTDIR\bin\GraphicsPad.bat
+
+    # If set, then install the native launcher
+    Push $R0
+    ReadINIStr $R0 "$PLUGINSDIR\nativelauncher.ini" "Field 2" "State"
+    ${If} $R0 == '1'
+        SetOutPath $INSTDIR\bin
+        File /oname=graphicsPad.exe "${DIR_PREFIX}\${NATIVE_DIR}\groovyw.exe"
+        CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^GraphicsPadLink).lnk" $INSTDIR\bin\graphicsPad.exe
+    ${Else}
+        CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^GraphicsPadLink).lnk" $INSTDIR\bin\graphicsPad.bat
+    ${EndIf}
+    Pop $R0
+    
   ${EndIf}
 
   # If set, then install SwingXBuilder
