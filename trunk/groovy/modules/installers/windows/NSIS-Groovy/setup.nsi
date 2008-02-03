@@ -743,7 +743,7 @@ Function InstallAdditionalPackages
   ${If} $R0 == '1'
     SetOutPath $INSTDIR
     File  /r "${DIR_PREFIX}\${DOC_DIR}\*"
-    CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^HTMLLink).lnk" $INSTDIR\html\groovy-jdk.html
+    CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^HTMLLink).lnk" $INSTDIR\html\groovy-jdk\index.html
     CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^APILink).lnk" $INSTDIR\html\api\index.html
     CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^GAPILink).lnk" $INSTDIR\html\gapi\index.html
     CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^PDFLink).lnk" $INSTDIR\pdf\wiki-snapshot.pdf    
