@@ -1,3 +1,13 @@
+# Commandline
+# /N   Install Native Launcher (only with silent install)
+# /V   Set Variables (only with silent install)
+# /F   Create File Associations (only with silent install)
+# /A   Install Additional Packages (only with silent install)
+# /ALL Install All (only with silent install)
+# /S   Silent Install
+# /D   Set Installation Directory
+
+
 # We assume the following commandline parameters for the compilation
 # DIR_PREFIX     is the full path to the directory containing the different modules
 # SOURCE_VERSION defines the version of the release
@@ -13,7 +23,7 @@
 
 Name Groovy
 
-!define InstallerVersion 0.5.5
+!define InstallerVersion 0.5.6
 
 # Set the compression level
 SetCompressor /SOLID lzma
@@ -50,7 +60,11 @@ SetCompressor /SOLID lzma
 !include MUI.nsh
 !include logiclib.nsh
 !include WinMessages.NSH
+!include FileFunc.nsh
 
+# Macros for reading command line parameters
+!insertmacro GetParameters
+!insertmacro GetOptions
 
 # Reserved Files
 !insertmacro MUI_RESERVEFILE_LANGDLL
@@ -61,7 +75,15 @@ SetCompressor /SOLID lzma
 
 # Variables
 Var StartMenuGroup
-Var UserOrSystem 
+Var UserOrSystem
+
+# Silent Installer Variables
+Var AllOptions
+Var InstallAll
+Var NativeLauncher
+Var SetVariables
+Var FileAssociations
+Var AdditionalPackages
 
 # Installer pages
 !insertmacro MUI_PAGE_WELCOME
@@ -101,6 +123,23 @@ ShowUninstDetails show
 
 # Installer sections
 Section -Main SEC0000
+    ${If} ${Silent}
+        StrCpy $StartMenuGroup "Groovy"
+        ${If} $NativeLauncher = 1
+            Call InstallNativeLauncher
+        ${EndIf}
+        ${If} $SetVariables = 1
+            Call SetVariables
+        ${EndIf}
+        ${If} $FileAssociations = 1
+            Call SetFileAssociation
+        ${EndIf}
+        ${If} $AdditionalPackages = 1
+            Call InstallAdditionalPackages
+        ${EndIf}
+        
+    ${EndIf}
+
     SetOutPath $INSTDIR
     SetOverwrite on
     File /r "${SOURCEDIR}\*"
@@ -173,6 +212,46 @@ Press ok to install Ubuntu and Groovy as an Ubuntu package."
 
 # Installer functions
 Function .onInit
+
+    ${GetParameters} $AllOptions
+    ClearErrors
+    
+    ${GetOptions} $AllOptions /N $NativeLauncher
+    ${If} ${Errors}
+        StrCpy $NativeLauncher "0"
+    ${Else}
+        StrCpy $NativeLauncher "1"    
+    ${EndIf}
+    ${GetOptions} $AllOptions /V $SetVariables
+    ${If} ${Errors}
+        StrCpy $SetVariables "0"
+    ${Else}
+        StrCpy $SetVariables "1" 
+    ${EndIf}
+    ${GetOptions} $AllOptions /F $FileAssociations
+    ${If} ${Errors}
+        StrCpy $FileAssociations "0"
+    ${Else}
+        StrCpy $FileAssociations "1"    
+    ${EndIf}
+    ${GetOptions} $AllOptions /A $AdditionalPackages
+    ${If} ${Errors}
+        StrCpy $AdditionalPackages "0"
+    ${Else}
+        StrCpy $AdditionalPackages "1"    
+    ${EndIf}
+
+    ${GetOptions} $AllOptions /ALL $InstallAll
+    ${If} ${Errors}
+        StrCpy $InstallAll "0"
+    ${Else}
+        StrCpy $NativeLauncher "1"
+        StrCpy $SetVariables "1"
+        StrCpy $FileAssociations "1"
+        StrCpy $AdditionalPackages "1"
+        StrCpy $InstallAll "1"    
+    ${EndIf}
+
     InitPluginsDir
     !insertmacro MUI_LANGDLL_DISPLAY
     File /oname=$PLUGINSDIR\variables.ini variables.ini
@@ -417,6 +496,8 @@ Function ReadNativeLauncher
   Pop $R0
 FunctionEnd
 
+Var WhichGroovyConsole
+
 Function InstallNativeLauncher
   Push $R0
 
@@ -431,12 +512,16 @@ Function InstallNativeLauncher
 
     File /oname=groovyw.exe "${DIR_PREFIX}\${NATIVE_DIR}\groovyw.exe"
     File /oname=groovyConsole.exe "${DIR_PREFIX}\${NATIVE_DIR}\groovyw.exe"
-    
-    CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^GroovyConsoleLink).lnk" $INSTDIR\bin\GroovyConsole.exe
-    
+
+    StrCpy $WhichGroovyConsole "exe"
   ${Else}
-    CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^GroovyConsoleLink).lnk" $INSTDIR\bin\GroovyConsole.bat
+    StrCpy $WhichGroovyConsole "bat"
   ${EndIf}
+
+  !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
+  SetOutPath $SMPROGRAMS\$StartMenuGroup
+  CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^GroovyConsoleLink).lnk" $INSTDIR\bin\GroovyConsole.$WhichGroovyConsole
+  !insertmacro MUI_STARTMENU_WRITE_END    
 
   Pop $R0
 
@@ -677,6 +762,8 @@ Function ReadAdditionalPackages
   Pop $R0
 FunctionEnd
 
+Var WhichGraphicsPad
+
 Function InstallAdditionalPackages
   Push $R0
 
@@ -688,9 +775,11 @@ Function InstallAdditionalPackages
 
     SetOutPath $INSTDIR\lib
     File  /r "${DIR_PREFIX}\${GANT_DIR}\lib\gant*.jar"
-    # ask Russel whether this could be removed
     File  /nonfatal /r "${DIR_PREFIX}\${GANT_DIR}\lib\ivy*.jar"
     File  /nonfatal /r "${DIR_PREFIX}\${GANT_DIR}\lib\maven*.jar"
+
+    SetOutPath $INSTDIR\supplementary
+    File  /nonfatal /r "${DIR_PREFIX}\${GANT_DIR}\supplementary\*"
     
     Push $R0
 
@@ -722,10 +811,12 @@ Function InstallAdditionalPackages
     ${If} $R0 == '1'
         SetOutPath $INSTDIR\bin
         File /oname=graphicsPad.exe "${DIR_PREFIX}\${NATIVE_DIR}\groovyw.exe"
-        CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^GraphicsPadLink).lnk" $INSTDIR\bin\graphicsPad.exe
+
+        StrCpy $WhichGraphicsPad "exe"
     ${Else}
-        CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^GraphicsPadLink).lnk" $INSTDIR\bin\graphicsPad.bat
+        StrCpy $WhichGraphicsPad "bat"
     ${EndIf}
+
     Pop $R0
     
   ${EndIf}
@@ -743,10 +834,21 @@ Function InstallAdditionalPackages
   ${If} $R0 == '1'
     SetOutPath $INSTDIR
     File  /r "${DIR_PREFIX}\${DOC_DIR}\*"
+    
+    !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
+    SetOutPath $SMPROGRAMS\$StartMenuGroup
     CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^HTMLLink).lnk" $INSTDIR\html\groovy-jdk\index.html
     CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^APILink).lnk" $INSTDIR\html\api\index.html
     CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^GAPILink).lnk" $INSTDIR\html\gapi\index.html
-    CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^PDFLink).lnk" $INSTDIR\pdf\wiki-snapshot.pdf    
+    CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^PDFLink).lnk" $INSTDIR\pdf\wiki-snapshot.pdf
+
+    ReadINIStr $R0 "$PLUGINSDIR\additionalpackages.ini" "Field 4" "State"
+    ${If} $R0 == '1'
+      CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^GraphicsPadLink).lnk" $INSTDIR\bin\graphicsPad.$WhichGraphicsPad
+    ${EndIf}
+
+    !insertmacro MUI_STARTMENU_WRITE_END
+
   ${EndIf}
 
   Pop $R0

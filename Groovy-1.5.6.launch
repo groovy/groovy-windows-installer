@@ -4,12 +4,13 @@
 <listEntry value="/NSIS-Groovy/setup.nsi"/>
 </listAttribute>
 <booleanAttribute key="noCD" value="false"/>
-<listAttribute key="instructions"/>
 <booleanAttribute key="noConfig" value="false"/>
-<booleanAttribute key="runInstaller" value="false"/>
+<listAttribute key="instructions"/>
 <stringAttribute key="script" value="${workspace_loc:/NSIS-Groovy/setup.nsi}"/>
+<booleanAttribute key="runInstaller" value="false"/>
 <booleanAttribute key="hdrInfo" value="false"/>
 <intAttribute key="processPriority" value="-1"/>
+<booleanAttribute key="solidCompression" value="false"/>
 <listAttribute key="symbols">
 <listEntry value="SOURCE_VERSION­1.5.6"/>
 <listEntry value="DIR_PREFIX­D:\NSIS\NSIS-Groovy\Data\1.5\6"/>
@@ -23,12 +24,11 @@
 <listEntry value="SWINGX_B­swingxbuilder"/>
 <listEntry value="JIDE_B­jidebuilder"/>
 </listAttribute>
-<booleanAttribute key="solidCompression" value="false"/>
 <stringAttribute key="pluginVersion" value="0.9.5.1"/>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
 <listEntry value="1"/>
 </listAttribute>
-<intAttribute key="compressor" value="0"/>
+<intAttribute key="compressor" value="1"/>
 <booleanAttribute key="license" value="false"/>
 <intAttribute key="verbosity" value="-1"/>
 </launchConfiguration>
