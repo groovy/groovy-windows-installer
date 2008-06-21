@@ -772,6 +772,7 @@ Function InstallAdditionalPackages
   ${If} $R0 == '1'
     SetOutPath $INSTDIR\bin
     File  /r "${DIR_PREFIX}\${GANT_DIR}\bin\gant*"
+    File  /nonfatal /r "${DIR_PREFIX}\${GANT_DIR}\bin\startGroovy*"
 
     SetOutPath $INSTDIR\lib
     File  /r "${DIR_PREFIX}\${GANT_DIR}\lib\gant*.jar"
