@@ -23,7 +23,7 @@
 
 Name Groovy
 
-!define InstallerVersion 0.5.6
+!define InstallerVersion 0.5.7
 
 # Set the compression level
 SetCompressor /SOLID lzma
@@ -129,6 +129,7 @@ Section -Main SEC0000
             Call InstallNativeLauncher
         ${EndIf}
         ${If} $SetVariables = 1
+            Call ReadVariables
             Call SetVariables
         ${EndIf}
         ${If} $FileAssociations = 1
@@ -377,7 +378,7 @@ Function ReadVariables
   WriteINIStr $PLUGINSDIR\variables.ini "Field 8"  "Text" $(VField08)
   WriteINIStr $PLUGINSDIR\variables.ini "Field 9"  "Text" $(VField09)
 
-  # Set value for GROOVY_HOME textfield  
+  # Set value for GROOVY_HOME textfield
   WriteINIStr $PLUGINSDIR\variables.ini "Field 3" "state" $INSTDIR
 
   # Check for groovy in path
