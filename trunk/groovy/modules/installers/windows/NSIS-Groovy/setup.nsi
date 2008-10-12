@@ -789,7 +789,8 @@ Function InstallAdditionalPackages
     ReadINIStr $R0 "$PLUGINSDIR\nativelauncher.ini" "Field 2" "State"
     ${If} $R0 == '1'
         SetOutPath $INSTDIR\bin
-        File /oname=gant.exe "${DIR_PREFIX}\${NATIVE_DIR}\groovy.exe"
+        File /oname=gant.exe "${DIR_PREFIX}\${NATIVE_DIR}\gant.exe"
+        File /oname=gantw.exe "${DIR_PREFIX}\${NATIVE_DIR}\gantw.exe"
     ${EndIf}
     Pop $R0  
   ${EndIf}
