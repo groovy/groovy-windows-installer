@@ -780,6 +780,9 @@ Function InstallAdditionalPackages
     File  /nonfatal /r "${DIR_PREFIX}\${GANT_DIR}\lib\ivy*.jar"
     File  /nonfatal /r "${DIR_PREFIX}\${GANT_DIR}\lib\maven*.jar"
 
+    SetOutPath $INSTDIR\conf
+    File  /nonfatal /r "${DIR_PREFIX}\${GANT_DIR}\conf\*"
+    
     SetOutPath $INSTDIR\supplementary
     File  /nonfatal /r "${DIR_PREFIX}\${GANT_DIR}\supplementary\*"
     
