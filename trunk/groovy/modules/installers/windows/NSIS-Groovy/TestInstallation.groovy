@@ -4,9 +4,11 @@
  */
 
 import groovy.swing.j2d.GraphicsBuilder
-import griffon.builder.jide.JideBuilder
 import groovy.swing.SwingXBuilder
 import org.codehaus.groovy.scriptom.*;
+
+import griffon.builder.jide.JideBuilder
+// 1.5 import org.kordamp.groovy.swing.jide.JideBuilder
 
 
 /**
