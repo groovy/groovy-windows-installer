@@ -1,3 +1,4 @@
+#!/usr/bin/env groovy
 /**
  * Test Groovy Installation
  * A full installation is assumed
