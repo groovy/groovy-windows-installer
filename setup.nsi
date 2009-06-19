@@ -466,7 +466,7 @@ FunctionEnd
 LangString NLField01 ${LANG_ENGLISH} "The Native Launcher is an executable, that \
 in most cases is preferrable to the normal \
 launching scripts. If you want file associations, \
-than you have to install the native launcher.\
+then you have to install the native launcher.\
 \r\n\r\nIf you don't know what this is about, \
 then leave the checkbox in the checked state."
 LangString NLField01 ${LANG_GERMAN} "Der 'Native Launcher' ist ein ausführbares \
