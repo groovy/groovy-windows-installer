@@ -4,7 +4,6 @@
  * A full installation is assumed
  */
 
-import groovy.swing.j2d.GraphicsBuilder
 import groovy.swing.SwingXBuilder
 import org.codehaus.groovy.scriptom.*;
 
@@ -66,18 +65,6 @@ public class TestInstallation extends GroovyTestCase {
         assertNotNull groovyVar
         def result = "$groovyVar/bin/gant.exe -V".execute().text
         assert result =~ /Gant version/
-    }
-
-    void testGraphicsBuilder() {
-        def gb = new GraphicsBuilder()
-        assertNotNull gb
-        gb.group {
-            rect(x: 10, y: 10, width: 100, height: 100,
-                    arcWidth: 20, arcHeight: 20, fill: 'green')
-
-            ellipse(cx: 120, cy: 120, radiusx: 50, radiusy: 100)
-            text(x: 50, y: 200, text: 'Hallo Groovy', fill: "yellow")
-        }
     }
 
     void testInstantiateJideBuilder() {
