@@ -1,13 +1,3 @@
-# Commandline
-# /N   Install Native Launcher (only with silent install)
-# /V   Set Variables (only with silent install)
-# /F   Create File Associations (only with silent install)
-# /A   Install Additional Packages (only with silent install)
-# /ALL Install All (only with silent install)
-# /S   Silent Install
-# /D   Set Installation Directory
-
-
 # We assume the following commandline parameters for the compilation
 # DIR_PREFIX     is the full path to the directory containing the different modules
 # SOURCE_VERSION defines the version of the release
@@ -15,15 +5,13 @@
 # NATIVE_DIR     is the relative path to the native launcher
 # SCRIPTOM_DIR   is the relative path to the scriptom module
 # GANT_DIR       is the relative path to the gant module
-# GRAPHICS_B     is the relative path to the graphicsbuilder module
-# SWINGX_B       is the relative path to the swingxbuilder module
-# JIDE_B         is the relative path to the jidebuilder module
+# GRIFFON_B      is the relative path to the griffon builders module
 # VERSION_TXT    is the relative path to the installed_versions.txt
 # DOC_DIR        is the relative path to the doc directory
 
 Name Groovy
 
-!define InstallerVersion 0.5.7
+!define InstallerVersion 0.7.0
 
 # Set the compression level
 SetCompressor /SOLID lzma
@@ -38,17 +26,13 @@ SetCompressor /SOLID lzma
 !define URL groovy.codehaus.org
 
 # MUI defines
-!define MUI_ICON "${NSISDIR}\Contrib\Graphics\Icons\modern-install.ico"
 !define MUI_FINISHPAGE_NOAUTOCLOSE
 !define MUI_STARTMENUPAGE_REGISTRY_ROOT HKLM
 !define MUI_STARTMENUPAGE_REGISTRY_KEY ${REGKEY}
 !define MUI_STARTMENUPAGE_REGISTRY_VALUENAME StartMenuGroup
 !define MUI_STARTMENUPAGE_DEFAULTFOLDER Groovy
-!define MUI_UNICON "${NSISDIR}\Contrib\Graphics\Icons\modern-uninstall.ico"
+!define MUI_FINISHPAGE_SHOWREADME $INSTDIR\${VERSION_TXT}
 !define MUI_UNFINISHPAGE_NOAUTOCLOSE
-!define MUI_LANGDLL_REGISTRY_ROOT HKLM
-!define MUI_LANGDLL_REGISTRY_KEY ${REGKEY}
-!define MUI_LANGDLL_REGISTRY_VALUENAME InstallerLanguage
 !define MUI_HEADERIMAGE
 !define MUI_HEADERIMAGE_BITMAP "header.bmp"
 !define MUI_HEADERIMAGE_BITMAP_NOSTRETCH
@@ -63,12 +47,9 @@ SetCompressor /SOLID lzma
 !include FileFunc.nsh
 !include  EnvVarUpdate.nsh
 
-# Macros for reading command line parameters
-!insertmacro GetParameters
-!insertmacro GetOptions
 
 # Reserved Files
-!insertmacro MUI_RESERVEFILE_LANGDLL
+#ReserveFile "${NSISDIR}\Plugins\AdvSplash.dll"
 
 # User and System Environment
 !define NT_current_env 'HKCU "Environment"'
@@ -78,22 +59,13 @@ SetCompressor /SOLID lzma
 Var StartMenuGroup
 Var UserOrSystem
 
-# Silent Installer Variables
-Var AllOptions
-Var InstallAll
-Var NativeLauncher
-Var SetVariables
-Var FileAssociations
-Var AdditionalPackages
-
 # Installer pages
 !insertmacro MUI_PAGE_WELCOME
+!insertmacro MUI_PAGE_COMPONENTS
 !insertmacro MUI_PAGE_DIRECTORY
 !insertmacro MUI_PAGE_STARTMENU Application $StartMenuGroup
 !insertmacro MUI_PAGE_INSTFILES
 Page custom ReadVariables SetVariables
-Page custom ReadNativeLauncher InstallNativeLauncher
-Page custom ReadAdditionalPackages InstallAdditionalPackages
 Page custom ReadFileAssociation SetFileAssociation
 !insertmacro MUI_PAGE_FINISH
 !insertmacro MUI_UNPAGE_CONFIRM
@@ -106,50 +78,197 @@ Page custom ReadFileAssociation SetFileAssociation
 !insertmacro MUI_LANGUAGE French
 !insertmacro MUI_LANGUAGE PortugueseBR
 
+
 # Installer attributes
 OutFile "groovy-${SOURCE_VERSION}-installer.exe"
 InstallDir "$PROGRAMFILES\$(^Name)\$(^Name)-${VERSION}"
 CRCCheck on
 XPStyle on
 ShowInstDetails show
-VIProductVersion 1.1.0.0
-VIAddVersionKey /LANG=${LANG_ENGLISH} ProductName Groovy
-VIAddVersionKey ProductVersion "${VERSION}"
-VIAddVersionKey /LANG=${LANG_ENGLISH} CompanyWebsite "${URL}"
-VIAddVersionKey /LANG=${LANG_ENGLISH} FileVersion ""
-VIAddVersionKey /LANG=${LANG_ENGLISH} FileDescription ""
-VIAddVersionKey /LANG=${LANG_ENGLISH} LegalCopyright ""
 InstallDirRegKey HKLM "${REGKEY}" Path
 ShowUninstDetails show
 
 # Installer sections
-Section -Main SEC0000
-    ${If} ${Silent}
-        StrCpy $StartMenuGroup "Groovy"
-        ${If} $NativeLauncher = 1
-            Call InstallNativeLauncher
-        ${EndIf}
-        ${If} $SetVariables = 1
-            Call ReadVariables
-            Call SetVariables
-        ${EndIf}
-        ${If} $FileAssociations = 1
-            Call SetFileAssociation
-        ${EndIf}
-        ${If} $AdditionalPackages = 1
-            Call InstallAdditionalPackages
-        ${EndIf}
-        
-    ${EndIf}
-
+Section "Groovy Binaries" SecBinaries
+    SectionIn RO    # this section cannot be deselected
     SetOutPath $INSTDIR
     SetOverwrite on
     File /r "${SOURCEDIR}\*"
+    SetOutPath $INSTDIR
     File "${DIR_PREFIX}\${VERSION_TXT}"
-    WriteRegStr HKLM "${REGKEY}\Components" Main 1
+    WriteRegStr HKLM "${REGKEY}\Components" "Groovy Binaries" 1
 SectionEnd
 
-Section -post SEC0001
+Section "Groovy Documentation" SecDocumentation
+    SetOutPath $INSTDIR
+    
+    SetOverwrite on
+    File  /r "${DIR_PREFIX}\${DOC_DIR}\*"
+    WriteRegStr HKLM "${REGKEY}\Components" "Groovy Documentation" 1
+SectionEnd
+
+Section "Modify Variables" SecVariables
+    SetOutPath $INSTDIR
+    SetOverwrite on
+    WriteRegStr HKLM "${REGKEY}\Components" "Modify Variables" 1
+SectionEnd
+
+SectionGroup /e Modules SecGrpModules
+    Section Gant SecGant
+        SetOutPath $INSTDIR
+        SetOverwrite on
+        File /r "${DIR_PREFIX}\${GANT_DIR}\*"
+        WriteRegStr HKLM "${REGKEY}\Components" Gant 1
+    SectionEnd
+
+    Section Griffon SecGriffon
+        SetOutPath "$INSTDIR\lib"
+        SetOverwrite on
+        File /r "${DIR_PREFIX}\${GRIFFON_B}\*"
+        WriteRegStr HKLM "${REGKEY}\Components" Griffon 1
+    SectionEnd
+
+    Section Scriptom SecScriptom
+        SetOutPath $INSTDIR
+        SetOverwrite on
+        File /r "${DIR_PREFIX}\${SCRIPTOM_DIR}\*"
+        WriteRegStr HKLM "${REGKEY}\Components" Scriptom 1
+    SectionEnd
+SectionGroupEnd
+
+# Links in Start Menu
+
+LangString ^UninstallLink ${LANG_ENGLISH} "Uninstall $(^Name)"
+LangString ^UninstallLink ${LANG_GERMAN} "Deinstalliere $(^Name)"
+LangString ^UninstallLink ${LANG_SPANISH} "Uninstall $(^Name)"
+LangString ^UninstallLink ${LANG_FRENCH} "Uninstall $(^Name)"
+LangString ^UninstallLink ${LANG_PortugueseBR} "Desinstalar $(^Name)"
+
+LangString ^PDFLink ${LANG_ENGLISH} "PDF Documentation"
+LangString ^PDFLink ${LANG_GERMAN} "PDF-Dokumentation"
+LangString ^PDFLink ${LANG_SPANISH} "Documentación en PDF"
+LangString ^PDFLink ${LANG_FRENCH} "Documentation PDF"
+LangString ^PDFLink ${LANG_PortugueseBR} "Documentação em PDF"
+
+LangString ^HTMLLink ${LANG_ENGLISH} "GDK Documentation"
+LangString ^HTMLLink ${LANG_GERMAN} "GDK-Dokumentation"
+LangString ^HTMLLink ${LANG_SPANISH} "Documentación del GDK"
+LangString ^HTMLLink ${LANG_FRENCH} "Documentation du GDK"
+LangString ^HTMLLink ${LANG_PortugueseBR} "Documentação do GDK"
+
+LangString ^APILink ${LANG_ENGLISH} "API Documentation"
+LangString ^APILink ${LANG_GERMAN} "API-Dokumentation"
+LangString ^APILink ${LANG_SPANISH} "Documentación del API"
+LangString ^APILink ${LANG_FRENCH} "Documentation de l'API"
+LangString ^APILink ${LANG_PortugueseBR} "Documentação da API"
+
+LangString ^GAPILink ${LANG_ENGLISH} "GAPI Documentation"
+LangString ^GAPILink ${LANG_GERMAN} "GAPI-Dokumentation"
+LangString ^GAPILink ${LANG_SPANISH} "Documentación del GAPI"
+LangString ^GAPILink ${LANG_FRENCH} "Documentation de la GAPI"
+LangString ^GAPILink ${LANG_PortugueseBR} "Documentação da GAPI"
+
+LangString ^GroovyConsoleLink ${LANG_ENGLISH} "Start GroovyConsole"
+LangString ^GroovyConsoleLink ${LANG_GERMAN} "Starte GroovyConsole"
+LangString ^GroovyConsoleLink ${LANG_SPANISH} "Start GroovyConsole"
+LangString ^GroovyConsoleLink ${LANG_FRENCH} "Start GroovyConsole"
+LangString ^GroovyConsoleLink ${LANG_PortugueseBR} "Iniciar GroovyConsole"
+
+Section "-Shortcuts" SecShortcuts
+
+    !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
+    SetOutPath $SMPROGRAMS\$StartMenuGroup
+
+    SectionGetFlags ${SecDocumentation} $R0 
+    IntOp $R0 $R0 & ${SF_SELECTED} 
+
+    ${If} $R0 == ${SF_SELECTED}
+        CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^HTMLLink).lnk" $INSTDIR\html\groovy-jdk\index.html
+        CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^APILink).lnk" $INSTDIR\html\api\index.html
+        CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^GAPILink).lnk" $INSTDIR\html\gapi\index.html
+        CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^PDFLink).lnk" $INSTDIR\pdf\wiki-snapshot.pdf
+    ${EndIf}
+
+    CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^GroovyConsoleLink).lnk" $INSTDIR\bin\GroovyConsole.exe
+
+    !insertmacro MUI_STARTMENU_WRITE_END    
+    WriteRegStr HKLM "${REGKEY}\Components" Shortcuts 1
+SectionEnd
+
+# Section Descriptions
+LangString DESC_SecBinaries ${LANG_ENGLISH} "Main Groovy Binaries"
+LangString DESC_SecBinaries ${LANG_GERMAN} "Groovy Basisinstallation"
+LangString DESC_SecBinaries ${LANG_SPANISH} "Main Groovy Binaries"
+LangString DESC_SecBinaries ${LANG_FRENCH} "Main Groovy Binaries"
+LangString DESC_SecBinaries ${LANG_PortugueseBR} "Main Groovy Binaries"
+
+LangString DESC_SecDocumentation ${LANG_ENGLISH} "Groovy Documentation - including  a \
+PDF Snapshot of the Wiki (ca. 900 pages)"
+LangString DESC_SecDocumentation ${LANG_GERMAN}  "Groovy-Dokumentation - inkl. \
+PDF-Abzug des Wiki (ca. 900 Seiten)"
+LangString DESC_SecDocumentation ${LANG_SPANISH} "Documentación de Groovy - incluye copia \
+del wiki en PDF (aprox. 900 páginas)"
+LangString DESC_SecDocumentation ${LANG_FRENCH}  "Documentation de Groovy - dont un PDF \
+du wiki (900 pages)"
+LangString DESC_SecDocumentation ${LANG_PortugueseBR}  "Groovy Documentation - incluindo um \
+PDF extraido da Wiki (aprox. 900 páginas)"
+
+LangString DESC_SecVariables ${LANG_ENGLISH} "Environment Variables and File Association"
+LangString DESC_SecVariables ${LANG_GERMAN} "Umgebungsvariablen und Dateiassoziationen"
+LangString DESC_SecVariables ${LANG_SPANISH} "Environment Variables and File Association"
+LangString DESC_SecVariables ${LANG_FRENCH} "Environment Variables and File Association"
+LangString DESC_SecVariables ${LANG_PortugueseBR} "Environment Variables and File Association"
+
+LangString DESC_SecGrpModules ${LANG_ENGLISH} "Additional Modules are not strictly necessary, \
+but we recommend installing them anyway."
+LangString DESC_SecGrpModules ${LANG_GERMAN} "Zusätzliche Module sind nicht unbedingt notwendig, \
+wir empfehlen aber, sie trotzdem zu installieren."
+LangString DESC_SecGrpModules ${LANG_SPANISH} "Los Módulos Adicionales no son estrictamente \
+necesarios, pero recomendamos que se instalen de todas formas."
+LangString DESC_SecGrpModules ${LANG_FRENCH}  "Les Modules aditionnels sont optionnels, \
+nous vous recommendons cependant de les installer"
+LangString DESC_SecGrpModules ${LANG_PortugueseBR}  "Módulos adicionais não são estritamente necessários, \
+mesmo assim recomendamos que sejam instalados."
+
+LangString DESC_SecGant ${LANG_ENGLISH} "Gant - a build tool for scripting Ant tasks \
+with Groovy"
+LangString DESC_SecGant ${LANG_GERMAN}  "Gant - Ein Werkzeug, um Ant Tasks mit Groovy \
+zu programmieren"
+LangString DESC_SecGant ${LANG_SPANISH} "Gant - una herramienta que facilita el \
+'scripting' the tareas de Ant con Groovy"
+LangString DESC_SecGant ${LANG_FRENCH}  "Gant - Outil de build permettant de manipuler \
+les tâches Ant avec Groovy"
+LangString DESC_SecGant ${LANG_PortugueseBR}  "Gant - uma ferramenta de build para criar tarefas do Ant \
+com scripts Groovy"
+
+LangString DESC_SecGriffon ${LANG_ENGLISH} "Griffon Builders"
+LangString DESC_SecGriffon ${LANG_GERMAN} "Griffon Builders"
+LangString DESC_SecGriffon ${LANG_SPANISH} "Griffon Builders"
+LangString DESC_SecGriffon ${LANG_FRENCH} "Griffon Builders"
+LangString DESC_SecGriffon ${LANG_PortugueseBR} "Griffon Builders"
+
+LangString DESC_SecScriptom ${LANG_ENGLISH} "Scriptom - script ActiveX or COM components \
+with Groovy"
+LangString DESC_SecScriptom ${LANG_GERMAN}  "Scriptom - Programmieren von ActiveX und COM-\
+Komponenten mit Groovy"
+LangString DESC_SecScriptom ${LANG_SPANISH} "Scriptom - permite acceder y configurar \
+components ActiveX y/o COM con Groovy"
+LangString DESC_SecScriptom ${LANG_FRENCH}  "Scriptom - Manipulation d'ActiveX ou composants \
+COM avec Groovy"
+LangString DESC_SecScriptom ${LANG_PortugueseBR}  "Scriptom - acesse componentes ActiveX ou COM \
+com Groovy"
+
+!insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
+  !insertmacro MUI_DESCRIPTION_TEXT ${SecBinaries} $(DESC_SecBinaries)
+  !insertmacro MUI_DESCRIPTION_TEXT ${SecDocumentation} $(DESC_SecDocumentation)
+  !insertmacro MUI_DESCRIPTION_TEXT ${SecVariables} $(DESC_SecVariables)
+  !insertmacro MUI_DESCRIPTION_TEXT ${SecGrpModules} $(DESC_SecGrpModules)
+  !insertmacro MUI_DESCRIPTION_TEXT ${SecGant} $(DESC_SecGant)
+  !insertmacro MUI_DESCRIPTION_TEXT ${SecGriffon} $(DESC_SecGriffon)
+  !insertmacro MUI_DESCRIPTION_TEXT ${SecScriptom} $(DESC_SecScriptom)
+!insertmacro MUI_FUNCTION_DESCRIPTION_END
+
+Section -post SEC0006
     WriteRegStr HKLM "${REGKEY}" Path $INSTDIR
     SetOutPath $INSTDIR
     WriteUninstaller $INSTDIR\uninstall.exe
@@ -158,8 +277,6 @@ Section -post SEC0001
     CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^UninstallLink).lnk" $INSTDIR\uninstall.exe
     !insertmacro MUI_STARTMENU_WRITE_END
     WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" DisplayName "$(^Name)"
-    WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" DisplayVersion "${VERSION}"
-    WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" URLInfoAbout "${URL}"
     WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" DisplayIcon $INSTDIR\uninstall.exe
     WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" UninstallString $INSTDIR\uninstall.exe
     WriteRegDWORD HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" NoModify 1
@@ -179,22 +296,45 @@ done${UNSECTION_ID}:
     Pop $R0
 !macroend
 
-# Uninstaller sections
-Section /o un.Main UNSEC0000
-    RmDir /r /REBOOTOK $INSTDIR
-    DeleteRegValue HKLM "${REGKEY}\Components" Main
-SectionEnd
-
-Section un.post UNSEC0001
-    DeleteRegKey HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)"
-    Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(^UninstallLink).lnk"
+Section /o un.Shortcuts UNSEC0006
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(^GroovyConsoleLink).lnk"
-    Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(^GraphicsPadLink).lnk"
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(^HTMLLink).lnk"
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(^APILink).lnk"
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(^GAPILink).lnk"
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(^PDFLink).lnk"
+    DeleteRegValue HKLM "${REGKEY}\Components" "Shortcuts"
+SectionEnd
 
+# Uninstaller sections
+Section /o un.Scriptom UNSEC0005
+    DeleteRegValue HKLM "${REGKEY}\Components" Scriptom
+SectionEnd
+
+Section /o un.Griffon UNSEC0004
+    DeleteRegValue HKLM "${REGKEY}\Components" Griffon
+SectionEnd
+
+Section /o un.Gant UNSEC0003
+    DeleteRegValue HKLM "${REGKEY}\Components" Gant
+SectionEnd
+
+Section /o "un.Modify Variables" UNSEC0002
+    DeleteRegValue HKLM "${REGKEY}\Components" "Modify Variables"
+SectionEnd
+
+Section /o "un.Groovy Documentation" UNSEC0001
+    DeleteRegValue HKLM "${REGKEY}\Components" "Groovy Documentation"
+SectionEnd
+
+Section /o "un.Groovy Binaries" UNSEC0000
+    Delete /REBOOTOK $INSTDIR\${VERSION_TXT}
+    RmDir /r /REBOOTOK $INSTDIR
+    DeleteRegValue HKLM "${REGKEY}\Components" "Groovy Binaries"
+SectionEnd
+
+Section un.post UNSEC0007
+    DeleteRegKey HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)"
+    Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(^UninstallLink).lnk"
     Delete /REBOOTOK $INSTDIR\uninstall.exe
     DeleteRegValue HKLM "${REGKEY}" StartMenuGroup
     DeleteRegValue HKLM "${REGKEY}" Path
@@ -209,66 +349,12 @@ no_smgroup:
     Pop $R0
 SectionEnd
 
-!define RUSSELOPTION "Russel-option detected: Now reformatting the disc. \
-Press ok to install Ubuntu and Groovy as an Ubuntu package."
-
 # Installer functions
 Function .onInit
-
-    ${GetParameters} $AllOptions
-    ClearErrors
-    
-    ${GetOptions} $AllOptions /N $NativeLauncher
-    ${If} ${Errors}
-        StrCpy $NativeLauncher "0"
-    ${Else}
-        StrCpy $NativeLauncher "1"    
-    ${EndIf}
-    ${GetOptions} $AllOptions /V $SetVariables
-    ${If} ${Errors}
-        StrCpy $SetVariables "0"
-    ${Else}
-        StrCpy $SetVariables "1" 
-    ${EndIf}
-    ${GetOptions} $AllOptions /F $FileAssociations
-    ${If} ${Errors}
-        StrCpy $FileAssociations "0"
-    ${Else}
-        StrCpy $FileAssociations "1"    
-    ${EndIf}
-    ${GetOptions} $AllOptions /A $AdditionalPackages
-    ${If} ${Errors}
-        StrCpy $AdditionalPackages "0"
-    ${Else}
-        StrCpy $AdditionalPackages "1"    
-    ${EndIf}
-
-    ${GetOptions} $AllOptions /ALL $InstallAll
-    ${If} ${Errors}
-        StrCpy $InstallAll "0"
-    ${Else}
-        StrCpy $NativeLauncher "1"
-        StrCpy $SetVariables "1"
-        StrCpy $FileAssociations "1"
-        StrCpy $AdditionalPackages "1"
-        StrCpy $InstallAll "1"    
-    ${EndIf}
-
     InitPluginsDir
     !insertmacro MUI_LANGDLL_DISPLAY
     File /oname=$PLUGINSDIR\variables.ini variables.ini
-    File /oname=$PLUGINSDIR\nativelauncher.ini nativelauncher.ini
     File /oname=$PLUGINSDIR\fileassociation.ini fileassociation.ini
-    File /oname=$PLUGINSDIR\additionalpackages.ini additionalpackages.ini
-      
-    Push $CMDLINE
-    Push "-russel"
-    Call StrStr
-    Pop $R0
-  
-    ${If} $R0 != ''
-      MessageBox MB_ICONEXCLAMATION|MB_OK "${RUSSELOPTION}"
-    ${EndIf}
     
 FunctionEnd
 
@@ -277,9 +363,15 @@ FunctionEnd
 Function un.onInit
     ReadRegStr $INSTDIR HKLM "${REGKEY}" Path
     !insertmacro MUI_STARTMENU_GETFOLDER Application $StartMenuGroup
-    !insertmacro MUI_UNGETLANGUAGE
-    !insertmacro SELECT_UNSECTION Main ${UNSEC0000}
+    !insertmacro SELECT_UNSECTION "Groovy Binaries" ${UNSEC0000}
+    !insertmacro SELECT_UNSECTION "Groovy Documentation" ${UNSEC0001}
+    !insertmacro SELECT_UNSECTION "Modify Variables" ${UNSEC0002}
+    !insertmacro SELECT_UNSECTION Gant ${UNSEC0003}
+    !insertmacro SELECT_UNSECTION Griffon ${UNSEC0004}
+    !insertmacro SELECT_UNSECTION Scriptom ${UNSEC0005}
+    !insertmacro SELECT_UNSECTION Shortcuts ${UNSEC0006}
 FunctionEnd
+
 
 #################################################################################################
 
@@ -353,6 +445,13 @@ LangString VField09 ${LANG_SPANISH} "Extensión de Rutas"
 LangString VField09 ${LANG_FRENCH}  "Extension du chemin d'accès"
 LangString VField09 ${LANG_PortugueseBR}  "Extensão do Path"
 
+# EnvironmentTitle
+LangString EnvironmentTitle ${LANG_ENGLISH} "Environment"
+LangString EnvironmentTitle ${LANG_GERMAN}  "Umgebung"
+LangString EnvironmentTitle ${LANG_SPANISH} "Entorno"
+LangString EnvironmentTitle ${LANG_FRENCH}  "Environnement"
+LangString EnvironmentTitle ${LANG_PortugueseBR}  "Variáveis"
+
 # JavaHomeWarning
 LangString JavaHomeWarning ${LANG_ENGLISH} "JAVA_HOME is not set. Please set it \
 to your Java installation, otherwise Groovy won't be able to work."
@@ -368,6 +467,15 @@ para o diretório de instalação do Java, caso contrário o Groovy não funcionará."
 
 #Additional Page for setting GROOVY_HOME and system path
 Function ReadVariables
+
+  SectionGetFlags ${SecVariables} $R0 
+  IntOp $R0 $R0 & ${SF_SELECTED} 
+  IntCmp $R0 ${SF_SELECTED} show 
+ 
+  Abort 
+ 
+  show: 
+
   Push $R0
 
   # Localization
@@ -395,7 +503,10 @@ Function ReadVariables
     WriteINIStr $PLUGINSDIR\variables.ini "Field 2" "state" "0"
   ${EndIf}
   
-  InstallOptions::dialog $PLUGINSDIR\variables.ini
+  #InstallOptions::dialog $PLUGINSDIR\variables.ini
+  ;If not using Modern UI use InstallOptions::dialog "iofile.ini"
+  !insertmacro MUI_HEADER_TEXT "$(EnvironmentTitle)" ""
+  !insertmacro MUI_INSTALLOPTIONS_DISPLAY "variables.ini" 
 
   Pop $R0
 FunctionEnd
@@ -452,96 +563,6 @@ Function SetVariables
     MessageBox MB_ICONEXCLAMATION|MB_OK $(JavaHomeWarning)
   ${EndIf}
   
-  Pop $R0
-
-FunctionEnd
-
-#################################################################################################
-
-### Native Launcher
-
-#################################################################################################
-
-# NLField 01
-LangString NLField01 ${LANG_ENGLISH} "The Native Launcher is an executable, that \
-in most cases is preferrable to the normal \
-launching scripts. If you want file associations, \
-then you have to install the native launcher.\
-\r\n\r\nIf you don't know what this is about, \
-then leave the checkbox in the checked state."
-LangString NLField01 ${LANG_GERMAN} "Der 'Native Launcher' ist ein ausführbares \
-Programm, das den Start-Skripten in den meisten \
-Fällen überlegen ist. Wenn Sie Datei-Assoziationen \
-verwenden wollen, müssen sie den 'Native Launcher' \
-installieren.\r\n\r\n\
-Wenn Sie nicht wissen, was das bedeutet, \
-lassen Sie die Checkbox angehakt."
-LangString NLField01 ${LANG_SPANISH} "El Lanzador Nativo es una aplicación ejecutable, que \
-en la mayoría de los casos es preferible a los ficheros de \
-inicio tipo script. Si desea tener asociaciones a ficheros, \
-entonces deberá instalar el Lanzador Nativo. \
-\r\n\r\nSi no tiene conocimiento de lo anterior, entonces por favor \
-deje el botón en estado seleccionado."
-LangString NLField01 ${LANG_FRENCH}  "Le lanceur natif est un executable qui \
-dans la majeure partie des cas est bien préférable à \
-un lancement par scripts. Si vous voulez une association fichier, \
-il est nécessaire d'utiliser le lanceur natif.\
-\r\n\r\nSi vous ne savez pas de quoi il s'agit, alors laissez \
-la boite à cocher dans l'état coché."
-LangString NLField01 ${LANG_PortugueseBR}  "O Native Launcher é um executável que, \
-na maioria dos casos, é melhor do que executar \
-scripts normalmente. Se você quer associação de arquivos, \
-então você deve instalar o Native Launcher.\
-\r\n\r\nSe você não sabe o que é isso, \
-então deixe o checkbox marcado."
-
-# NLField 02
-LangString NLField02 ${LANG_ENGLISH} "Install Native Launcher"
-LangString NLField02 ${LANG_GERMAN}  "Installiere Native Launcher"
-LangString NLField02 ${LANG_SPANISH} "Instalar el Lanzador Nativo"
-LangString NLField02 ${LANG_FRENCH}  "Installer le lanceur natif"
-LangString NLField02 ${LANG_PortugueseBR}  "Instalar o Native Launcher"
-
-Function ReadNativeLauncher
-  Push $R0
-
-  # Localization
-  #MessageBox MB_ICONEXCLAMATION|MB_OK "Result. $(Field10)"
-  WriteINIStr $PLUGINSDIR\nativelauncher.ini "Field 1" "Text" $(NLField01)
-  WriteINIStr $PLUGINSDIR\nativelauncher.ini "Field 2" "Text" $(NLField02)
-    
-  InstallOptions::dialog $PLUGINSDIR\nativelauncher.ini
-
-  Pop $R0
-FunctionEnd
-
-Var WhichGroovyConsole
-
-Function InstallNativeLauncher
-  Push $R0
-
-  # If set, then install the native launcher
-  ReadINIStr $R0 "$PLUGINSDIR\nativelauncher.ini" "Field 2" "State"
-  ${If} $R0 == '1'
-    SetOutPath $INSTDIR\bin
-    File /oname=groovy.exe "${DIR_PREFIX}\${NATIVE_DIR}\groovy.exe"
-    File /oname=groovyc.exe "${DIR_PREFIX}\${NATIVE_DIR}\groovy.exe"
-    File /oname=groovysh.exe "${DIR_PREFIX}\${NATIVE_DIR}\groovy.exe"
-    File /oname=java2groovy.exe "${DIR_PREFIX}\${NATIVE_DIR}\groovy.exe"
-
-    File /oname=groovyw.exe "${DIR_PREFIX}\${NATIVE_DIR}\groovyw.exe"
-    File /oname=groovyConsole.exe "${DIR_PREFIX}\${NATIVE_DIR}\groovyw.exe"
-
-    StrCpy $WhichGroovyConsole "exe"
-  ${Else}
-    StrCpy $WhichGroovyConsole "bat"
-  ${EndIf}
-
-  !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
-  SetOutPath $SMPROGRAMS\$StartMenuGroup
-  CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^GroovyConsoleLink).lnk" $INSTDIR\bin\GroovyConsole.$WhichGroovyConsole
-  !insertmacro MUI_STARTMENU_WRITE_END    
-
   Pop $R0
 
 FunctionEnd
@@ -624,7 +645,23 @@ LangString FAField04 ${LANG_SPANISH} "Agregar a PATHEXT"
 LangString FAField04 ${LANG_FRENCH}  "Ajouter à PATHEXT"
 LangString FAField04 ${LANG_PortugueseBR}  "Adicionar ao PATHEXT"
 
+# AssocTitle
+LangString AssocTitle ${LANG_ENGLISH} "File Association"
+LangString AssocTitle ${LANG_GERMAN}  "Dateiassoziationen"
+LangString AssocTitle ${LANG_SPANISH} "Asociación de Ficheros"
+LangString AssocTitle ${LANG_FRENCH}  "Association des fichiers"
+LangString AssocTitle ${LANG_PortugueseBR}  "Associação de arquivos"
+
 Function ReadFileAssociation
+
+  SectionGetFlags ${SecVariables} $R0 
+  IntOp $R0 $R0 & ${SF_SELECTED} 
+  IntCmp $R0 ${SF_SELECTED} show 
+ 
+  Abort 
+ 
+  show: 
+
   Push $R0
 
   # Localization
@@ -647,7 +684,10 @@ Function ReadFileAssociation
     WriteINIStr $PLUGINSDIR\fileassociation.ini "Field 4" "state" "0"
   ${EndIf}
     
-  InstallOptions::dialog $PLUGINSDIR\fileassociation.ini
+  #InstallOptions::dialog $PLUGINSDIR\fileassociation.ini
+  ;If not using Modern UI use InstallOptions::dialog "iofile.ini"
+  !insertmacro MUI_HEADER_TEXT "$(AssocTitle)" ""
+  !insertmacro MUI_INSTALLOPTIONS_DISPLAY "fileassociation.ini" 
 
   Pop $R0
 FunctionEnd
@@ -697,278 +737,6 @@ FunctionEnd
 
 
 
-#################################################################################################
-
-### Additional Packages
-
-#################################################################################################
-
-# APField 01
-LangString APField01 ${LANG_ENGLISH} "Additional Modules are not strictly necessary, \
-but we recommend installing them anyway."
-LangString APField01 ${LANG_GERMAN}  "Zusätzliche Module sind nicht unbedingt notwendig, \
-wir empfehlen aber, sie trotzdem zu installieren."
-LangString APField01 ${LANG_SPANISH} "Los Módulos Adicionales no son estrictamente \
-necesarios, pero recomendamos que se instalen de todas formas."
-LangString APField01 ${LANG_FRENCH}  "Les Modules aditionnels sont optionnels, \
-nous vous recommendons cependant de les installer"
-LangString APField01 ${LANG_PortugueseBR}  "Módulos adicionais não são estritamente necessários, \
-mesmo assim recomendamos que sejam instalados."
-
-# APField 02
-LangString APField02 ${LANG_ENGLISH} "Gant - a build tool for scripting Ant tasks \
-with Groovy"
-LangString APField02 ${LANG_GERMAN}  "Gant - Ein Werkzeug, um Ant Tasks mit Groovy \
-zu programmieren"
-LangString APField02 ${LANG_SPANISH} "Gant - una herramienta que facilita el \
-'scripting' the tareas de Ant con Groovy"
-LangString APField02 ${LANG_FRENCH}  "Gant - Outil de build permettant de manipuler \
-les tâches Ant avec Groovy"
-LangString APField02 ${LANG_PortugueseBR}  "Gant - uma ferramenta de build para criar tarefas do Ant \
-com scripts Groovy"
-
-# APField 03
-LangString APField03 ${LANG_ENGLISH} "Scriptom - script ActiveX or COM components \
-with Groovy"
-LangString APField03 ${LANG_GERMAN}  "Scriptom - Programmieren von ActiveX und COM-\
-Komponenten mit Groovy"
-LangString APField03 ${LANG_SPANISH} "Scriptom - permite acceder y configurar \
-components ActiveX y/o COM con Groovy"
-LangString APField03 ${LANG_FRENCH}  "Scriptom - Manipulation d'ActiveX ou composants \
-COM avec Groovy"
-LangString APField03 ${LANG_PortugueseBR}  "Scriptom - acesse componentes ActiveX ou COM \
-com Groovy"
-
-# APField 04
-LangString APField04 ${LANG_ENGLISH} "GraphicsBuilder - 2D Graphics with Groovy"
-LangString APField04 ${LANG_GERMAN}  "GraphicsBuilder - 2D Graphics mit Groovy"
-LangString APField04 ${LANG_SPANISH} "GraphicsBuilder - Gráficas 2D con Groovy"
-LangString APField04 ${LANG_FRENCH}  "GraphicsBuilder - Graphiques 2D avec Groovy"
-LangString APField04 ${LANG_PortugueseBR}  "GraphicsBuilder - Gráficos 2D com Groovy"
-
-# APField 05
-LangString APField05 ${LANG_ENGLISH} "SwingXBuilder, JideBuilder - The SwingX and Jide Components for Groovy"
-LangString APField05 ${LANG_GERMAN}  "SwingXBuilder, JideBuilder - Die SwingX- und Jide-Komponenten für Groovy"
-LangString APField05 ${LANG_SPANISH} "SwingXBuilder, JideBuilder - Componentes SwingX y/o Jide para Groovy"
-LangString APField05 ${LANG_FRENCH}  "SwingXBuilder, JideBuilder - Les composants SwingX et Jide pour Groovy"
-LangString APField05 ${LANG_PortugueseBR}  "SwingXBuilder, JideBuilder - Os Componentes SwingX ou Jide para Groovy"
-
-# APField 06
-LangString APField06 ${LANG_ENGLISH} "Groovy Documentation - including  a \
-PDF Snapshot of the Wiki (ca. 900 pages)"
-LangString APField06 ${LANG_GERMAN}  "Groovy-Dokumentation - inkl. \
-PDF-Abzug des Wiki (ca. 900 Seiten)"
-LangString APField06 ${LANG_SPANISH} "Documentación de Groovy - incluye copia \
-del wiki en PDF (aprox. 900 páginas)"
-LangString APField06 ${LANG_FRENCH}  "Documentation de Groovy - dont un PDF \
-du wiki (900 pages)"
-LangString APField06 ${LANG_PortugueseBR}  "Groovy Documentation - incluindo um \
-PDF extraido da Wiki (aprox. 900 páginas)"
-
-Function ReadAdditionalPackages
-  Push $R0
-
-  # Localization
-  WriteINIStr $PLUGINSDIR\additionalpackages.ini "Field 1" "Text" $(APField01)
-  WriteINIStr $PLUGINSDIR\additionalpackages.ini "Field 2" "Text" $(APField02)
-  WriteINIStr $PLUGINSDIR\additionalpackages.ini "Field 3" "Text" $(APField03)
-  WriteINIStr $PLUGINSDIR\additionalpackages.ini "Field 4" "Text" $(APField04)
-  WriteINIStr $PLUGINSDIR\additionalpackages.ini "Field 5" "Text" $(APField05)
-  WriteINIStr $PLUGINSDIR\additionalpackages.ini "Field 6" "Text" $(APField06)
-    
-  InstallOptions::dialog $PLUGINSDIR\additionalpackages.ini
-
-  Pop $R0
-FunctionEnd
-
-Var WhichGraphicsPad
-
-Function InstallAdditionalPackages
-  Push $R0
-
-  # If set, then install Gant
-  ReadINIStr $R0 "$PLUGINSDIR\additionalpackages.ini" "Field 2" "State"
-  ${If} $R0 == '1'
-    SetOutPath $INSTDIR\bin
-    File  /r "${DIR_PREFIX}\${GANT_DIR}\bin\gant*"
-    File  /nonfatal /r "${DIR_PREFIX}\${GANT_DIR}\bin\startGroovy*"
-
-    SetOutPath $INSTDIR\lib
-    File  /r "${DIR_PREFIX}\${GANT_DIR}\lib\gant*.jar"
-    File  /nonfatal /r "${DIR_PREFIX}\${GANT_DIR}\lib\ivy*.jar"
-    File  /nonfatal /r "${DIR_PREFIX}\${GANT_DIR}\lib\maven*.jar"
-
-    SetOutPath $INSTDIR\conf
-    File  /nonfatal /r "${DIR_PREFIX}\${GANT_DIR}\conf\*"
-    
-    SetOutPath $INSTDIR\supplementary
-    File  /nonfatal /r "${DIR_PREFIX}\${GANT_DIR}\supplementary\*"
-    
-    Push $R0
-
-    # If set, then install the native launcher
-    ReadINIStr $R0 "$PLUGINSDIR\nativelauncher.ini" "Field 2" "State"
-    ${If} $R0 == '1'
-        SetOutPath $INSTDIR\bin
-#        File /oname=gant.exe "${DIR_PREFIX}\${NATIVE_DIR}\gant.exe"
-#        File /oname=gantw.exe "${DIR_PREFIX}\${NATIVE_DIR}\gantw.exe"
-        File /oname=gant.exe "${DIR_PREFIX}\${NATIVE_DIR}\groovy.exe"
-        File /oname=gantw.exe "${DIR_PREFIX}\${NATIVE_DIR}\groovyw.exe"
-    ${EndIf}
-    Pop $R0  
-  ${EndIf}
-
-  # If set, then install Scriptom
-  ReadINIStr $R0 "$PLUGINSDIR\additionalpackages.ini" "Field 3" "State"
-  ${If} $R0 == '1'
-    SetOutPath $INSTDIR
-    File  /r "${DIR_PREFIX}\${SCRIPTOM_DIR}\*"
-  ${EndIf}
-
-  # If set, then install GraphicsBuilder
-  ReadINIStr $R0 "$PLUGINSDIR\additionalpackages.ini" "Field 4" "State"
-  ${If} $R0 == '1'
-    SetOutPath $INSTDIR
-    File  /r "${DIR_PREFIX}\${GRAPHICS_B}\*"
-
-    # If set, then install the native launcher
-    Push $R0
-    ReadINIStr $R0 "$PLUGINSDIR\nativelauncher.ini" "Field 2" "State"
-    ${If} $R0 == '1'
-        SetOutPath $INSTDIR\bin
-        File /oname=graphicsPad.exe "${DIR_PREFIX}\${NATIVE_DIR}\groovyw.exe"
-
-        StrCpy $WhichGraphicsPad "exe"
-    ${Else}
-        StrCpy $WhichGraphicsPad "bat"
-    ${EndIf}
-
-    Pop $R0
-    
-  ${EndIf}
-
-  # If set, then install SwingXBuilder
-  ReadINIStr $R0 "$PLUGINSDIR\additionalpackages.ini" "Field 5" "State"
-  ${If} $R0 == '1'
-    SetOutPath $INSTDIR
-    File  /r "${DIR_PREFIX}\${SWINGX_B}\*"
-    File  /r "${DIR_PREFIX}\${JIDE_B}\*"
-  ${EndIf}
-
-  # If set, then install Documentation
-  ReadINIStr $R0 "$PLUGINSDIR\additionalpackages.ini" "Field 6" "State"
-  ${If} $R0 == '1'
-    SetOutPath $INSTDIR
-    File  /r "${DIR_PREFIX}\${DOC_DIR}\*"
-    
-  ${EndIf}
-
-  # Create the links for documentation and Graphicspad
-
-  !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
-  SetOutPath $SMPROGRAMS\$StartMenuGroup
-
-  ReadINIStr $R0 "$PLUGINSDIR\additionalpackages.ini" "Field 4" "State"
-  ${If} $R0 == '1'
-    CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^GraphicsPadLink).lnk" $INSTDIR\bin\graphicsPad.$WhichGraphicsPad
-  ${EndIf}
-
-  ReadINIStr $R0 "$PLUGINSDIR\additionalpackages.ini" "Field 6" "State"
-  ${If} $R0 == '1'
-    CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^HTMLLink).lnk" $INSTDIR\html\groovy-jdk\index.html
-    CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^APILink).lnk" $INSTDIR\html\api\index.html
-    CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^GAPILink).lnk" $INSTDIR\html\gapi\index.html
-    CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^PDFLink).lnk" $INSTDIR\pdf\wiki-snapshot.pdf
-  ${EndIf}
-
-  !insertmacro MUI_STARTMENU_WRITE_END
-
-  Pop $R0
-
-FunctionEnd
-
-
-# Links in Start Menu
-
-LangString ^UninstallLink ${LANG_ENGLISH} "Uninstall $(^Name)"
-LangString ^UninstallLink ${LANG_GERMAN} "Deinstalliere $(^Name)"
-LangString ^UninstallLink ${LANG_SPANISH} "Uninstall $(^Name)"
-LangString ^UninstallLink ${LANG_FRENCH} "Uninstall $(^Name)"
-LangString ^UninstallLink ${LANG_PortugueseBR} "Desinstalar $(^Name)"
-
-LangString ^PDFLink ${LANG_ENGLISH} "PDF Documentation"
-LangString ^PDFLink ${LANG_GERMAN} "PDF-Dokumentation"
-LangString ^PDFLink ${LANG_SPANISH} "Documentación en PDF"
-LangString ^PDFLink ${LANG_FRENCH} "Documentation PDF"
-LangString ^PDFLink ${LANG_PortugueseBR} "Documentação em PDF"
-
-LangString ^HTMLLink ${LANG_ENGLISH} "GDK Documentation"
-LangString ^HTMLLink ${LANG_GERMAN} "GDK-Dokumentation"
-LangString ^HTMLLink ${LANG_SPANISH} "Documentación del GDK"
-LangString ^HTMLLink ${LANG_FRENCH} "Documentation du GDK"
-LangString ^HTMLLink ${LANG_PortugueseBR} "Documentação do GDK"
-
-LangString ^APILink ${LANG_ENGLISH} "API Documentation"
-LangString ^APILink ${LANG_GERMAN} "API-Dokumentation"
-LangString ^APILink ${LANG_SPANISH} "Documentación del API"
-LangString ^APILink ${LANG_FRENCH} "Documentation de l'API"
-LangString ^APILink ${LANG_PortugueseBR} "Documentação da API"
-
-LangString ^GAPILink ${LANG_ENGLISH} "GAPI Documentation"
-LangString ^GAPILink ${LANG_GERMAN} "GAPI-Dokumentation"
-LangString ^GAPILink ${LANG_SPANISH} "Documentación del GAPI"
-LangString ^GAPILink ${LANG_FRENCH} "Documentation de la GAPI"
-LangString ^GAPILink ${LANG_PortugueseBR} "Documentação da GAPI"
-
-LangString ^GroovyConsoleLink ${LANG_ENGLISH} "Start GroovyConsole"
-LangString ^GroovyConsoleLink ${LANG_GERMAN} "Starte GroovyConsole"
-LangString ^GroovyConsoleLink ${LANG_SPANISH} "Start GroovyConsole"
-LangString ^GroovyConsoleLink ${LANG_FRENCH} "Start GroovyConsole"
-LangString ^GroovyConsoleLink ${LANG_PortugueseBR} "Iniciar GroovyConsole"
-
-LangString ^GraphicsPadLink ${LANG_ENGLISH} "Start GraphicsPad"
-LangString ^GraphicsPadLink ${LANG_GERMAN} "Starte GraphicsPad"
-LangString ^GraphicsPadLink ${LANG_SPANISH} "Start GraphicsPad"
-LangString ^GraphicsPadLink ${LANG_FRENCH} "Start GraphicsPad"
-LangString ^GraphicsPadLink ${LANG_PortugueseBR} "Iniciar GraphicsPad"
-
-/*
-;====================================================
-; get_NT_environment 
-;     Returns: the selected environment
-;     Output : head of the stack
-;====================================================
-!macro select_NT_profile UN
-Function ${UN}select_NT_profile
-   MessageBox MB_YESNO|MB_ICONQUESTION "Change the environment for all users?$\r$\nSaying no here will change the envrironment for the current user only.$\r$\n(Administrator permissions required for all users)" \
-      IDNO environment_single
-      DetailPrint "Selected environment for all users"
-      Push "all"
-      Return
-   environment_single:
-      DetailPrint "Selected environment for current user only."
-      Push "current"
-      Return
-FunctionEnd
-!macroend
-!insertmacro select_NT_profile ""
-!insertmacro select_NT_profile "un."
-
-
-*/
-
-
-#
-# [un.]IsNT - Pushes 1 if running on NT, 0 if not
-#
-# Example:
-#   Call IsNT
-#   Pop $0
-#   StrCmp $0 1 +3
-#     MessageBox MB_OK "Not running on NT!"
-#     Goto +2
-#     MessageBox MB_OK "Running on NT!"
-#
 !macro IsNT UN
 Function ${UN}IsNT
   Push $0
