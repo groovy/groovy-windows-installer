@@ -4,13 +4,12 @@
 <listEntry value="/NSIS-Groovy/setup.nsi"/>
 </listAttribute>
 <booleanAttribute key="noCD" value="false"/>
-<booleanAttribute key="noConfig" value="false"/>
 <listAttribute key="instructions"/>
-<stringAttribute key="script" value="${workspace_loc:/NSIS-Groovy/setup.nsi}"/>
+<booleanAttribute key="noConfig" value="false"/>
 <booleanAttribute key="runInstaller" value="false"/>
+<stringAttribute key="script" value="${workspace_loc:/NSIS-Groovy/setup.nsi}"/>
 <booleanAttribute key="hdrInfo" value="false"/>
 <intAttribute key="processPriority" value="-1"/>
-<booleanAttribute key="solidCompression" value="false"/>
 <listAttribute key="symbols">
 <listEntry value="SOURCE_VERSION­1.6.4"/>
 <listEntry value="DIR_PREFIX­D:\NSIS\NSIS-Groovy\Data\1.6\4"/>
@@ -20,7 +19,9 @@
 <listEntry value="GANT_DIR­gant-1.7.0"/>
 <listEntry value="VERSION_TXT­installed_versions.txt"/>
 <listEntry value="GRIFFON_B­builders-1.6.4"/>
+<listEntry value="NATIVE_DIR­native"/>
 </listAttribute>
+<booleanAttribute key="solidCompression" value="false"/>
 <stringAttribute key="pluginVersion" value="0.9.5.1"/>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
 <listEntry value="1"/>
