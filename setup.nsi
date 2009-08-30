@@ -9,28 +9,30 @@
 # VERSION_TXT    is the relative path to the installed_versions.txt
 # DOC_DIR        is the relative path to the doc directory
 
-Name Groovy
+;@Todo: Correct language strings
 
 !define InstallerVersion 0.7.0
 
 # Set the compression level
-SetCompressor /SOLID lzma
+#SetCompressor /SOLID lzma
 
 # The source of the Groovy installation
 !define SOURCEDIR "${DIR_PREFIX}\${SOURCE_DIR}"
 
 # Defines
-!define REGKEY "SOFTWARE\$(^Name)"
-!define VERSION ${SOURCE_VERSION}
 !define COMPANY ""
 !define URL groovy.codehaus.org
+!define ShortName Groovy
+!define VERSION ${SOURCE_VERSION}
+Name "Groovy-${Version}"
+!define REGKEY "SOFTWARE\$(^Name)"
 
 # MUI defines
 !define MUI_FINISHPAGE_NOAUTOCLOSE
 !define MUI_STARTMENUPAGE_REGISTRY_ROOT HKLM
 !define MUI_STARTMENUPAGE_REGISTRY_KEY ${REGKEY}
 !define MUI_STARTMENUPAGE_REGISTRY_VALUENAME StartMenuGroup
-!define MUI_STARTMENUPAGE_DEFAULTFOLDER Groovy
+!define MUI_STARTMENUPAGE_DEFAULTFOLDER $(^Name)
 !define MUI_FINISHPAGE_SHOWREADME $INSTDIR\${VERSION_TXT}
 !define MUI_UNFINISHPAGE_NOAUTOCLOSE
 !define MUI_HEADERIMAGE
@@ -81,7 +83,7 @@ Page custom ReadFileAssociation SetFileAssociation
 
 # Installer attributes
 OutFile "groovy-${SOURCE_VERSION}-installer.exe"
-InstallDir "$PROGRAMFILES\$(^Name)\$(^Name)-${VERSION}"
+InstallDir "$PROGRAMFILES\${ShortName}\$(^Name)"
 CRCCheck on
 XPStyle on
 ShowInstDetails show
@@ -94,8 +96,19 @@ Section "Groovy Binaries" SecBinaries
     SetOutPath $INSTDIR
     SetOverwrite on
     File /r "${SOURCEDIR}\*"
+
+    SetOutPath $INSTDIR\bin
+    File /oname=groovy.exe "${DIR_PREFIX}\${NATIVE_DIR}\groovy.exe"
+    File /oname=groovyc.exe "${DIR_PREFIX}\${NATIVE_DIR}\groovy.exe"
+    File /oname=groovysh.exe "${DIR_PREFIX}\${NATIVE_DIR}\groovy.exe"
+    File /oname=java2groovy.exe "${DIR_PREFIX}\${NATIVE_DIR}\groovy.exe"
+
+    File /oname=groovyw.exe "${DIR_PREFIX}\${NATIVE_DIR}\groovyw.exe"
+    File /oname=groovyConsole.exe "${DIR_PREFIX}\${NATIVE_DIR}\groovyw.exe"
+
     SetOutPath $INSTDIR
     File "${DIR_PREFIX}\${VERSION_TXT}"
+
     WriteRegStr HKLM "${REGKEY}\Components" "Groovy Binaries" 1
 SectionEnd
 
@@ -118,6 +131,11 @@ SectionGroup /e Modules SecGrpModules
         SetOutPath $INSTDIR
         SetOverwrite on
         File /r "${DIR_PREFIX}\${GANT_DIR}\*"
+
+        SetOutPath $INSTDIR\bin
+        File /oname=gant.exe "${DIR_PREFIX}\${NATIVE_DIR}\groovy.exe"
+        File /oname=gantw.exe "${DIR_PREFIX}\${NATIVE_DIR}\groovyw.exe"
+        
         WriteRegStr HKLM "${REGKEY}\Components" Gant 1
     SectionEnd
 
@@ -196,8 +214,8 @@ Section "-Shortcuts" SecShortcuts
 SectionEnd
 
 # Section Descriptions
-LangString DESC_SecBinaries ${LANG_ENGLISH} "Main Groovy Binaries"
-LangString DESC_SecBinaries ${LANG_GERMAN} "Groovy Basisinstallation"
+LangString DESC_SecBinaries ${LANG_ENGLISH} "Main Groovy Binaries (includes native launcher)"
+LangString DESC_SecBinaries ${LANG_GERMAN} "Groovy Basisinstallation (beinhaltet den nativelauncher)"
 LangString DESC_SecBinaries ${LANG_SPANISH} "Main Groovy Binaries"
 LangString DESC_SecBinaries ${LANG_FRENCH} "Main Groovy Binaries"
 LangString DESC_SecBinaries ${LANG_PortugueseBR} "Main Groovy Binaries"
