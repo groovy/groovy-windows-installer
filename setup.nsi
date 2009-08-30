@@ -14,7 +14,7 @@
 !define InstallerVersion 0.7.0
 
 # Set the compression level
-#SetCompressor /SOLID lzma
+SetCompressor /SOLID lzma
 
 # The source of the Groovy installation
 !define SOURCEDIR "${DIR_PREFIX}\${SOURCE_DIR}"
