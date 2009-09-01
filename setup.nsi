@@ -9,7 +9,7 @@
 # VERSION_TXT    is the relative path to the installed_versions.txt
 # DOC_DIR        is the relative path to the doc directory
 
-;@Todo: Correct language strings
+;@Todo: Correct language strings portuguese
 
 !define InstallerVersion 0.7.0
 
@@ -216,8 +216,8 @@ SectionEnd
 # Section Descriptions
 LangString DESC_SecBinaries ${LANG_ENGLISH} "Main Groovy Binaries (includes native launcher)"
 LangString DESC_SecBinaries ${LANG_GERMAN} "Groovy Basisinstallation (beinhaltet den nativelauncher)"
-LangString DESC_SecBinaries ${LANG_SPANISH} "Main Groovy Binaries"
-LangString DESC_SecBinaries ${LANG_FRENCH} "Main Groovy Binaries"
+LangString DESC_SecBinaries ${LANG_SPANISH} "Ficheros principales de Groovy"
+LangString DESC_SecBinaries ${LANG_FRENCH} "Binaires principaux de Groovy"
 LangString DESC_SecBinaries ${LANG_PortugueseBR} "Main Groovy Binaries"
 
 LangString DESC_SecDocumentation ${LANG_ENGLISH} "Groovy Documentation - including  a \
@@ -233,8 +233,8 @@ PDF extraido da Wiki (aprox. 900 páginas)"
 
 LangString DESC_SecVariables ${LANG_ENGLISH} "Environment Variables and File Association"
 LangString DESC_SecVariables ${LANG_GERMAN} "Umgebungsvariablen und Dateiassoziationen"
-LangString DESC_SecVariables ${LANG_SPANISH} "Environment Variables and File Association"
-LangString DESC_SecVariables ${LANG_FRENCH} "Environment Variables and File Association"
+LangString DESC_SecVariables ${LANG_SPANISH} "Variables de Entorno y Asociación de Ficheros"
+LangString DESC_SecVariables ${LANG_FRENCH} "Variables d'environnement et association de fichiers"
 LangString DESC_SecVariables ${LANG_PortugueseBR} "Environment Variables and File Association"
 
 LangString DESC_SecGrpModules ${LANG_ENGLISH} "Additional Modules are not strictly necessary, \
@@ -261,8 +261,8 @@ com scripts Groovy"
 
 LangString DESC_SecGriffon ${LANG_ENGLISH} "Griffon Builders"
 LangString DESC_SecGriffon ${LANG_GERMAN} "Griffon Builders"
-LangString DESC_SecGriffon ${LANG_SPANISH} "Griffon Builders"
-LangString DESC_SecGriffon ${LANG_FRENCH} "Griffon Builders"
+LangString DESC_SecGriffon ${LANG_SPANISH} "Builders de Griffon"
+LangString DESC_SecGriffon ${LANG_FRENCH} "Builders Griffon"
 LangString DESC_SecGriffon ${LANG_PortugueseBR} "Griffon Builders"
 
 LangString DESC_SecScriptom ${LANG_ENGLISH} "Scriptom - script ActiveX or COM components \
@@ -464,11 +464,11 @@ LangString VField09 ${LANG_FRENCH}  "Extension du chemin d'accès"
 LangString VField09 ${LANG_PortugueseBR}  "Extensão do Path"
 
 # EnvironmentTitle
-LangString EnvironmentTitle ${LANG_ENGLISH} "Environment"
-LangString EnvironmentTitle ${LANG_GERMAN}  "Umgebung"
-LangString EnvironmentTitle ${LANG_SPANISH} "Entorno"
-LangString EnvironmentTitle ${LANG_FRENCH}  "Environnement"
-LangString EnvironmentTitle ${LANG_PortugueseBR}  "Variáveis"
+LangString EnvironmentTitle ${LANG_ENGLISH} "Environment ..."
+LangString EnvironmentTitle ${LANG_GERMAN}  "Umgebung ..."
+LangString EnvironmentTitle ${LANG_SPANISH} "Entorno ..."
+LangString EnvironmentTitle ${LANG_FRENCH}  "Environnement ..."
+LangString EnvironmentTitle ${LANG_PortugueseBR}  "Variáveis ..."
 
 # JavaHomeWarning
 LangString JavaHomeWarning ${LANG_ENGLISH} "JAVA_HOME is not set. Please set it \
@@ -664,11 +664,11 @@ LangString FAField04 ${LANG_FRENCH}  "Ajouter à PATHEXT"
 LangString FAField04 ${LANG_PortugueseBR}  "Adicionar ao PATHEXT"
 
 # AssocTitle
-LangString AssocTitle ${LANG_ENGLISH} "File Association"
-LangString AssocTitle ${LANG_GERMAN}  "Dateiassoziationen"
-LangString AssocTitle ${LANG_SPANISH} "Asociación de Ficheros"
-LangString AssocTitle ${LANG_FRENCH}  "Association des fichiers"
-LangString AssocTitle ${LANG_PortugueseBR}  "Associação de arquivos"
+LangString AssocTitle ${LANG_ENGLISH} "File Associations ..."
+LangString AssocTitle ${LANG_GERMAN}  "Dateiassoziationen ..."
+LangString AssocTitle ${LANG_SPANISH} "Asociación de Ficheros ..."
+LangString AssocTitle ${LANG_FRENCH}  "Association de fichiers ..."
+LangString AssocTitle ${LANG_PortugueseBR}  "Associação de arquivos ..."
 
 Function ReadFileAssociation
 
@@ -752,8 +752,6 @@ Function SetFileAssociation
   Pop $R0
 
 FunctionEnd
-
-
 
 !macro IsNT UN
 Function ${UN}IsNT
