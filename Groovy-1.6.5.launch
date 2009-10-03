@@ -12,14 +12,14 @@
 <intAttribute key="processPriority" value="-1"/>
 <booleanAttribute key="solidCompression" value="false"/>
 <listAttribute key="symbols">
-<listEntry value="SOURCE_VERSION­1.6.4"/>
-<listEntry value="DIR_PREFIX­D:\NSIS\NSIS-Groovy\Data\1.6\4"/>
-<listEntry value="SOURCE_DIR­groovy-1.6.4"/>
-<listEntry value="DOC_DIR­groovy-docs-1.6.4"/>
+<listEntry value="SOURCE_VERSION­1.6.5"/>
+<listEntry value="DIR_PREFIX­D:\NSIS\NSIS-Groovy\Data\1.6\5"/>
+<listEntry value="SOURCE_DIR­groovy-1.6.5"/>
+<listEntry value="DOC_DIR­groovy-docs-1.6.5"/>
 <listEntry value="SCRIPTOM_DIR­scriptom-all-assembly-1.6.0"/>
 <listEntry value="GANT_DIR­gant-1.7.0"/>
 <listEntry value="VERSION_TXT­installed_versions.txt"/>
-<listEntry value="GRIFFON_B­builders-1.6.4"/>
+<listEntry value="GRIFFON_B­builders-1.6.5"/>
 <listEntry value="NATIVE_DIR­native"/>
 <listEntry value="JAVA_ARCH­D:\NSIS\NSIS-Groovy\Java"/>
 </listAttribute>

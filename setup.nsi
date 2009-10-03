@@ -8,6 +8,7 @@
 # GRIFFON_B      is the relative path to the griffon builders module
 # VERSION_TXT    is the relative path to the installed_versions.txt
 # DOC_DIR        is the relative path to the doc directory
+# JAVA_ARCH      is the directory containing the architecture detection jar
 
 ;@Todo: Correct language strings portuguese
 
@@ -60,6 +61,7 @@ Name "Groovy-${Version}"
 # Variables
 Var StartMenuGroup
 Var UserOrSystem
+Var JavaArchModel
 
 # Installer pages
 !insertmacro MUI_PAGE_WELCOME
@@ -90,22 +92,53 @@ ShowInstDetails show
 InstallDirRegKey HKLM "${REGKEY}" Path
 ShowUninstDetails show
 
+# @Todo add correct translations
+LangString NoJava ${LANG_ENGLISH} "Cannot identify Java installation. Assuming 32 bit version."
+LangString NoJava ${LANG_GERMAN} "Die Java-Installation kann nicht identifiziert werden. Gehe von einer 32-Bit Installation aus."
+LangString NoJava ${LANG_SPANISH} "Cannot identify Java installation. Assuming 32 bit version."
+LangString NoJava ${LANG_FRENCH} "Cannot identify Java installation. Assuming 32 bit version."
+LangString NoJava ${LANG_PortugueseBR} "Cannot identify Java installation. Assuming 32 bit version."
+
 # Installer sections
 Section "Groovy Binaries" SecBinaries
     SectionIn RO    # this section cannot be deselected
     SetOutPath $INSTDIR
     SetOverwrite on
+
     File /r "${SOURCEDIR}\*"
 
+    SetOutPath $INSTDIR\Supplementary\JavaArch
+    File /r "${JAVA_ARCH}\GetArchModel.jar"
+    File /r "${JAVA_ARCH}\GetArchDataModel.java"
+    
+    # Now execute JRE
+    Call GetJRE
+    Pop $R0
+    # StrCpy $0 '"$R0" -classpath "${CLASSPATH}" ${CLASS}'
+    StrCpy $0 '"$R0" -jar "$INSTDIR\Supplementary\JavaArch\GetArchModel.jar"'
+    
+    ExecWait $0 $JavaArchModel
+    
+    ${If} ${Errors} 
+    ${OrIf} $JavaArchModel == 1
+        # We assume a 32-bit installation
+        MessageBox MB_OK $(NoJava)
+        StrCpy $JavaArchModel 32
+    ${EndIf}
+
     SetOutPath $INSTDIR\bin
-    File /oname=groovy.exe "${DIR_PREFIX}\${NATIVE_DIR}\groovy.exe"
-    File /oname=groovyc.exe "${DIR_PREFIX}\${NATIVE_DIR}\groovy.exe"
-    File /oname=groovysh.exe "${DIR_PREFIX}\${NATIVE_DIR}\groovy.exe"
-    File /oname=java2groovy.exe "${DIR_PREFIX}\${NATIVE_DIR}\groovy.exe"
+    ${if} $JavaArchModel == 32
+        File /oname=groovy.exe "${DIR_PREFIX}\${NATIVE_DIR}\groovy.exe"
+        File /oname=groovyc.exe "${DIR_PREFIX}\${NATIVE_DIR}\groovy.exe"
+        File /oname=groovysh.exe "${DIR_PREFIX}\${NATIVE_DIR}\groovy.exe"
+        File /oname=java2groovy.exe "${DIR_PREFIX}\${NATIVE_DIR}\groovy.exe"
 
-    File /oname=groovyw.exe "${DIR_PREFIX}\${NATIVE_DIR}\groovyw.exe"
-    File /oname=groovyConsole.exe "${DIR_PREFIX}\${NATIVE_DIR}\groovyw.exe"
-
+        File /oname=groovyw.exe "${DIR_PREFIX}\${NATIVE_DIR}\groovyw.exe"
+        File /oname=groovyConsole.exe "${DIR_PREFIX}\${NATIVE_DIR}\groovyw.exe"
+    ${else}
+        # here the 64-bit installation whenever we have the respective executables
+    ${EndIf}
+    
     SetOutPath $INSTDIR
     File "${DIR_PREFIX}\${VERSION_TXT}"
 
@@ -133,8 +166,12 @@ SectionGroup /e Modules SecGrpModules
         File /r "${DIR_PREFIX}\${GANT_DIR}\*"
 
         SetOutPath $INSTDIR\bin
-        File /oname=gant.exe "${DIR_PREFIX}\${NATIVE_DIR}\groovy.exe"
-        File /oname=gantw.exe "${DIR_PREFIX}\${NATIVE_DIR}\groovyw.exe"
+        ${if} $JavaArchModel == 32
+            File /oname=gant.exe "${DIR_PREFIX}\${NATIVE_DIR}\groovy.exe"
+            File /oname=gantw.exe "${DIR_PREFIX}\${NATIVE_DIR}\groovyw.exe"
+        ${else}
+            # here the 64-bit installation whenever we have the respective executables
+        ${EndIf}
         
         WriteRegStr HKLM "${REGKEY}\Components" Gant 1
     SectionEnd
@@ -207,7 +244,12 @@ Section "-Shortcuts" SecShortcuts
         CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^PDFLink).lnk" $INSTDIR\pdf\wiki-snapshot.pdf
     ${EndIf}
 
-    CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^GroovyConsoleLink).lnk" $INSTDIR\bin\GroovyConsole.exe
+    ${If} $JavaArchModel == 32
+        CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^GroovyConsoleLink).lnk" $INSTDIR\bin\GroovyConsole.exe
+    ${Else}
+        # until a 64-bit version is available
+        CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^GroovyConsoleLink).lnk" $INSTDIR\bin\GroovyConsole.bat
+    ${EndIf}
 
     !insertmacro MUI_STARTMENU_WRITE_END    
     WriteRegStr HKLM "${REGKEY}\Components" Shortcuts 1
@@ -835,4 +877,39 @@ Function WriteEnvStr
     Pop $2
     Pop $0
     Pop $1
+FunctionEnd
+
+
+Function GetJRE
+;
+;  Find JRE (javaw.exe)
+;  1 - in .\jre directory (JRE Installed with application)
+;  2 - in JAVA_HOME environment variable
+;  3 - in the registry
+;  4 - assume javaw.exe in current dir or PATH
+ 
+  Push $R0
+  Push $R1
+ 
+  ClearErrors
+  StrCpy $R0 "$EXEDIR\jre\bin\javaw.exe"
+  IfFileExists $R0 JreFound
+  StrCpy $R0 ""
+ 
+  ClearErrors
+  ReadEnvStr $R0 "JAVA_HOME"
+  StrCpy $R0 "$R0\bin\javaw.exe"
+  IfErrors 0 JreFound
+ 
+  ClearErrors
+  ReadRegStr $R1 HKLM "SOFTWARE\JavaSoft\Java Runtime Environment" "CurrentVersion"
+  ReadRegStr $R0 HKLM "SOFTWARE\JavaSoft\Java Runtime Environment\$R1" "JavaHome"
+  StrCpy $R0 "$R0\bin\javaw.exe"
+ 
+  IfErrors 0 JreFound
+  StrCpy $R0 "javaw.exe"
+ 
+ JreFound:
+  Pop $R1
+  Exch $R0
 FunctionEnd
