@@ -1,0 +1,1 @@
+wget -nd -r -np -A "*.jar" -R "asm-*.jar,macwidgets-0.9.3.1.jar,macwidgetsbuilder-0.1.jar,flamingobuilder-0.1.jar,jide-oss-2.4.8.jar,jidebuilder-2.1.jar" http://dist.codehaus.org/griffon/builders/
