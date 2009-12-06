@@ -23,12 +23,8 @@ settings for the groovy version, the groovy location (on your hard disk) and the
 location of the native launcher. The groovy version influences the final name of the
 installer.
 
-The launch scripts are setting the following variables:
-
-SOURCE_VERSION defines the version of the release
-SOURCE_DIR     is the full path to the groovy install directory
-NATIVE_DIR     is the full path to the native launcher
-
+The launch scripts are setting a lot of variables that you should adapt to your needs.
+They are explained at the head of the setup.nsi file.
 
 Most probably you only have to set these variables and you are happy to go.
 
