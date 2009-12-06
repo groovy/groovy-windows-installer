@@ -18,7 +18,7 @@ see what they look like.
 Two bmp-images contain the Groovy logo in different resolutions, one for the welcome
 page and one as header image for the other pages. The name is the game ...
 
-Fínally you have the launch scripts. These actually start the compiler with different
+Finally you have the launch scripts. These actually start the compiler with different
 settings for the groovy version, the groovy location (on your hard disk) and the
 location of the native launcher. The groovy version influences the final name of the
 installer.
