@@ -6,6 +6,7 @@
 # SCRIPTOM_DIR   is the relative path to the scriptom module
 # GANT_DIR       is the relative path to the gant module
 # GRIFFON_B      is the relative path to the griffon builders module
+# GAELYK_DIR     is the relative path to the Gaelyk module
 # VERSION_TXT    is the relative path to the installed_versions.txt
 # DOC_DIR        is the relative path to the doc directory
 # JAVA_ARCH      is the directory containing the architecture detection jar
@@ -27,6 +28,7 @@ SetCompressor /SOLID lzma
 !define VERSION ${SOURCE_VERSION}
 Name "Groovy-${Version}"
 !define REGKEY "SOFTWARE\$(^Name)"
+!define SUPPLEMENTARY "Supplementary"
 
 # MUI defines
 !define MUI_FINISHPAGE_NOAUTOCLOSE
@@ -41,6 +43,16 @@ Name "Groovy-${Version}"
 !define MUI_HEADERIMAGE_BITMAP_NOSTRETCH
 !define MUI_WELCOMEFINISHPAGE_BITMAP "welcome.bmp"
 !define MUI_WELCOMEFINISHPAGE_BITMAP_NOSTRETCH
+
+# Defines for Registry keys
+!define REG_GROOVY_BINARIES "Groovy Binaries"
+!define REG_GROOVY_DOCUMENTATION "Groovy Documentation"
+!define REG_MODIFY_VARIABLES "Modify Variables"
+!define REG_GANT "Gant"
+!define REG_GRIFFON "Griffon"
+!define REG_SCRIPTOM "Scriptom"
+!define REG_GAELYK "Gaelyk"
+
 
 # Included files
 !include Sections.nsh
@@ -107,7 +119,7 @@ Section "Groovy Binaries" SecBinaries
 
     File /r "${SOURCEDIR}\*"
 
-    SetOutPath $INSTDIR\Supplementary\JavaArch
+    SetOutPath $INSTDIR\${SUPPLEMENTARY}\JavaArch
     File /r "${JAVA_ARCH}\GetArchModel.jar"
     File /r "${JAVA_ARCH}\GetArchDataModel.java"
     
@@ -115,7 +127,7 @@ Section "Groovy Binaries" SecBinaries
     Call GetJRE
     Pop $R0
     # StrCpy $0 '"$R0" -classpath "${CLASSPATH}" ${CLASS}'
-    StrCpy $0 '"$R0" -jar "$INSTDIR\Supplementary\JavaArch\GetArchModel.jar"'
+    StrCpy $0 '"$R0" -jar "$INSTDIR\${SUPPLEMENTARY}\JavaArch\GetArchModel.jar"'
     
     ExecWait $0 $JavaArchModel
     
@@ -126,8 +138,8 @@ Section "Groovy Binaries" SecBinaries
         StrCpy $JavaArchModel 32
     ${EndIf}
 
-    SetOutPath $INSTDIR\bin
     ${if} $JavaArchModel == 32
+        SetOutPath $INSTDIR\bin
         File /oname=groovy.exe "${DIR_PREFIX}\${NATIVE_DIR}\groovy.exe"
         File /oname=groovyc.exe "${DIR_PREFIX}\${NATIVE_DIR}\groovy.exe"
         File /oname=groovysh.exe "${DIR_PREFIX}\${NATIVE_DIR}\groovy.exe"
@@ -135,6 +147,11 @@ Section "Groovy Binaries" SecBinaries
 
         File /oname=groovyw.exe "${DIR_PREFIX}\${NATIVE_DIR}\groovyw.exe"
         File /oname=groovyConsole.exe "${DIR_PREFIX}\${NATIVE_DIR}\groovyw.exe"
+        
+        SetOutPath $INSTDIR\${Supplementary}\NativeLauncherWithoutCygwinSupport
+        File /oname=groovy.exe "${DIR_PREFIX}\${NATIVE_DIR}\NativeLauncherNoCygwinSupport\groovy.exe"
+        File /oname=groovyw.exe "${DIR_PREFIX}\${NATIVE_DIR}\NativeLauncherNoCygwinSupport\groovyw.exe"
+        
     ${else}
         # here the 64-bit installation whenever we have the respective executables
     ${EndIf}
@@ -142,7 +159,7 @@ Section "Groovy Binaries" SecBinaries
     SetOutPath $INSTDIR
     File "${DIR_PREFIX}\${VERSION_TXT}"
 
-    WriteRegStr HKLM "${REGKEY}\Components" "Groovy Binaries" 1
+    WriteRegStr HKLM "${REGKEY}\Components" "${REG_GROOVY_BINARIES}" 1
 SectionEnd
 
 Section "Groovy Documentation" SecDocumentation
@@ -150,13 +167,13 @@ Section "Groovy Documentation" SecDocumentation
     
     SetOverwrite on
     File  /r "${DIR_PREFIX}\${DOC_DIR}\*"
-    WriteRegStr HKLM "${REGKEY}\Components" "Groovy Documentation" 1
+    WriteRegStr HKLM "${REGKEY}\Components" "${REG_GROOVY_DOCUMENTATION}" 1
 SectionEnd
 
 Section "Modify Variables" SecVariables
     SetOutPath $INSTDIR
     SetOverwrite on
-    WriteRegStr HKLM "${REGKEY}\Components" "Modify Variables" 1
+    WriteRegStr HKLM "${REGKEY}\Components" "${REG_MODIFY_VARIABLES}" 1
 SectionEnd
 
 SectionGroup /e Modules SecGrpModules
@@ -165,29 +182,40 @@ SectionGroup /e Modules SecGrpModules
         SetOverwrite on
         File /r "${DIR_PREFIX}\${GANT_DIR}\*"
 
-        SetOutPath $INSTDIR\bin
         ${if} $JavaArchModel == 32
-            File /oname=gant.exe "${DIR_PREFIX}\${NATIVE_DIR}\groovy.exe"
-            File /oname=gantw.exe "${DIR_PREFIX}\${NATIVE_DIR}\groovyw.exe"
+            SetOutPath $INSTDIR\bin
+            File /oname=gant.exe "${DIR_PREFIX}\${NATIVE_DIR}\gant.exe"
+            File /oname=gantw.exe "${DIR_PREFIX}\${NATIVE_DIR}\gantw.exe"
+
+            SetOutPath $INSTDIR\${Supplementary}\NativeLauncherWithoutCygwinSupport
+            File /oname=gant.exe "${DIR_PREFIX}\${NATIVE_DIR}\NativeLauncherNoCygwinSupport\gant.exe"
+            File /oname=gantw.exe "${DIR_PREFIX}\${NATIVE_DIR}\NativeLauncherNoCygwinSupport\gantw.exe"
         ${else}
             # here the 64-bit installation whenever we have the respective executables
         ${EndIf}
         
-        WriteRegStr HKLM "${REGKEY}\Components" Gant 1
+        WriteRegStr HKLM "${REGKEY}\Components" "${REG_GANT}" 1
     SectionEnd
 
     Section Griffon SecGriffon
         SetOutPath "$INSTDIR\lib"
         SetOverwrite on
         File /r "${DIR_PREFIX}\${GRIFFON_B}\*"
-        WriteRegStr HKLM "${REGKEY}\Components" Griffon 1
+        WriteRegStr HKLM "${REGKEY}\Components" "${REG_GRIFFON}" 1
     SectionEnd
 
     Section Scriptom SecScriptom
         SetOutPath $INSTDIR
         SetOverwrite on
         File /r "${DIR_PREFIX}\${SCRIPTOM_DIR}\*"
-        WriteRegStr HKLM "${REGKEY}\Components" Scriptom 1
+        WriteRegStr HKLM "${REGKEY}\Components" "${REG_SCRIPTOM}" 1
+    SectionEnd
+
+    Section Gaelyk SecGaelyk
+        SetOutPath $INSTDIR\${SUPPLEMENTARY}\Gaelyk
+        SetOverwrite on
+        File /r "${DIR_PREFIX}\${GAELYK_DIR}\*"
+        WriteRegStr HKLM "${REGKEY}\Components" "${REG_GAELYK}" 1
     SectionEnd
 SectionGroupEnd
 
@@ -318,6 +346,14 @@ COM avec Groovy"
 LangString DESC_SecScriptom ${LANG_PortugueseBR}  "Scriptom - acesse componentes ActiveX ou COM \
 com Groovy"
 
+# TODO correct language strings spanish and portuguese
+LangString DESC_SecGaelyk ${LANG_ENGLISH} "Gaelyk - Develop with Google App Engine"
+LangString DESC_SecGaelyk ${LANG_GERMAN} "Gaelyk - Entwickeln mit Google App Engine"
+LangString DESC_SecGaelyk ${LANG_SPANISH} "Gaelyk - Develop with Google App Engine"
+LangString DESC_SecGaelyk ${LANG_FRENCH} "Gaelyk - Developpez avec Google app Engine"
+LangString DESC_SecGaelyk ${LANG_PortugueseBR} "Gaelyk - Develop with Google App Engine"
+
+
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
   !insertmacro MUI_DESCRIPTION_TEXT ${SecBinaries} $(DESC_SecBinaries)
   !insertmacro MUI_DESCRIPTION_TEXT ${SecDocumentation} $(DESC_SecDocumentation)
@@ -326,6 +362,7 @@ com Groovy"
   !insertmacro MUI_DESCRIPTION_TEXT ${SecGant} $(DESC_SecGant)
   !insertmacro MUI_DESCRIPTION_TEXT ${SecGriffon} $(DESC_SecGriffon)
   !insertmacro MUI_DESCRIPTION_TEXT ${SecScriptom} $(DESC_SecScriptom)
+  !insertmacro MUI_DESCRIPTION_TEXT ${SecGaelyk} $(DESC_SecGaelyk)
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 Section -post SEC0006
@@ -356,7 +393,7 @@ done${UNSECTION_ID}:
     Pop $R0
 !macroend
 
-Section /o un.Shortcuts UNSEC0006
+Section /o un.Shortcuts UNSEC0999
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(^GroovyConsoleLink).lnk"
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(^HTMLLink).lnk"
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(^APILink).lnk"
@@ -366,30 +403,34 @@ Section /o un.Shortcuts UNSEC0006
 SectionEnd
 
 # Uninstaller sections
+Section /o un.Gaelyk UNSEC0006
+    DeleteRegValue HKLM "${REGKEY}\Components" "${REG_GAELYK}"
+SectionEnd
+
 Section /o un.Scriptom UNSEC0005
-    DeleteRegValue HKLM "${REGKEY}\Components" Scriptom
+    DeleteRegValue HKLM "${REGKEY}\Components" "${REG_SCRIPTOM}"
 SectionEnd
 
 Section /o un.Griffon UNSEC0004
-    DeleteRegValue HKLM "${REGKEY}\Components" Griffon
+    DeleteRegValue HKLM "${REGKEY}\Components" "${REG_GRIFFON}"
 SectionEnd
 
 Section /o un.Gant UNSEC0003
-    DeleteRegValue HKLM "${REGKEY}\Components" Gant
+    DeleteRegValue HKLM "${REGKEY}\Components" "${REG_GANT}"
 SectionEnd
 
 Section /o "un.Modify Variables" UNSEC0002
-    DeleteRegValue HKLM "${REGKEY}\Components" "Modify Variables"
+    DeleteRegValue HKLM "${REGKEY}\Components" "${REG_MODIFY_VARIABLES}"
 SectionEnd
 
 Section /o "un.Groovy Documentation" UNSEC0001
-    DeleteRegValue HKLM "${REGKEY}\Components" "Groovy Documentation"
+    DeleteRegValue HKLM "${REGKEY}\Components" "${REG_GROOVY_DOCUMENTATION}"
 SectionEnd
 
 Section /o "un.Groovy Binaries" UNSEC0000
     Delete /REBOOTOK $INSTDIR\${VERSION_TXT}
     RmDir /r /REBOOTOK $INSTDIR
-    DeleteRegValue HKLM "${REGKEY}\Components" "Groovy Binaries"
+    DeleteRegValue HKLM "${REGKEY}\Components" "${REG_GROOVY_BINARIES}"
 SectionEnd
 
 Section un.post UNSEC0007
