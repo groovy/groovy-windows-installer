@@ -346,10 +346,10 @@ COM avec Groovy"
 LangString DESC_SecScriptom ${LANG_PortugueseBR}  "Scriptom - acesse componentes ActiveX ou COM \
 com Groovy"
 
-# TODO correct language strings spanish and portuguese
+# TODO correct language strings for portuguese
 LangString DESC_SecGaelyk ${LANG_ENGLISH} "Gaelyk - Develop with Google App Engine"
 LangString DESC_SecGaelyk ${LANG_GERMAN} "Gaelyk - Entwickeln mit Google App Engine"
-LangString DESC_SecGaelyk ${LANG_SPANISH} "Gaelyk - Develop with Google App Engine"
+LangString DESC_SecGaelyk ${LANG_SPANISH} "Gaelyk - Desarrollo con Google App Engine"
 LangString DESC_SecGaelyk ${LANG_FRENCH} "Gaelyk - Developpez avec Google app Engine"
 LangString DESC_SecGaelyk ${LANG_PortugueseBR} "Gaelyk - Develop with Google App Engine"
 
