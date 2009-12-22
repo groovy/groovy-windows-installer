@@ -7,13 +7,14 @@
 # GANT_DIR       is the relative path to the gant module
 # GRIFFON_B      is the relative path to the griffon builders module
 # GAELYK_DIR     is the relative path to the Gaelyk module
+# GPARS_DIR      is the relative path to the GPars module
+# SPOCK_DIR      is the relative path to the Spock module
 # VERSION_TXT    is the relative path to the installed_versions.txt
 # DOC_DIR        is the relative path to the doc directory
 # JAVA_ARCH      is the directory containing the architecture detection jar
 
-;@Todo: Correct language strings portuguese
 
-!define InstallerVersion 0.7.0
+!define InstallerVersion 0.7.1
 
 # Set the compression level
 SetCompressor /SOLID lzma
@@ -52,6 +53,8 @@ Name "Groovy-${Version}"
 !define REG_GRIFFON "Griffon"
 !define REG_SCRIPTOM "Scriptom"
 !define REG_GAELYK "Gaelyk"
+!define REG_GPARS "GPars"
+!define REG_SPOCK "Spock"
 
 
 # Included files
@@ -111,6 +114,10 @@ LangString NoJava ${LANG_SPANISH} "Cannot identify Java installation. Assuming 3
 LangString NoJava ${LANG_FRENCH} "Impossible d'identifier la version de Java installée. Version 32 bits supposée."
 LangString NoJava ${LANG_PortugueseBR} "Cannot identify Java installation. Assuming 32 bit version."
 
+# Install Types
+InstType "Full"
+InstType "Minimal"
+
 # Installer sections
 Section "Groovy Binaries" SecBinaries
     SectionIn RO    # this section cannot be deselected
@@ -163,6 +170,7 @@ Section "Groovy Binaries" SecBinaries
 SectionEnd
 
 Section "Groovy Documentation" SecDocumentation
+    SectionIn 1
     SetOutPath $INSTDIR
     
     SetOverwrite on
@@ -171,6 +179,7 @@ Section "Groovy Documentation" SecDocumentation
 SectionEnd
 
 Section "Modify Variables" SecVariables
+    SectionIn 1 2
     SetOutPath $INSTDIR
     SetOverwrite on
     WriteRegStr HKLM "${REGKEY}\Components" "${REG_MODIFY_VARIABLES}" 1
@@ -178,6 +187,7 @@ SectionEnd
 
 SectionGroup /e Modules SecGrpModules
     Section Gant SecGant
+        SectionIn 1
         SetOutPath $INSTDIR
         SetOverwrite on
         File /r "${DIR_PREFIX}\${GANT_DIR}\*"
@@ -198,6 +208,7 @@ SectionGroup /e Modules SecGrpModules
     SectionEnd
 
     Section Griffon SecGriffon
+        SectionIn 1
         SetOutPath "$INSTDIR\lib"
         SetOverwrite on
         File /r "${DIR_PREFIX}\${GRIFFON_B}\*"
@@ -205,6 +216,7 @@ SectionGroup /e Modules SecGrpModules
     SectionEnd
 
     Section Scriptom SecScriptom
+        SectionIn 1
         SetOutPath $INSTDIR
         SetOverwrite on
         File /r "${DIR_PREFIX}\${SCRIPTOM_DIR}\*"
@@ -212,10 +224,27 @@ SectionGroup /e Modules SecGrpModules
     SectionEnd
 
     Section Gaelyk SecGaelyk
+        SectionIn 1
         SetOutPath $INSTDIR\${SUPPLEMENTARY}\Gaelyk
         SetOverwrite on
         File /r "${DIR_PREFIX}\${GAELYK_DIR}\*"
         WriteRegStr HKLM "${REGKEY}\Components" "${REG_GAELYK}" 1
+    SectionEnd
+
+    Section GPars SecGPars
+        SectionIn 1
+        SetOutPath "$INSTDIR"
+        SetOverwrite on
+        File /r "${DIR_PREFIX}\${GPARS_DIR}\*"
+        WriteRegStr HKLM "${REGKEY}\Components" "${REG_GPARS}" 1
+    SectionEnd
+
+    Section Spock SecSpock
+        SectionIn 1
+        SetOutPath "$INSTDIR"
+        SetOverwrite on
+        File /r "${DIR_PREFIX}\${SPOCK_DIR}\*"
+        WriteRegStr HKLM "${REGKEY}\Components" "${REG_SPOCK}" 1
     SectionEnd
 SectionGroupEnd
 
@@ -353,6 +382,20 @@ LangString DESC_SecGaelyk ${LANG_SPANISH} "Gaelyk - Desarrollo con Google App En
 LangString DESC_SecGaelyk ${LANG_FRENCH} "Gaelyk - Developpez avec Google app Engine"
 LangString DESC_SecGaelyk ${LANG_PortugueseBR} "Gaelyk - Develop with Google App Engine"
 
+# TODO correct language strings for spanish, portuguese
+LangString DESC_SecGPars ${LANG_ENGLISH} "GPars - Groovy Parallel Systems"
+LangString DESC_SecGPars ${LANG_GERMAN} "GPars - Parallel programmieren mit Groovy"
+LangString DESC_SecGPars ${LANG_SPANISH} "GPars - Groovy Parallel Systems"
+LangString DESC_SecGPars ${LANG_FRENCH} "Programmation parallèle avec Groovy"
+LangString DESC_SecGPars ${LANG_PortugueseBR} "GPars - Groovy Parallel Systems"
+
+# TODO correct language strings for spanish, portuguese
+LangString DESC_SecSpock ${LANG_ENGLISH} "Spock - The Testing and Specification Framework"
+LangString DESC_SecSpock ${LANG_GERMAN} "Spock - Das Test- und Spezifikations-Framework"
+LangString DESC_SecSpock ${LANG_SPANISH} "Spock - The Testing and Specification Framework"
+LangString DESC_SecSpock ${LANG_FRENCH} "Le framework de tests et de spécifications"
+LangString DESC_SecSpock ${LANG_PortugueseBR} "Spock - The Testing and Specification Framework"
+
 
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
   !insertmacro MUI_DESCRIPTION_TEXT ${SecBinaries} $(DESC_SecBinaries)
@@ -363,6 +406,8 @@ LangString DESC_SecGaelyk ${LANG_PortugueseBR} "Gaelyk - Develop with Google App
   !insertmacro MUI_DESCRIPTION_TEXT ${SecGriffon} $(DESC_SecGriffon)
   !insertmacro MUI_DESCRIPTION_TEXT ${SecScriptom} $(DESC_SecScriptom)
   !insertmacro MUI_DESCRIPTION_TEXT ${SecGaelyk} $(DESC_SecGaelyk)
+  !insertmacro MUI_DESCRIPTION_TEXT ${SecGPars} $(DESC_SecGPars)
+  !insertmacro MUI_DESCRIPTION_TEXT ${SecSpock} $(DESC_SecSpock)
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 Section -post SEC0006
@@ -393,7 +438,7 @@ done${UNSECTION_ID}:
     Pop $R0
 !macroend
 
-Section /o un.Shortcuts UNSEC0999
+Section /o un.Shortcuts UNSEC0998
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(^GroovyConsoleLink).lnk"
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(^HTMLLink).lnk"
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(^APILink).lnk"
@@ -403,6 +448,14 @@ Section /o un.Shortcuts UNSEC0999
 SectionEnd
 
 # Uninstaller sections
+Section /o un.Spock UNSEC0008
+    DeleteRegValue HKLM "${REGKEY}\Components" "${REG_SPOCK}"
+SectionEnd
+
+Section /o un.GPars UNSEC0007
+    DeleteRegValue HKLM "${REGKEY}\Components" "${REG_GPARS}"
+SectionEnd
+
 Section /o un.Gaelyk UNSEC0006
     DeleteRegValue HKLM "${REGKEY}\Components" "${REG_GAELYK}"
 SectionEnd
@@ -433,7 +486,7 @@ Section /o "un.Groovy Binaries" UNSEC0000
     DeleteRegValue HKLM "${REGKEY}\Components" "${REG_GROOVY_BINARIES}"
 SectionEnd
 
-Section un.post UNSEC0007
+Section un.post UNSEC0999
     DeleteRegKey HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)"
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(^UninstallLink).lnk"
     Delete /REBOOTOK $INSTDIR\uninstall.exe
@@ -470,7 +523,10 @@ Function un.onInit
     !insertmacro SELECT_UNSECTION Gant ${UNSEC0003}
     !insertmacro SELECT_UNSECTION Griffon ${UNSEC0004}
     !insertmacro SELECT_UNSECTION Scriptom ${UNSEC0005}
-    !insertmacro SELECT_UNSECTION Shortcuts ${UNSEC0006}
+    !insertmacro SELECT_UNSECTION Gaelyk ${UNSEC0006}
+    !insertmacro SELECT_UNSECTION GPars ${UNSEC0007}
+    !insertmacro SELECT_UNSECTION Spock ${UNSEC0008}
+    !insertmacro SELECT_UNSECTION Shortcuts ${UNSEC0998}
 FunctionEnd
 
 
