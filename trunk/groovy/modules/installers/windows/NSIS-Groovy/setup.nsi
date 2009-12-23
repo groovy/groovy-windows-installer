@@ -382,17 +382,17 @@ LangString DESC_SecGaelyk ${LANG_SPANISH} "Gaelyk - Desarrollo con Google App En
 LangString DESC_SecGaelyk ${LANG_FRENCH} "Gaelyk - Developpez avec Google app Engine"
 LangString DESC_SecGaelyk ${LANG_PortugueseBR} "Gaelyk - Develop with Google App Engine"
 
-# TODO correct language strings for spanish, portuguese
+# TODO correct language strings for portuguese
 LangString DESC_SecGPars ${LANG_ENGLISH} "GPars - Groovy Parallel Systems"
 LangString DESC_SecGPars ${LANG_GERMAN} "GPars - Parallel programmieren mit Groovy"
-LangString DESC_SecGPars ${LANG_SPANISH} "GPars - Groovy Parallel Systems"
+LangString DESC_SecGPars ${LANG_SPANISH} "GPars - Sistemas Paralelos con Groovy"
 LangString DESC_SecGPars ${LANG_FRENCH} "Programmation parallèle avec Groovy"
 LangString DESC_SecGPars ${LANG_PortugueseBR} "GPars - Groovy Parallel Systems"
 
-# TODO correct language strings for spanish, portuguese
+# TODO correct language strings for portuguese
 LangString DESC_SecSpock ${LANG_ENGLISH} "Spock - The Testing and Specification Framework"
 LangString DESC_SecSpock ${LANG_GERMAN} "Spock - Das Test- und Spezifikations-Framework"
-LangString DESC_SecSpock ${LANG_SPANISH} "Spock - The Testing and Specification Framework"
+LangString DESC_SecSpock ${LANG_SPANISH} "Spock - Herramienta de Pruebas y Especificaciones"
 LangString DESC_SecSpock ${LANG_FRENCH} "Le framework de tests et de spécifications"
 LangString DESC_SecSpock ${LANG_PortugueseBR} "Spock - The Testing and Specification Framework"
 
