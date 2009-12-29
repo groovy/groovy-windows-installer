@@ -9,6 +9,7 @@
 # GAELYK_DIR     is the relative path to the Gaelyk module
 # GPARS_DIR      is the relative path to the GPars module
 # SPOCK_DIR      is the relative path to the Spock module
+# EASYB_DIR      is the relative path to the easyb module
 # VERSION_TXT    is the relative path to the installed_versions.txt
 # DOC_DIR        is the relative path to the doc directory
 # JAVA_ARCH      is the directory containing the architecture detection jar
@@ -55,6 +56,7 @@ Name "Groovy-${Version}"
 !define REG_GAELYK "Gaelyk"
 !define REG_GPARS "GPars"
 !define REG_SPOCK "Spock"
+!define REG_EASYB "easyb"
 
 
 # Included files
@@ -186,6 +188,22 @@ Section "Modify Variables" SecVariables
 SectionEnd
 
 SectionGroup /e Modules SecGrpModules
+    Section Easyb SecEasyb
+        SectionIn 1
+        SetOutPath "$INSTDIR"
+        SetOverwrite on
+        File /r "${DIR_PREFIX}\${EASYB_DIR}\*"
+        WriteRegStr HKLM "${REGKEY}\Components" "${REG_EASYB}" 1
+    SectionEnd
+
+    Section Gaelyk SecGaelyk
+        SectionIn 1
+        SetOutPath $INSTDIR\${SUPPLEMENTARY}\Gaelyk
+        SetOverwrite on
+        File /r "${DIR_PREFIX}\${GAELYK_DIR}\*"
+        WriteRegStr HKLM "${REGKEY}\Components" "${REG_GAELYK}" 1
+    SectionEnd
+
     Section Gant SecGant
         SectionIn 1
         SetOutPath $INSTDIR
@@ -207,9 +225,17 @@ SectionGroup /e Modules SecGrpModules
         WriteRegStr HKLM "${REGKEY}\Components" "${REG_GANT}" 1
     SectionEnd
 
+    Section GPars SecGPars
+        SectionIn 1
+        SetOutPath "$INSTDIR"
+        SetOverwrite on
+        File /r "${DIR_PREFIX}\${GPARS_DIR}\*"
+        WriteRegStr HKLM "${REGKEY}\Components" "${REG_GPARS}" 1
+    SectionEnd
+
     Section Griffon SecGriffon
         SectionIn 1
-        SetOutPath "$INSTDIR\lib"
+        SetOutPath $INSTDIR
         SetOverwrite on
         File /r "${DIR_PREFIX}\${GRIFFON_B}\*"
         WriteRegStr HKLM "${REGKEY}\Components" "${REG_GRIFFON}" 1
@@ -223,22 +249,6 @@ SectionGroup /e Modules SecGrpModules
         WriteRegStr HKLM "${REGKEY}\Components" "${REG_SCRIPTOM}" 1
     SectionEnd
 
-    Section Gaelyk SecGaelyk
-        SectionIn 1
-        SetOutPath $INSTDIR\${SUPPLEMENTARY}\Gaelyk
-        SetOverwrite on
-        File /r "${DIR_PREFIX}\${GAELYK_DIR}\*"
-        WriteRegStr HKLM "${REGKEY}\Components" "${REG_GAELYK}" 1
-    SectionEnd
-
-    Section GPars SecGPars
-        SectionIn 1
-        SetOutPath "$INSTDIR"
-        SetOverwrite on
-        File /r "${DIR_PREFIX}\${GPARS_DIR}\*"
-        WriteRegStr HKLM "${REGKEY}\Components" "${REG_GPARS}" 1
-    SectionEnd
-
     Section Spock SecSpock
         SectionIn 1
         SetOutPath "$INSTDIR"
@@ -246,6 +256,7 @@ SectionGroup /e Modules SecGrpModules
         File /r "${DIR_PREFIX}\${SPOCK_DIR}\*"
         WriteRegStr HKLM "${REGKEY}\Components" "${REG_SPOCK}" 1
     SectionEnd
+
 SectionGroupEnd
 
 # Links in Start Menu
@@ -391,10 +402,17 @@ LangString DESC_SecGPars ${LANG_PortugueseBR} "GPars - Groovy Parallel Systems"
 
 # TODO correct language strings for portuguese
 LangString DESC_SecSpock ${LANG_ENGLISH} "Spock - The Testing and Specification Framework"
-LangString DESC_SecSpock ${LANG_GERMAN} "Spock - Das Test- und Spezifikations-Framework"
+LangString DESC_SecSpock ${LANG_GERMAN} "Spock - Das Test- und Spezifikations-Frame- work"
 LangString DESC_SecSpock ${LANG_SPANISH} "Spock - Herramienta de Pruebas y Especificaciones"
 LangString DESC_SecSpock ${LANG_FRENCH} "Le framework de tests et de spécifications"
 LangString DESC_SecSpock ${LANG_PortugueseBR} "Spock - The Testing and Specification Framework"
+
+# TODO correct language strings for french, spanish, portuguese
+LangString DESC_SecEasyb ${LANG_ENGLISH} "easyb - BDD with Groovy"
+LangString DESC_SecEasyb ${LANG_GERMAN} "easyb - BDD mit Groovy"
+LangString DESC_SecEasyb ${LANG_SPANISH} "easyb - BDD con Groovy"
+LangString DESC_SecEasyb ${LANG_FRENCH} "easyb - BDD avec Groovy"
+LangString DESC_SecEasyb ${LANG_PortugueseBR} "easyb - BDD with Groovy"
 
 
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
@@ -408,6 +426,7 @@ LangString DESC_SecSpock ${LANG_PortugueseBR} "Spock - The Testing and Specifica
   !insertmacro MUI_DESCRIPTION_TEXT ${SecGaelyk} $(DESC_SecGaelyk)
   !insertmacro MUI_DESCRIPTION_TEXT ${SecGPars} $(DESC_SecGPars)
   !insertmacro MUI_DESCRIPTION_TEXT ${SecSpock} $(DESC_SecSpock)
+  !insertmacro MUI_DESCRIPTION_TEXT ${SecEasyb} $(DESC_SecEasyb)
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 Section -post SEC0006
@@ -448,6 +467,10 @@ Section /o un.Shortcuts UNSEC0998
 SectionEnd
 
 # Uninstaller sections
+Section /o un.Easyb UNSEC0009
+    DeleteRegValue HKLM "${REGKEY}\Components" "${REG_Easyb}"
+SectionEnd
+
 Section /o un.Spock UNSEC0008
     DeleteRegValue HKLM "${REGKEY}\Components" "${REG_SPOCK}"
 SectionEnd
@@ -526,6 +549,7 @@ Function un.onInit
     !insertmacro SELECT_UNSECTION Gaelyk ${UNSEC0006}
     !insertmacro SELECT_UNSECTION GPars ${UNSEC0007}
     !insertmacro SELECT_UNSECTION Spock ${UNSEC0008}
+    !insertmacro SELECT_UNSECTION Easyb ${UNSEC0009}
     !insertmacro SELECT_UNSECTION Shortcuts ${UNSEC0998}
 FunctionEnd
 

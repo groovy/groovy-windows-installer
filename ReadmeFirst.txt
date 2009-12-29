@@ -71,11 +71,13 @@ Test local installation
   - remove error, do same for groovy-starter.conf
 - Check Menu for correct entries
 - Start GroovyConsole
-- Execute tridentbuilder.groovy in Console
 - Execute TestInstallation.groovy from cmd.exe
   - using "groovy TestInstallation.groovy"
   - using "TestInstallation.groovy"
 - Execute "groovy TestInstallation.groovy" from Cygwin bash
+- Execute tridentbuilder.groovy in GroovyConsole
+- Execute spocktest.groovy from Cygwin bash
+- Execute actortest.groovy from Cygwin bash
 - Uninstall, verify that menu has been deleted fully and that the installation directory is removed
 ---------------------------------------------------------------------------------------
 
