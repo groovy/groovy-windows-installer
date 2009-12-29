@@ -129,6 +129,6 @@ public class TestInstallation extends GroovyTestCase {
     }
     
     void testEasyb() {
-    	println Eval.me("org.easyb.BehaviorRunner.main('easybTest.story')")
+    	Eval.me("org.easyb.BehaviorRunner.main('easybTest.story')")
     }
 }
