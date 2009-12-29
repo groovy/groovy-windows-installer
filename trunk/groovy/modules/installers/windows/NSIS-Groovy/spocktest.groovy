@@ -1,6 +1,4 @@
-import spock.lang.Specification
-
-class HelloSpock extends Specification {
+class HelloSpock extends spock.lang.Specification {
     def "can you figure out what I'm up to?"() {
         expect:
         name.size() == size
