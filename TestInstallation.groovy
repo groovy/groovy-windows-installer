@@ -8,6 +8,7 @@ import groovy.swing.SwingXBuilder
 import org.codehaus.groovy.scriptom.*
 import groovy.util.Eval
 import groovy.lang.GroovyShell
+import spock.util.EmbeddedSpecRunner
 
 import griffon.builder.jide.JideBuilder
 // 1.5 import org.kordamp.groovy.swing.jide.JideBuilder
@@ -129,6 +130,34 @@ public class TestInstallation extends GroovyTestCase {
     }
     
     void testEasyb() {
-    	Eval.me("org.easyb.BehaviorRunner.main('easybTest.story')")
+        String easybScript = """
+            import org.easyb.*
+            import org.easyb.listener.ResultsCollector
+
+            Configuration configuration = new ConsoleConfigurator().configure('easybTest.story');
+            BehaviorRunner runner = new BehaviorRunner(configuration, new ResultsCollector());
+            boolean success = runner.runBehaviors(BehaviorRunner.getBehaviors(configuration.getFilePaths(), 
+                configuration));
+        """
+
+        assertTrue Eval.me(easybScript) == true
+    }
+    
+    void testSpock() {
+        String spockScript = """
+            import spock.lang.*
+            class HelloSpock extends spock.lang.Specification {
+                def "can you figure out what I'm up to?"() {
+                    expect:
+                    name.size() == size
+
+                    where:
+                    name << ["Kirk", "Spock", "Scotty"]
+                    size << [4, 5, 6]
+                }
+            }
+        """
+        org.junit.runner.Result result = new EmbeddedSpecRunner().run(spockScript)
+        assertTrue result.fFailures.size == 0
     }
 }
