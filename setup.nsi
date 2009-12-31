@@ -10,6 +10,7 @@
 # GPARS_DIR      is the relative path to the GPars module
 # SPOCK_DIR      is the relative path to the Spock module
 # EASYB_DIR      is the relative path to the easyb module
+# GMOCK_DIR      is the relative path to the gmock module
 # VERSION_TXT    is the relative path to the installed_versions.txt
 # DOC_DIR        is the relative path to the doc directory
 # JAVA_ARCH      is the directory containing the architecture detection jar
@@ -57,6 +58,7 @@ Name "Groovy-${Version}"
 !define REG_GPARS "GPars"
 !define REG_SPOCK "Spock"
 !define REG_EASYB "easyb"
+!define REG_GMOCK "GMock"
 
 
 # Included files
@@ -223,6 +225,14 @@ SectionGroup /e Modules SecGrpModules
         ${EndIf}
         
         WriteRegStr HKLM "${REGKEY}\Components" "${REG_GANT}" 1
+    SectionEnd
+
+    Section GMock SecGMock
+        SectionIn 1
+        SetOutPath "$INSTDIR"
+        SetOverwrite on
+        File /r "${DIR_PREFIX}\${GMOCK_DIR}\*"
+        WriteRegStr HKLM "${REGKEY}\Components" "${REG_GMOCK}" 1
     SectionEnd
 
     Section GPars SecGPars
@@ -414,6 +424,13 @@ LangString DESC_SecEasyb ${LANG_SPANISH} "easyb - BDD con Groovy"
 LangString DESC_SecEasyb ${LANG_FRENCH} "easyb - BDD avec Groovy"
 LangString DESC_SecEasyb ${LANG_PortugueseBR} "easyb - BDD with Groovy"
 
+# TODO correct language strings for french, spanish, portuguese
+LangString DESC_SecGMock ${LANG_ENGLISH} "GMock - Mocking Framework for Groovy"
+LangString DESC_SecGMock ${LANG_GERMAN} "GMock - Mocking Framework für Groovy"
+LangString DESC_SecGMock ${LANG_SPANISH} "GMock - Mocking Framework for Groovy"
+LangString DESC_SecGMock ${LANG_FRENCH} "GMock - Mocking Framework for Groovy"
+LangString DESC_SecGMock ${LANG_PortugueseBR} "GMock - Mocking Framework for Groovy"
+
 
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
   !insertmacro MUI_DESCRIPTION_TEXT ${SecBinaries} $(DESC_SecBinaries)
@@ -427,6 +444,7 @@ LangString DESC_SecEasyb ${LANG_PortugueseBR} "easyb - BDD with Groovy"
   !insertmacro MUI_DESCRIPTION_TEXT ${SecGPars} $(DESC_SecGPars)
   !insertmacro MUI_DESCRIPTION_TEXT ${SecSpock} $(DESC_SecSpock)
   !insertmacro MUI_DESCRIPTION_TEXT ${SecEasyb} $(DESC_SecEasyb)
+  !insertmacro MUI_DESCRIPTION_TEXT ${SecGMock} $(DESC_SecGMock)
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 Section -post SEC0006
@@ -467,8 +485,12 @@ Section /o un.Shortcuts UNSEC0998
 SectionEnd
 
 # Uninstaller sections
+Section /o un.GMock UNSEC0010
+    DeleteRegValue HKLM "${REGKEY}\Components" "${REG_GMOCK"
+SectionEnd
+
 Section /o un.Easyb UNSEC0009
-    DeleteRegValue HKLM "${REGKEY}\Components" "${REG_Easyb}"
+    DeleteRegValue HKLM "${REGKEY}\Components" "${REG_EASYB}"
 SectionEnd
 
 Section /o un.Spock UNSEC0008
@@ -550,6 +572,7 @@ Function un.onInit
     !insertmacro SELECT_UNSECTION GPars ${UNSEC0007}
     !insertmacro SELECT_UNSECTION Spock ${UNSEC0008}
     !insertmacro SELECT_UNSECTION Easyb ${UNSEC0009}
+    !insertmacro SELECT_UNSECTION GMock ${UNSEC0010}
     !insertmacro SELECT_UNSECTION Shortcuts ${UNSEC0998}
 FunctionEnd
 
