@@ -76,8 +76,6 @@ Test local installation
   - using "TestInstallation.groovy"
 - Execute "groovy TestInstallation.groovy" from Cygwin bash
 - Execute tridentbuilder.groovy in GroovyConsole
-- Execute spocktest.groovy from Cygwin bash
-- Execute actortest.groovy from Cygwin bash
 - Uninstall, verify that menu has been deleted fully and that the installation directory is removed
 ---------------------------------------------------------------------------------------
 
