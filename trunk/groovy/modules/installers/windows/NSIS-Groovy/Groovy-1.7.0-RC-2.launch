@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="net.sf.eclipsensis.launch.nsisLaunchConfigType">
+<intAttribute key="compressor" value="0"/>
+<booleanAttribute key="hdrInfo" value="false"/>
+<listAttribute key="instructions"/>
+<booleanAttribute key="license" value="false"/>
+<booleanAttribute key="noCD" value="false"/>
+<booleanAttribute key="noConfig" value="false"/>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
 <listEntry value="/NSIS-Groovy/setup.nsi"/>
 </listAttribute>
-<booleanAttribute key="noCD" value="false"/>
-<booleanAttribute key="noConfig" value="false"/>
-<listAttribute key="instructions"/>
-<stringAttribute key="script" value="${workspace_loc:/NSIS-Groovy/setup.nsi}"/>
-<booleanAttribute key="runInstaller" value="false"/>
-<booleanAttribute key="hdrInfo" value="false"/>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
+<listEntry value="1"/>
+</listAttribute>
+<stringAttribute key="pluginVersion" value="0.9.7.2"/>
 <intAttribute key="processPriority" value="-1"/>
+<booleanAttribute key="runInstaller" value="false"/>
+<stringAttribute key="script" value="${workspace_loc:/NSIS-Groovy/setup.nsi}"/>
 <booleanAttribute key="solidCompression" value="false"/>
 <listAttribute key="symbols">
 <listEntry value="SOURCE_VERSION­1.7.0-RC2"/>
@@ -24,11 +30,5 @@
 <listEntry value="JAVA_ARCH­D:\NSIS\NSIS-Groovy\Java"/>
 <listEntry value="GAELYK_DIR­Gaelyk"/>
 </listAttribute>
-<stringAttribute key="pluginVersion" value="0.9.5.1"/>
-<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
-<listEntry value="1"/>
-</listAttribute>
-<intAttribute key="compressor" value="0"/>
-<booleanAttribute key="license" value="false"/>
 <intAttribute key="verbosity" value="-1"/>
 </launchConfiguration>
