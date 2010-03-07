@@ -46,12 +46,15 @@ Setup Directory for Groovy Files
   - Groovy
   - Groovy Docs
   - Scriptom (place examples into supplementary\Scriptom\ directory)
+  - Download msvcr80.dll if you don't have it on your system
+  - Add msvcr80.dll to Scriptom's bin directory
   - Griffon Builders (download using wget command in griffonbuilders.txt)
   - Gaelyk (place zip file in Gaelyk subdir)
   - GPars (with third-party jars)
   - Gant
     - Download supplementary jars (maven-ant-tasks-2.0.10.jar)
     - Remove file startGroovy.bat from bin directory
+    - Correct the jar file name in the lib directory if necessary
   - Spock (place examples into supplementary\Spock\ directory)
   - Native Launcher and compile it with Cygwin support 
     (place exe without Cygwin support into subdirectory NativeLauncherNoCygwinSupport)
