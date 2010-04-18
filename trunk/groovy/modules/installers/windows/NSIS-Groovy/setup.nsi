@@ -486,7 +486,7 @@ SectionEnd
 
 # Uninstaller sections
 Section /o un.GMock UNSEC0010
-    DeleteRegValue HKLM "${REGKEY}\Components" "${REG_GMOCK"
+    DeleteRegValue HKLM "${REGKEY}\Components" "${REG_GMOCK}"
 SectionEnd
 
 Section /o un.Easyb UNSEC0009
