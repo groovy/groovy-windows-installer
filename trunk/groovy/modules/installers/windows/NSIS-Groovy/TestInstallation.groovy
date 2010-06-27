@@ -203,8 +203,10 @@ public class TestInstallation extends GroovyTestCase {
     	            m.b()
     	        }
     	    }
-    	    class Loader {}
     	}
+
+    	class Loader {}
+
     	org.junit.runner.JUnitCore.runClasses GMockTest
     	"""
     	assertTrue Eval.me(gmockScript).wasSuccessful()
