@@ -149,25 +149,27 @@ Section "Groovy Binaries" SecBinaries
         StrCpy $JavaArchModel 32
     ${EndIf}
 
+    SetOutPath $INSTDIR\bin
     ${if} $JavaArchModel == 32
-        SetOutPath $INSTDIR\bin
-        File /oname=groovy.exe "${DIR_PREFIX}\${NATIVE_DIR}\groovy.exe"
-        File /oname=groovyc.exe "${DIR_PREFIX}\${NATIVE_DIR}\groovy.exe"
-        File /oname=groovysh.exe "${DIR_PREFIX}\${NATIVE_DIR}\groovy.exe"
-        File /oname=java2groovy.exe "${DIR_PREFIX}\${NATIVE_DIR}\groovy.exe"
+        File /oname=groovy.exe "${DIR_PREFIX}\${NATIVE_DIR}\${SUPPLEMENTARY}\native\32bit\groovy.exe"
+        File /oname=groovyc.exe "${DIR_PREFIX}\${NATIVE_DIR}\${SUPPLEMENTARY}\native\32bit\groovy.exe"
+        File /oname=groovysh.exe "${DIR_PREFIX}\${NATIVE_DIR}\${SUPPLEMENTARY}\native\32bit\groovy.exe"
+        File /oname=java2groovy.exe "${DIR_PREFIX}\${NATIVE_DIR}\${SUPPLEMENTARY}\native\32bit\groovy.exe"
 
-        File /oname=groovyw.exe "${DIR_PREFIX}\${NATIVE_DIR}\groovyw.exe"
-        File /oname=groovyConsole.exe "${DIR_PREFIX}\${NATIVE_DIR}\groovyw.exe"
-        
-        SetOutPath $INSTDIR\${Supplementary}\NativeLauncherWithoutCygwinSupport
-        File /oname=groovy.exe "${DIR_PREFIX}\${NATIVE_DIR}\NativeLauncherNoCygwinSupport\groovy.exe"
-        File /oname=groovyw.exe "${DIR_PREFIX}\${NATIVE_DIR}\NativeLauncherNoCygwinSupport\groovyw.exe"
-        
+        File /oname=groovyw.exe "${DIR_PREFIX}\${NATIVE_DIR}\${SUPPLEMENTARY}\native\32bit\groovyw.exe"
+        File /oname=groovyConsole.exe "${DIR_PREFIX}\${NATIVE_DIR}\${SUPPLEMENTARY}\native\32bit\groovyw.exe"        
     ${else}
-        # here the 64-bit installation whenever we have the respective executables
+        File /oname=groovy.exe "${DIR_PREFIX}\${NATIVE_DIR}\${SUPPLEMENTARY}\native\64bit\groovy.exe"
+        File /oname=groovyc.exe "${DIR_PREFIX}\${NATIVE_DIR}\${SUPPLEMENTARY}\native\64bit\groovy.exe"
+        File /oname=groovysh.exe "${DIR_PREFIX}\${NATIVE_DIR}\${SUPPLEMENTARY}\native\64bit\groovy.exe"
+        File /oname=java2groovy.exe "${DIR_PREFIX}\${NATIVE_DIR}\${SUPPLEMENTARY}\native\64bit\groovy.exe"
+
+        File /oname=groovyw.exe "${DIR_PREFIX}\${NATIVE_DIR}\${SUPPLEMENTARY}\native\64bit\groovyw.exe"
+        File /oname=groovyConsole.exe "${DIR_PREFIX}\${NATIVE_DIR}\${SUPPLEMENTARY}\native\64bit\groovyw.exe"        
     ${EndIf}
     
     SetOutPath $INSTDIR
+    File /r "${DIR_PREFIX}\${NATIVE_DIR}\*"
     File "${DIR_PREFIX}\${VERSION_TXT}"
 
     WriteRegStr HKLM "${REGKEY}\Components" "${REG_GROOVY_BINARIES}" 1
@@ -212,16 +214,13 @@ SectionGroup /e Modules SecGrpModules
         SetOverwrite on
         File /r "${DIR_PREFIX}\${GANT_DIR}\*"
 
+        SetOutPath $INSTDIR\bin
         ${if} $JavaArchModel == 32
-            SetOutPath $INSTDIR\bin
-            File /oname=gant.exe "${DIR_PREFIX}\${NATIVE_DIR}\gant.exe"
-            File /oname=gantw.exe "${DIR_PREFIX}\${NATIVE_DIR}\gantw.exe"
-
-            SetOutPath $INSTDIR\${Supplementary}\NativeLauncherWithoutCygwinSupport
-            File /oname=gant.exe "${DIR_PREFIX}\${NATIVE_DIR}\NativeLauncherNoCygwinSupport\gant.exe"
-            File /oname=gantw.exe "${DIR_PREFIX}\${NATIVE_DIR}\NativeLauncherNoCygwinSupport\gantw.exe"
+            File /oname=gant.exe "${DIR_PREFIX}\${NATIVE_DIR}\${SUPPLEMENTARY}\native\32bit\gant.exe"
+            File /oname=gantw.exe "${DIR_PREFIX}\${NATIVE_DIR}\${SUPPLEMENTARY}\native\32bit\gantw.exe"
         ${else}
-            # here the 64-bit installation whenever we have the respective executables
+            File /oname=gant.exe "${DIR_PREFIX}\${NATIVE_DIR}\${SUPPLEMENTARY}\native\64bit\gant.exe"
+            File /oname=gantw.exe "${DIR_PREFIX}\${NATIVE_DIR}\${SUPPLEMENTARY}\native\64bit\gantw.exe"
         ${EndIf}
         
         WriteRegStr HKLM "${REGKEY}\Components" "${REG_GANT}" 1
