@@ -331,12 +331,7 @@ Section "-Shortcuts" SecShortcuts
         CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^PDFLink).lnk" $INSTDIR\pdf\wiki-snapshot.pdf
     ${EndIf}
 
-    ${If} $JavaArchModel == 32
-        CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^GroovyConsoleLink).lnk" $INSTDIR\bin\GroovyConsole.exe
-    ${Else}
-        # until a 64-bit version is available
-        CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^GroovyConsoleLink).lnk" $INSTDIR\bin\GroovyConsole.bat
-    ${EndIf}
+    CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^GroovyConsoleLink).lnk" $INSTDIR\bin\GroovyConsole.exe
 
     !insertmacro MUI_STARTMENU_WRITE_END    
     WriteRegStr HKLM "${REGKEY}\Components" Shortcuts 1
