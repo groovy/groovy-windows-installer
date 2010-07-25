@@ -11,12 +11,13 @@
 # SPOCK_DIR      is the relative path to the Spock module
 # EASYB_DIR      is the relative path to the easyb module
 # GMOCK_DIR      is the relative path to the gmock module
+# GROOVYSERV_DIR is the relative path to the groovyserv module
 # VERSION_TXT    is the relative path to the installed_versions.txt
 # DOC_DIR        is the relative path to the doc directory
 # JAVA_ARCH      is the directory containing the architecture detection jar
 
 
-!define InstallerVersion 0.7.1
+!define InstallerVersion 0.7.2
 
 # Set the compression level
 SetCompressor /SOLID lzma
@@ -59,6 +60,7 @@ Name "Groovy-${Version}"
 !define REG_SPOCK "Spock"
 !define REG_EASYB "easyb"
 !define REG_GMOCK "GMock"
+!define REG_GROOVYSERV "GroovyServ"
 
 
 # Included files
@@ -242,6 +244,14 @@ SectionGroup /e Modules SecGrpModules
         WriteRegStr HKLM "${REGKEY}\Components" "${REG_GPARS}" 1
     SectionEnd
 
+    Section GroovyServ SecGroovyServ
+        SectionIn 1
+        SetOutPath "$INSTDIR"
+        SetOverwrite on
+        File /r "${DIR_PREFIX}\${GROOVYSERV_DIR}\*"
+        WriteRegStr HKLM "${REGKEY}\Components" "${REG_GROOVYSERV}" 1
+    SectionEnd
+
     Section Griffon SecGriffon
         SectionIn 1
         SetOutPath $INSTDIR
@@ -416,19 +426,26 @@ LangString DESC_SecSpock ${LANG_SPANISH} "Spock - Herramienta de Pruebas y Espec
 LangString DESC_SecSpock ${LANG_FRENCH} "Le framework de tests et de spécifications"
 LangString DESC_SecSpock ${LANG_PortugueseBR} "Spock - The Testing and Specification Framework"
 
-# TODO correct language strings for french, spanish, portuguese
+# TODO correct language strings for portuguese
 LangString DESC_SecEasyb ${LANG_ENGLISH} "easyb - BDD with Groovy"
 LangString DESC_SecEasyb ${LANG_GERMAN} "easyb - BDD mit Groovy"
 LangString DESC_SecEasyb ${LANG_SPANISH} "easyb - BDD con Groovy"
 LangString DESC_SecEasyb ${LANG_FRENCH} "easyb - BDD avec Groovy"
 LangString DESC_SecEasyb ${LANG_PortugueseBR} "easyb - BDD with Groovy"
 
-# TODO correct language strings for french, spanish, portuguese
+# TODO correct language strings for spanish, portuguese
 LangString DESC_SecGMock ${LANG_ENGLISH} "GMock - Mocking Framework for Groovy"
 LangString DESC_SecGMock ${LANG_GERMAN} "GMock - Mocking Framework für Groovy"
 LangString DESC_SecGMock ${LANG_SPANISH} "GMock - Mocking Framework for Groovy"
-LangString DESC_SecGMock ${LANG_FRENCH} "GMock - Mocking Framework for Groovy"
+LangString DESC_SecGMock ${LANG_FRENCH} "GMock - Mocking Framework pour Groovy"
 LangString DESC_SecGMock ${LANG_PortugueseBR} "GMock - Mocking Framework for Groovy"
+
+# TODO correct language strings for spanish, portuguese
+LangString DESC_SecGroovyServ ${LANG_ENGLISH} "GroovyServ - A Server for Executing Groovy Programs"
+LangString DESC_SecGroovyServ ${LANG_GERMAN} "GroovyServ - Ein Server für die Ausführung von Groovy-Programmen"
+LangString DESC_SecGroovyServ ${LANG_SPANISH} "GroovyServ - A Server for Executing Groovy"
+LangString DESC_SecGroovyServ ${LANG_FRENCH} "GroovyServ - Un serveur pour exécuter des programmes Groovy"
+LangString DESC_SecGroovyServ ${LANG_PortugueseBR} "GroovyServ - A Server for Executing Groovy"
 
 
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
@@ -444,6 +461,7 @@ LangString DESC_SecGMock ${LANG_PortugueseBR} "GMock - Mocking Framework for Gro
   !insertmacro MUI_DESCRIPTION_TEXT ${SecSpock} $(DESC_SecSpock)
   !insertmacro MUI_DESCRIPTION_TEXT ${SecEasyb} $(DESC_SecEasyb)
   !insertmacro MUI_DESCRIPTION_TEXT ${SecGMock} $(DESC_SecGMock)
+  !insertmacro MUI_DESCRIPTION_TEXT ${SecGroovyServ} $(DESC_SecGroovyServ)
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 Section -post SEC0006
@@ -484,6 +502,10 @@ Section /o un.Shortcuts UNSEC0998
 SectionEnd
 
 # Uninstaller sections
+Section /o un.GroovyServ UNSEC0011
+    DeleteRegValue HKLM "${REGKEY}\Components" "${REG_GROOVYSERV}"
+SectionEnd
+
 Section /o un.GMock UNSEC0010
     DeleteRegValue HKLM "${REGKEY}\Components" "${REG_GMOCK}"
 SectionEnd
@@ -572,6 +594,7 @@ Function un.onInit
     !insertmacro SELECT_UNSECTION Spock ${UNSEC0008}
     !insertmacro SELECT_UNSECTION Easyb ${UNSEC0009}
     !insertmacro SELECT_UNSECTION GMock ${UNSEC0010}
+    !insertmacro SELECT_UNSECTION GroovyServ ${UNSEC0011}
     !insertmacro SELECT_UNSECTION Shortcuts ${UNSEC0998}
 FunctionEnd
 
