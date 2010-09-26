@@ -58,7 +58,7 @@ public class TestInstallation extends GroovyTestCase {
     void testGantVersionReturnsValue() {
         def groovyVar = System.getenv("GROOVY_HOME");
         assertNotNull groovyVar
-        def result = "$groovyVar/bin/gant.exe -V".execute().text
+        def result = "$groovyVar\\bin\\gant.exe -V".execute().text
         assert result =~ /Gant version/
     }
 
