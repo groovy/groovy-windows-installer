@@ -91,7 +91,11 @@ public class TestInstallation extends GroovyTestCase {
           def result = scriptControl.Eval('2.0 + 2.0;')
         }
     	"""
-        assertTrue Eval.me(scriptomScript) == 4    	
+    	
+    	String dataModel = System.getProperty("sun.arch.data.model");
+        int bits = Integer.parseInt(dataModel);
+    	// only evaluate when on 32 bit system
+        if(bits == 32) assertTrue Eval.me(scriptomScript) == 4    	
     }
     
     void testGaelykIsInstalled() {
@@ -136,7 +140,7 @@ public class TestInstallation extends GroovyTestCase {
             import org.easyb.listener.ResultsCollector
 
             Configuration configuration = new ConsoleConfigurator().configure('easybTest.story');
-            BehaviorRunner runner = new BehaviorRunner(configuration, new ResultsCollector());
+            BehaviorRunner runner = new BehaviorRunner(configuration);
             boolean success = runner.runBehaviors(BehaviorRunner.getBehaviors(configuration.getFilePaths(), 
                 configuration));
         """
