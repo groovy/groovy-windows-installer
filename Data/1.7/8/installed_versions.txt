@@ -1,0 +1,194 @@
+Installed Versions
+==================
+This file contains the versions (or dates) of all the components installed by the 
+Windows Installer.
+
+
+Groovy
+------
+Binary Version: 1.7.8
+Doc Version:    1.7.8
+
+Native Launcher (all in bin)
+----------------------------
+The native launcher is compiled with Cygwin support. In Supplemental you find a directory
+"NativeLauncherWithoutCygwinSupport" that contains versions of the native launcher 
+compiled without the Cygwin support. If you have any problems with the native launcher 
+please try these versions. Also in this directory you'll find the 32- and 64-bit versions
+of the launcher in case you need to exchange the installed versions.
+
+bin:
+	gant.exe
+	gantw.exe
+	groovy.exe
+	groovyc.exe
+	groovyConsole.exe
+	groovysh.exe
+	groovyw.exe
+	java2groovy.exe
+
+32-/64-Bit Version of Java
+--------------------------
+The installer tries to find out whether a 32-bit or a 64-bit version of Java is installed.
+If the installer cannot determine this a 32-bit installation is assumed. Depending on the 
+Java version the 32- or 64-bit version of the native launcher is installed. If you change 
+the Java installation later, simply copy the respective version of the native launcher to
+the bin directory. The mapping is as follows:
+
+groovy.exe  - groovy.exe, groovyc.exe, groovysh.exe, java2groovy.exe
+groovyw.exe - groovyw.exe, groovyConsole.exe
+gant.exe    - gant.exe
+gantw.exe   - gantw.exe
+
+
+Modules
+=======
+    
+easyb
+-----
+lib:
+    easyb-0.9.8.jar
+
+    
+Gaelyk
+------
+Supplementary/Gaelyk:
+    gaelyk-template-project-0.6.1.zip
+    
+
+Gant 1.9.3
+----------
+bin:
+    gant
+    gant.bat
+conf:
+    gant-starter.conf
+lib:
+    gant-1.9.3_groovy-1.7.3.jar
+    maven-ant-tasks-2.1.0.jar
+
+    
+GMock
+-----
+lib:
+    gmock-0.8.1.jar
+
+GPars
+-----
+lib:
+    gpars-0.11.jar
+    jcsp.jar
+    jcsp-demos-util.jar
+    jsr166y-070108.jar
+    netty-3.1.5.GA.jar
+supplementary/gpars:
+    license information
+
+    
+Griffon Builders (Griffon 0.3-compatible)
+-------------------------------------------
+lib:
+    Filters.jar
+    MultipleGradientPaint.jar
+    balloontip_2009-01-2.jar
+    batik-anim-1.7.jar
+    batik-awt-util-1.7.jar
+    batik-bridge-1.7.jar
+    batik-codec-1.7.jar
+    batik-css-1.7.jar
+    batik-dom-1.7.jar
+    batik-ext-1.7.jar
+    batik-extension-1.7.jar
+    batik-gui-util-1.7.jar
+    batik-gvt-1.7.jar
+    batik-parser-1.7.jar
+    batik-script-1.7.jar
+    batik-svg-dom-1.7.jar
+    batik-svggen-1.7.jar
+    batik-swing-1.7.jar
+    batik-transcoder-1.7.jar
+    batik-util-1.7.jar
+    batik-xml-1.7.jar
+    cssbuilder-0.4.jar
+    cssparser-0.9.5.jar
+    flamingo-4.0.jar
+    flamingobuilder-0.3.jar
+    forms-1.2.1.jar
+    gfxbuilder-core-0.2.4.jar
+    gfxbuilder-svg-0.2.4.jar
+    gfxbuilder-swingx-0.2.4.jar
+    jide-oss-2.6.2.jar
+    jidebuilder-2.2.jar
+    jsilhouette-geom-0.3.1.jar
+    l2fprod-common-all.jar
+    macwidgets-0.9.4.jar
+    macwidgetsbuilder-0.2.jar
+    sac-1.3.jar
+    svg-salamander-1.0.jar
+    swing-worker-1.1.jar
+    swingx-1.0.jar
+    swingx-beaninfo-0.9.5.jar
+    swingxbuilder-0.1.6.jar
+    swingxtrasbuilder-0.1.jar
+    timingframework-1.0.jar
+    trident-1.3.jar
+    tridentbuilder-0.4.jar
+    xml-apis-ext-1.3.04.jar
+    xswingx-0.2.jar
+
+Only JideBuilder will work with JDK 1.5, all other Builders need JDK 1.6
+    
+
+GroovyServ 0.5
+---------------
+bin:
+    groovyclient.exe
+    groovyserver.bat
+	groovyserver
+lib:
+    groovyserv-0.5.jar
+    jna-3.2.2.jar
+supplementary/GroovyServ:    
+    LICENSE, README, scripts
+
+GroovyServ works with the 32-bit JDK 6u21 and later versions (according to the readme)
+
+
+Scriptom-1.6.0
+--------------
+bin:
+    msvcr80.dll
+    jacob-1.14.3-x64.dll
+    jacob-1.14.3-x86.dll
+lib:
+    jacob-1.14.3.jar
+    scriptom-1.6.0.jar
+    scriptom-ie-6-tlb-1.6.0.jar
+    scriptom-office-2K3-tlb-1.6.0.jar
+    scriptom-sapi-tlb-1.6.0.jar
+    scriptom-scripting-tlb-1.6.0.jar
+    scriptom-wbem-tlb-1.6.0.jar
+    scriptom-wsh-tlb-1.6.0.jar
+supplementary/Scriptom:
+    examples...
+
+Additionally you find the directory scriptom in Supplementary. This directory contains
+the examples. If you are using a 64-bit version of Windows and Java, you might need to
+install the respective runtime libraries.
+
+This version of scriptom needs Java 1.5.
+
+
+Spock
+-----
+lib:
+    spock-core-0.5-groovy-1.7.jar
+Supplementary/Spock:
+    spock-example-0.5-groovy-1.7.zip
+
+
+Final Words
+===========
+If you have any questions, feel free to ask me personally or on the mailing lists.
+
+Joachim Baumann
