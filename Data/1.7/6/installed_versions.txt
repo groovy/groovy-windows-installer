@@ -127,6 +127,7 @@ lib:
     svg-salamander-1.0.jar
     swing-worker-1.1.jar
     swingx-1.0.jar
+    swingx-beaninfo-0.9.5.jar
     swingxbuilder-0.1.6.jar
     swingxtrasbuilder-0.1.jar
     timingframework-1.0.jar
