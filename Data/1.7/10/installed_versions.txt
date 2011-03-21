@@ -156,7 +156,7 @@ lib:
     groovyserv-0.6.jar
     jna-3.2.2.jar
 supplementary/GroovyServ:    
-    LICENSE, README, scripts
+    LICENSE.txt, README.txt, scripts
 
 GroovyServ works with the 32-bit JDK 6u21 and later versions (according to the readme)
 
