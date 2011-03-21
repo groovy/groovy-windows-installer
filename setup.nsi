@@ -218,11 +218,11 @@ SectionGroup /e Modules SecGrpModules
 
         SetOutPath $INSTDIR\bin
         ${if} $JavaArchModel == 32
-            File /oname=gant.exe "${DIR_PREFIX}\${NATIVE_DIR}\${SUPPLEMENTARY}\native\32bit\gant.exe"
-            File /oname=gantw.exe "${DIR_PREFIX}\${NATIVE_DIR}\${SUPPLEMENTARY}\native\32bit\gantw.exe"
+            File /oname=gant.exe "${DIR_PREFIX}\${NATIVE_DIR}\${SUPPLEMENTARY}\native\32bit\groovy.exe"
+            File /oname=gantw.exe "${DIR_PREFIX}\${NATIVE_DIR}\${SUPPLEMENTARY}\native\32bit\groovyw.exe"
         ${else}
-            File /oname=gant.exe "${DIR_PREFIX}\${NATIVE_DIR}\${SUPPLEMENTARY}\native\64bit\gant.exe"
-            File /oname=gantw.exe "${DIR_PREFIX}\${NATIVE_DIR}\${SUPPLEMENTARY}\native\64bit\gantw.exe"
+            File /oname=gant.exe "${DIR_PREFIX}\${NATIVE_DIR}\${SUPPLEMENTARY}\native\64bit\groovy.exe"
+            File /oname=gantw.exe "${DIR_PREFIX}\${NATIVE_DIR}\${SUPPLEMENTARY}\native\64bit\groovyw.exe"
         ${EndIf}
         
         WriteRegStr HKLM "${REGKEY}\Components" "${REG_GANT}" 1
