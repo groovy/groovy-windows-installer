@@ -62,7 +62,7 @@ public class TestInstallation extends GroovyTestCase {
         assert result =~ /Gant version/
     }
 
-    void testInstantiateJideBuilder() {
+    void OfftestInstantiateJideBuilder() {
         String jideBuilderScript = """
         import griffon.builder.jide.JideBuilder
         def jb = new JideBuilder()
@@ -70,7 +70,7 @@ public class TestInstallation extends GroovyTestCase {
         assertTrue Eval.me(jideBuilderScript) != null
     }
 
-    void testInstantiateSwingXBuilder() {
+    void OfftestInstantiateSwingXBuilder() {
         String swingXBuilderScript = """
         import groovy.swing.SwingXBuilder
         def sb = new SwingXBuilder()
@@ -167,6 +167,17 @@ public class TestInstallation extends GroovyTestCase {
         assertTrue Eval.me(spockScript).wasSuccessful()
     }
 
+	void testGroovyPP() {
+		String groovyPPScript = """
+			@Typed package mypackage
+
+			return ["Hello, ", "World!"].inject("") { String str, String item ->
+			    str + item.toLowerCase ()
+			}
+		"""
+        assertTrue Eval.me(groovyPPScript) == "hello, world!"
+	}
+	
     void testGMock() {
     	String gmockScript = """
     	import org.gmock.GMockTestCase
