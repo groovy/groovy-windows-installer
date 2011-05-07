@@ -7,7 +7,7 @@
 # GANT_DIR       is the relative path to the gant module
 # GRIFFON_B      is the relative path to the griffon builders module
 # GAELYK_DIR     is the relative path to the Gaelyk module
-# GPARS_DIR      is the relative path to the GPars module
+# GROVYPP_DIR    is the relative path to the Groovy++ module
 # SPOCK_DIR      is the relative path to the Spock module
 # EASYB_DIR      is the relative path to the easyb module
 # GMOCK_DIR      is the relative path to the gmock module
@@ -56,7 +56,7 @@ Name "Groovy-${Version}"
 !define REG_GRIFFON "Griffon"
 !define REG_SCRIPTOM "Scriptom"
 !define REG_GAELYK "Gaelyk"
-!define REG_GPARS "GPars"
+!define REG_GROOVYPP "Groovy++"
 !define REG_SPOCK "Spock"
 !define REG_EASYB "easyb"
 !define REG_GMOCK "GMock"
@@ -236,12 +236,12 @@ SectionGroup /e Modules SecGrpModules
         WriteRegStr HKLM "${REGKEY}\Components" "${REG_GMOCK}" 1
     SectionEnd
 
-    Section GPars SecGPars
+    Section GroovyPP SecGroovyPP
         SectionIn 1
         SetOutPath "$INSTDIR"
         SetOverwrite on
-        File /r "${DIR_PREFIX}\${GPARS_DIR}\*"
-        WriteRegStr HKLM "${REGKEY}\Components" "${REG_GPARS}" 1
+        File /r "${DIR_PREFIX}\${GROOVYPP_DIR}\*"
+        WriteRegStr HKLM "${REGKEY}\Components" "${REG_GROOVYPP}" 1
     SectionEnd
 
     Section GroovyServ SecGroovyServ
@@ -407,12 +407,12 @@ LangString DESC_SecGaelyk ${LANG_SPANISH} "Gaelyk - Desarrollo con Google App En
 LangString DESC_SecGaelyk ${LANG_FRENCH} "Gaelyk - Developpez avec Google app Engine"
 LangString DESC_SecGaelyk ${LANG_PortugueseBR} "Gaelyk - Develop with Google App Engine"
 
-# TODO correct language strings for portuguese
-LangString DESC_SecGPars ${LANG_ENGLISH} "GPars - Groovy Parallel Systems"
-LangString DESC_SecGPars ${LANG_GERMAN} "GPars - Parallel programmieren mit Groovy"
-LangString DESC_SecGPars ${LANG_SPANISH} "GPars - Sistemas Paralelos con Groovy"
-LangString DESC_SecGPars ${LANG_FRENCH} "Programmation parallèle avec Groovy"
-LangString DESC_SecGPars ${LANG_PortugueseBR} "GPars - Groovy Parallel Systems"
+# TODO correct language strings for french, spanish, portuguese
+LangString DESC_SecGroovyPP ${LANG_ENGLISH} "Groovy++ - static compilation for Groovy"
+LangString DESC_SecGroovyPP ${LANG_GERMAN} "Groovy++ - statische Übersetzung für Groovy"
+LangString DESC_SecGroovyPP ${LANG_SPANISH} "Groovy++ - static compilation for Groovy"
+LangString DESC_SecGroovyPP ${LANG_FRENCH} "Groovy++ - static compilation for Groovy"
+LangString DESC_SecGroovyPP ${LANG_PortugueseBR} "Groovy++ - static compilation for Groovy"
 
 # TODO correct language strings for portuguese
 LangString DESC_SecSpock ${LANG_ENGLISH} "Spock - The Testing and Specification Framework"
@@ -452,7 +452,7 @@ LangString DESC_SecGroovyServ ${LANG_PortugueseBR} "GroovyServ - A Server for Ex
   !insertmacro MUI_DESCRIPTION_TEXT ${SecGriffon} $(DESC_SecGriffon)
   !insertmacro MUI_DESCRIPTION_TEXT ${SecScriptom} $(DESC_SecScriptom)
   !insertmacro MUI_DESCRIPTION_TEXT ${SecGaelyk} $(DESC_SecGaelyk)
-  !insertmacro MUI_DESCRIPTION_TEXT ${SecGPars} $(DESC_SecGPars)
+  !insertmacro MUI_DESCRIPTION_TEXT ${SecGroovyPP} $(DESC_SecGroovyPP)
   !insertmacro MUI_DESCRIPTION_TEXT ${SecSpock} $(DESC_SecSpock)
   !insertmacro MUI_DESCRIPTION_TEXT ${SecEasyb} $(DESC_SecEasyb)
   !insertmacro MUI_DESCRIPTION_TEXT ${SecGMock} $(DESC_SecGMock)
@@ -513,8 +513,8 @@ Section /o un.Spock UNSEC0008
     DeleteRegValue HKLM "${REGKEY}\Components" "${REG_SPOCK}"
 SectionEnd
 
-Section /o un.GPars UNSEC0007
-    DeleteRegValue HKLM "${REGKEY}\Components" "${REG_GPARS}"
+Section /o un.GroovyPP UNSEC0007
+    DeleteRegValue HKLM "${REGKEY}\Components" "${REG_GROOVYPP}"
 SectionEnd
 
 Section /o un.Gaelyk UNSEC0006
@@ -585,7 +585,7 @@ Function un.onInit
     !insertmacro SELECT_UNSECTION Griffon ${UNSEC0004}
     !insertmacro SELECT_UNSECTION Scriptom ${UNSEC0005}
     !insertmacro SELECT_UNSECTION Gaelyk ${UNSEC0006}
-    !insertmacro SELECT_UNSECTION GPars ${UNSEC0007}
+    !insertmacro SELECT_UNSECTION GROOVYPP ${UNSEC0007}
     !insertmacro SELECT_UNSECTION Spock ${UNSEC0008}
     !insertmacro SELECT_UNSECTION Easyb ${UNSEC0009}
     !insertmacro SELECT_UNSECTION GMock ${UNSEC0010}
