@@ -113,7 +113,7 @@ ShowInstDetails show
 InstallDirRegKey HKLM "${REGKEY}" Path
 ShowUninstDetails show
 
-# @Todo add correct translations
+# TODO correct language strings for spanish, portuguese
 LangString NoJava ${LANG_ENGLISH} "Cannot identify Java installation. Assuming 32 bit version."
 LangString NoJava ${LANG_GERMAN} "Die Java-Installation kann nicht identifiziert werden. Gehe von einer 32-Bit Installation aus."
 LangString NoJava ${LANG_SPANISH} "Cannot identify Java installation. Assuming 32 bit version."
@@ -400,47 +400,43 @@ COM avec Groovy"
 LangString DESC_SecScriptom ${LANG_PortugueseBR}  "Scriptom - acesse componentes ActiveX ou COM \
 com Groovy"
 
-# TODO correct language strings for portuguese
 LangString DESC_SecGaelyk ${LANG_ENGLISH} "Gaelyk - Develop with Google App Engine"
 LangString DESC_SecGaelyk ${LANG_GERMAN} "Gaelyk - Entwickeln mit Google App Engine"
 LangString DESC_SecGaelyk ${LANG_SPANISH} "Gaelyk - Desarrollo con Google App Engine"
 LangString DESC_SecGaelyk ${LANG_FRENCH} "Gaelyk - Developpez avec Google app Engine"
-LangString DESC_SecGaelyk ${LANG_PortugueseBR} "Gaelyk - Develop with Google App Engine"
+LangString DESC_SecGaelyk ${LANG_PortugueseBR}  "Gaelyk - Desenvolva para o Google App Engine"
 
-# TODO correct language strings for french, spanish, portuguese
 LangString DESC_SecGroovyPP ${LANG_ENGLISH} "Groovy++ - static compilation for Groovy"
 LangString DESC_SecGroovyPP ${LANG_GERMAN} "Groovy++ - statische Übersetzung für Groovy"
 LangString DESC_SecGroovyPP ${LANG_SPANISH} "Groovy++ - static compilation for Groovy"
 LangString DESC_SecGroovyPP ${LANG_FRENCH} "Groovy++ - static compilation for Groovy"
-LangString DESC_SecGroovyPP ${LANG_PortugueseBR} "Groovy++ - static compilation for Groovy"
+LangString DESC_SecGroovyPP ${LANG_PortugueseBR}  "Groovy++ Compilação estática para Groovy" 
 
-# TODO correct language strings for portuguese
 LangString DESC_SecSpock ${LANG_ENGLISH} "Spock - The Testing and Specification Framework"
 LangString DESC_SecSpock ${LANG_GERMAN} "Spock - Das Test- und Spezifikations-Frame- work"
 LangString DESC_SecSpock ${LANG_SPANISH} "Spock - Herramienta de Pruebas y Especificaciones"
 LangString DESC_SecSpock ${LANG_FRENCH} "Le framework de tests et de spécifications"
-LangString DESC_SecSpock ${LANG_PortugueseBR} "Spock - The Testing and Specification Framework"
+LangString DESC_SecSpock ${LANG_PortugueseBR} "Spock - Framework de Testes e Especificações" 
 
-# TODO correct language strings for portuguese
 LangString DESC_SecEasyb ${LANG_ENGLISH} "easyb - BDD with Groovy"
 LangString DESC_SecEasyb ${LANG_GERMAN} "easyb - BDD mit Groovy"
 LangString DESC_SecEasyb ${LANG_SPANISH} "easyb - BDD con Groovy"
 LangString DESC_SecEasyb ${LANG_FRENCH} "easyb - BDD avec Groovy"
-LangString DESC_SecEasyb ${LANG_PortugueseBR} "easyb - BDD with Groovy"
+LangString DESC_SecEasyb ${LANG_PortugueseBR} "easyb - BDD para Groovy"
 
-# TODO correct language strings for spanish, portuguese
+# TODO correct language strings for spanish
 LangString DESC_SecGMock ${LANG_ENGLISH} "GMock - Mocking Framework for Groovy"
 LangString DESC_SecGMock ${LANG_GERMAN} "GMock - Mocking Framework für Groovy"
 LangString DESC_SecGMock ${LANG_SPANISH} "GMock - Mocking Framework for Groovy"
 LangString DESC_SecGMock ${LANG_FRENCH} "GMock - Mocking Framework pour Groovy"
-LangString DESC_SecGMock ${LANG_PortugueseBR} "GMock - Mocking Framework for Groovy"
+LangString DESC_SecGMock ${LANG_PortugueseBR} "GMock - Construa Mocks utilizando Groovy"
 
-# TODO correct language strings for spanish, portuguese
+# TODO correct language strings for spanish
 LangString DESC_SecGroovyServ ${LANG_ENGLISH} "GroovyServ - A Server for Executing Groovy Programs"
 LangString DESC_SecGroovyServ ${LANG_GERMAN} "GroovyServ - Ein Server für die Ausführung von Groovy-Programmen"
 LangString DESC_SecGroovyServ ${LANG_SPANISH} "GroovyServ - A Server for Executing Groovy"
 LangString DESC_SecGroovyServ ${LANG_FRENCH} "GroovyServ - Un serveur pour exécuter des programmes Groovy"
-LangString DESC_SecGroovyServ ${LANG_PortugueseBR} "GroovyServ - A Server for Executing Groovy"
+LangString DESC_SecGroovyServ ${LANG_PortugueseBR}  "GroovyServ - Servidor para execução de programas Groovy"
 
 
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
