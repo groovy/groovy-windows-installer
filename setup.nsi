@@ -113,12 +113,12 @@ ShowInstDetails show
 InstallDirRegKey HKLM "${REGKEY}" Path
 ShowUninstDetails show
 
-# TODO correct language strings for spanish, portuguese
+# TODO correct language strings for spanish
 LangString NoJava ${LANG_ENGLISH} "Cannot identify Java installation. Assuming 32 bit version."
 LangString NoJava ${LANG_GERMAN} "Die Java-Installation kann nicht identifiziert werden. Gehe von einer 32-Bit Installation aus."
 LangString NoJava ${LANG_SPANISH} "Cannot identify Java installation. Assuming 32 bit version."
 LangString NoJava ${LANG_FRENCH} "Impossible d'identifier la version de Java installée. Version 32 bits supposée."
-LangString NoJava ${LANG_PortugueseBR} "Cannot identify Java installation. Assuming 32 bit version."
+LangString NoJava ${LANG_PortugueseBR} "Não é possível identificar a instalação do Java. Assumindo versão 32 bits."
 
 # Install Types
 InstType "Full"
