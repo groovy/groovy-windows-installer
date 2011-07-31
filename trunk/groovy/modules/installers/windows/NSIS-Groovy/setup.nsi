@@ -194,6 +194,14 @@ Section "Modify Variables" SecVariables
 SectionEnd
 
 SectionGroup /e Modules SecGrpModules
+    Section GroovyPP SecGroovyPP
+#        SectionIn 1
+        SetOutPath "$INSTDIR"
+        SetOverwrite on
+        File /r "${DIR_PREFIX}\${GROOVYPP_DIR}\*"
+        WriteRegStr HKLM "${REGKEY}\Components" "${REG_GROOVYPP}" 1
+    SectionEnd
+
     Section Easyb SecEasyb
         SectionIn 1
         SetOutPath "$INSTDIR"
@@ -234,14 +242,6 @@ SectionGroup /e Modules SecGrpModules
         SetOverwrite on
         File /r "${DIR_PREFIX}\${GMOCK_DIR}\*"
         WriteRegStr HKLM "${REGKEY}\Components" "${REG_GMOCK}" 1
-    SectionEnd
-
-    Section GroovyPP SecGroovyPP
-#        SectionIn 1
-        SetOutPath "$INSTDIR"
-        SetOverwrite on
-        File /r "${DIR_PREFIX}\${GROOVYPP_DIR}\*"
-        WriteRegStr HKLM "${REGKEY}\Components" "${REG_GROOVYPP}" 1
     SectionEnd
 
     Section GroovyServ SecGroovyServ
