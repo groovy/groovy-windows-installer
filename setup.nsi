@@ -237,7 +237,7 @@ SectionGroup /e Modules SecGrpModules
     SectionEnd
 
     Section GroovyPP SecGroovyPP
-        SectionIn 1
+#        SectionIn 1
         SetOutPath "$INSTDIR"
         SetOverwrite on
         File /r "${DIR_PREFIX}\${GROOVYPP_DIR}\*"
@@ -249,6 +249,14 @@ SectionGroup /e Modules SecGrpModules
         SetOutPath "$INSTDIR"
         SetOverwrite on
         File /r "${DIR_PREFIX}\${GROOVYSERV_DIR}\*"
+
+    ${if} $JavaArchModel == 32
+        File /r "${DIR_PREFIX}\${GROOVYSERV_DIR}\${SUPPLEMENTARY}\Groovyserv\32bit\*"
+    ${else}
+        File /r "${DIR_PREFIX}\${GROOVYSERV_DIR}\${SUPPLEMENTARY}\Groovyserv\64bit\*"
+    ${EndIf}
+
+
         WriteRegStr HKLM "${REGKEY}\Components" "${REG_GROOVYSERV}" 1
     SectionEnd
 
