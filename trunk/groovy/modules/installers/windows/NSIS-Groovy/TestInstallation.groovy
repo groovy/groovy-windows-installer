@@ -227,4 +227,19 @@ public class TestInstallation extends GroovyTestCase {
     	assertTrue Eval.me(gmockScript).wasSuccessful()
     }
 
+	void testGPP() {
+		String gppScript = """
+			@Typed(TypePolicy.STATIC)
+			class GaussS {
+			    static final BigInteger calc( BigInteger n, BigInteger accu){
+			        if (n <= 1) return accu + 1G
+			        else return calc(n - 1, accu + n)
+			    }
+			}
+			
+			GaussS.calc(2500000, 0)
+		"""
+    	assertTrue Eval.me(gppScript).equals(3125001250000G)
+	}
+
 }
