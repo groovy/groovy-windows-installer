@@ -195,7 +195,7 @@ SectionEnd
 
 SectionGroup /e Modules SecGrpModules
     Section GroovyPP SecGroovyPP
-#        SectionIn 1
+        SectionIn 1
         SetOutPath "$INSTDIR"
         SetOverwrite on
         File /r "${DIR_PREFIX}\${GROOVYPP_DIR}\*"
