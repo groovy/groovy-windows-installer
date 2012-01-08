@@ -1,23 +1,24 @@
 # We assume the following commandline parameters for the compilation
-# DIR_PREFIX     is the full path to the directory containing the different modules
-# SOURCE_VERSION defines the version of the release
-# SOURCE_DIR     is the relative path to the groovy install directory
-# NATIVE_DIR     is the relative path to the native launcher
-# SCRIPTOM_DIR   is the relative path to the scriptom module
-# GANT_DIR       is the relative path to the gant module
-# GRIFFON_B      is the relative path to the griffon builders module
-# GAELYK_DIR     is the relative path to the Gaelyk module
-# GROVYPP_DIR    is the relative path to the Groovy++ module
-# SPOCK_DIR      is the relative path to the Spock module
-# EASYB_DIR      is the relative path to the easyb module
-# GMOCK_DIR      is the relative path to the gmock module
-# GROOVYSERV_DIR is the relative path to the groovyserv module
-# VERSION_TXT    is the relative path to the installed_versions.txt
-# DOC_DIR        is the relative path to the doc directory
-# JAVA_ARCH      is the directory containing the architecture detection jar
+# DIR_PREFIX       is the full path to the directory containing the different modules
+# SOURCE_VERSION   defines the version of the release
+# SOURCE_DIR       is the relative path to the groovy install directory
+# NATIVE_DIR       is the relative path to the native launcher
+# SCRIPTOM_DIR     is the relative path to the scriptom module
+# GANT_DIR         is the relative path to the gant module
+# GPARS_LIBRARIES  is the relative path to the optional libraries for gpars
+# GRIFFON_B        is the relative path to the griffon builders module
+# GAELYK_DIR       is the relative path to the Gaelyk module
+# GROVYPP_DIR      is the relative path to the Groovy++ module
+# SPOCK_DIR        is the relative path to the Spock module
+# EASYB_DIR        is the relative path to the easyb module
+# GMOCK_DIR        is the relative path to the gmock module
+# GROOVYSERV_DIR   is the relative path to the groovyserv module
+# VERSION_TXT      is the relative path to the installed_versions.txt
+# DOC_DIR          is the relative path to the doc directory
+# JAVA_ARCH        is the directory containing the architecture detection jar
 
 
-!define InstallerVersion 0.7.2
+!define InstallerVersion 0.7.3
 
 # Set the compression level
 SetCompressor /SOLID lzma
@@ -173,6 +174,7 @@ Section "Groovy Binaries" SecBinaries
     SetOutPath $INSTDIR
     File /r "${DIR_PREFIX}\${NATIVE_DIR}\*"
     File "${DIR_PREFIX}\${VERSION_TXT}"
+    File /r "${DIR_PREFIX}\${GPARS_LIBRARIES}\*"
 
     WriteRegStr HKLM "${REGKEY}\Components" "${REG_GROOVY_BINARIES}" 1
 SectionEnd
@@ -194,13 +196,13 @@ Section "Modify Variables" SecVariables
 SectionEnd
 
 SectionGroup /e Modules SecGrpModules
-    Section GroovyPP SecGroovyPP
-        SectionIn 1
-        SetOutPath "$INSTDIR"
-        SetOverwrite on
-        File /r "${DIR_PREFIX}\${GROOVYPP_DIR}\*"
-        WriteRegStr HKLM "${REGKEY}\Components" "${REG_GROOVYPP}" 1
-    SectionEnd
+;    Section GroovyPP SecGroovyPP
+;        SectionIn 1
+;        SetOutPath "$INSTDIR"
+;        SetOverwrite on
+;        File /r "${DIR_PREFIX}\${GROOVYPP_DIR}\*"
+;        WriteRegStr HKLM "${REGKEY}\Components" "${REG_GROOVYPP}" 1
+;    SectionEnd
 
     Section Easyb SecEasyb
         SectionIn 1
