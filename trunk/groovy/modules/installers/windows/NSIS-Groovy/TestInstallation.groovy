@@ -167,17 +167,6 @@ public class TestInstallation extends GroovyTestCase {
         assertTrue Eval.me(spockScript).wasSuccessful()
     }
 
-	void testGroovyPP() {
-		String groovyPPScript = """
-			@Typed package mypackage
-
-			return ["Hello, ", "World!"].inject("") { String str, String item ->
-			    str + item.toLowerCase ()
-			}
-		"""
-        assertTrue Eval.me(groovyPPScript) == "hello, world!"
-	}
-	
     void testGMock() {
     	String gmockScript = """
     	import org.gmock.GMockTestCase
@@ -227,7 +216,7 @@ public class TestInstallation extends GroovyTestCase {
     	assertTrue Eval.me(gmockScript).wasSuccessful()
     }
 
-	void testGPP() {
+	void doNottestGPP() {
 		String gppScript = """
 			@Typed(TypePolicy.STATIC)
 			class GaussS {
@@ -241,5 +230,5 @@ public class TestInstallation extends GroovyTestCase {
 		"""
     	assertTrue Eval.me(gppScript).equals(3125001250000G)
 	}
-
+	
 }
