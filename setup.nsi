@@ -8,7 +8,6 @@
 # GPARS_LIBRARIES  is the relative path to the optional libraries for gpars
 # GRIFFON_B        is the relative path to the griffon builders module
 # GAELYK_DIR       is the relative path to the Gaelyk module
-# GROVYPP_DIR      is the relative path to the Groovy++ module
 # SPOCK_DIR        is the relative path to the Spock module
 # EASYB_DIR        is the relative path to the easyb module
 # GMOCK_DIR        is the relative path to the gmock module
@@ -57,7 +56,6 @@ Name "Groovy-${Version}"
 !define REG_GRIFFON "Griffon"
 !define REG_SCRIPTOM "Scriptom"
 !define REG_GAELYK "Gaelyk"
-!define REG_GROOVYPP "Groovy++"
 !define REG_SPOCK "Spock"
 !define REG_EASYB "easyb"
 !define REG_GMOCK "GMock"
@@ -196,13 +194,6 @@ Section "Modify Variables" SecVariables
 SectionEnd
 
 SectionGroup /e Modules SecGrpModules
-;    Section GroovyPP SecGroovyPP
-;        SectionIn 1
-;        SetOutPath "$INSTDIR"
-;        SetOverwrite on
-;        File /r "${DIR_PREFIX}\${GROOVYPP_DIR}\*"
-;        WriteRegStr HKLM "${REGKEY}\Components" "${REG_GROOVYPP}" 1
-;    SectionEnd
 
     Section Easyb SecEasyb
         SectionIn 1
@@ -282,7 +273,7 @@ SectionGroup /e Modules SecGrpModules
         SectionIn 1
         SetOutPath "$INSTDIR"
         SetOverwrite on
-        File /r "${DIR_PREFIX}\${SPOCK_DIR}\*"
+        File /nonfatal /r "${DIR_PREFIX}\${SPOCK_DIR}\*"
         WriteRegStr HKLM "${REGKEY}\Components" "${REG_SPOCK}" 1
     SectionEnd
 
@@ -416,12 +407,6 @@ LangString DESC_SecGaelyk ${LANG_SPANISH} "Gaelyk - Desarrollo con Google App En
 LangString DESC_SecGaelyk ${LANG_FRENCH} "Gaelyk - Developpez avec Google app Engine"
 LangString DESC_SecGaelyk ${LANG_PortugueseBR}  "Gaelyk - Desenvolva para o Google App Engine"
 
-LangString DESC_SecGroovyPP ${LANG_ENGLISH} "Groovy++ - static compilation for Groovy"
-LangString DESC_SecGroovyPP ${LANG_GERMAN} "Groovy++ - statische Übersetzung für Groovy"
-LangString DESC_SecGroovyPP ${LANG_SPANISH} "Groovy++ - static compilation for Groovy"
-LangString DESC_SecGroovyPP ${LANG_FRENCH} "Groovy++ - static compilation for Groovy"
-LangString DESC_SecGroovyPP ${LANG_PortugueseBR}  "Groovy++ Compilação estática para Groovy" 
-
 LangString DESC_SecSpock ${LANG_ENGLISH} "Spock - The Testing and Specification Framework"
 LangString DESC_SecSpock ${LANG_GERMAN} "Spock - Das Test- und Spezifikations-Frame- work"
 LangString DESC_SecSpock ${LANG_SPANISH} "Spock - Herramienta de Pruebas y Especificaciones"
@@ -458,7 +443,6 @@ LangString DESC_SecGroovyServ ${LANG_PortugueseBR}  "GroovyServ - Servidor para 
   !insertmacro MUI_DESCRIPTION_TEXT ${SecGriffon} $(DESC_SecGriffon)
   !insertmacro MUI_DESCRIPTION_TEXT ${SecScriptom} $(DESC_SecScriptom)
   !insertmacro MUI_DESCRIPTION_TEXT ${SecGaelyk} $(DESC_SecGaelyk)
-  !insertmacro MUI_DESCRIPTION_TEXT ${SecGroovyPP} $(DESC_SecGroovyPP)
   !insertmacro MUI_DESCRIPTION_TEXT ${SecSpock} $(DESC_SecSpock)
   !insertmacro MUI_DESCRIPTION_TEXT ${SecEasyb} $(DESC_SecEasyb)
   !insertmacro MUI_DESCRIPTION_TEXT ${SecGMock} $(DESC_SecGMock)
@@ -503,24 +487,20 @@ Section /o un.Shortcuts UNSEC0998
 SectionEnd
 
 # Uninstaller sections
-Section /o un.GroovyServ UNSEC0011
+Section /o un.GroovyServ UNSEC0010
     DeleteRegValue HKLM "${REGKEY}\Components" "${REG_GROOVYSERV}"
 SectionEnd
 
-Section /o un.GMock UNSEC0010
+Section /o un.GMock UNSEC0009
     DeleteRegValue HKLM "${REGKEY}\Components" "${REG_GMOCK}"
 SectionEnd
 
-Section /o un.Easyb UNSEC0009
+Section /o un.Easyb UNSEC0008
     DeleteRegValue HKLM "${REGKEY}\Components" "${REG_EASYB}"
 SectionEnd
 
-Section /o un.Spock UNSEC0008
+Section /o un.Spock UNSEC0007
     DeleteRegValue HKLM "${REGKEY}\Components" "${REG_SPOCK}"
-SectionEnd
-
-Section /o un.GroovyPP UNSEC0007
-    DeleteRegValue HKLM "${REGKEY}\Components" "${REG_GROOVYPP}"
 SectionEnd
 
 Section /o un.Gaelyk UNSEC0006
@@ -591,11 +571,10 @@ Function un.onInit
     !insertmacro SELECT_UNSECTION Griffon ${UNSEC0004}
     !insertmacro SELECT_UNSECTION Scriptom ${UNSEC0005}
     !insertmacro SELECT_UNSECTION Gaelyk ${UNSEC0006}
-    !insertmacro SELECT_UNSECTION GROOVYPP ${UNSEC0007}
-    !insertmacro SELECT_UNSECTION Spock ${UNSEC0008}
-    !insertmacro SELECT_UNSECTION Easyb ${UNSEC0009}
-    !insertmacro SELECT_UNSECTION GMock ${UNSEC0010}
-    !insertmacro SELECT_UNSECTION GroovyServ ${UNSEC0011}
+    !insertmacro SELECT_UNSECTION Spock ${UNSEC0007}
+    !insertmacro SELECT_UNSECTION Easyb ${UNSEC0008}
+    !insertmacro SELECT_UNSECTION GMock ${UNSEC0009}
+    !insertmacro SELECT_UNSECTION GroovyServ ${UNSEC0010}
     !insertmacro SELECT_UNSECTION Shortcuts ${UNSEC0998}
 FunctionEnd
 
