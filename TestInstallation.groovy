@@ -28,7 +28,7 @@ public class TestInstallation extends GroovyTestCase {
         nl.eachFileRecurse{
             if(it.name =~ /index.html/) count++
         }
-        assertEquals 3, count	// api, gapi, groovy-jdk
+        assertEquals 3, count    // api, gapi, groovy-jdk
         
         nl = "$groovyVar/pdf" as File
         assertEquals true, nl.exists()
@@ -79,8 +79,8 @@ public class TestInstallation extends GroovyTestCase {
     }
     
     void testScriptomInstalled() {
-    	String scriptomScript = """
-    	import org.codehaus.groovy.scriptom.*
+        String scriptomScript = """
+        import org.codehaus.groovy.scriptom.*
 
         Scriptom.inApartment
         {
@@ -90,12 +90,12 @@ public class TestInstallation extends GroovyTestCase {
           scriptControl.Language = "JScript"
           def result = scriptControl.Eval('2.0 + 2.0;')
         }
-    	"""
-    	
-    	String dataModel = System.getProperty("sun.arch.data.model");
+        """
+        
+        String dataModel = System.getProperty("sun.arch.data.model");
         int bits = Integer.parseInt(dataModel);
-    	// only evaluate when on 32 bit system
-        if(bits == 32) assertTrue Eval.me(scriptomScript) == 4    	
+        // only evaluate when on 32 bit system
+        if(bits == 32) assertTrue Eval.me(scriptomScript) == 4        
     }
     
     void testGaelykIsInstalled() {
@@ -109,29 +109,29 @@ public class TestInstallation extends GroovyTestCase {
     }
 
     void testGPars() {
-    	String gparsScript = """
-			import static groovyx.gpars.actor.Actors.actor
-			def decryptor = actor { 
-				loop {
-					react {message -> 
-						if (message instanceof String) reply message.reverse() 
-						else stop() 
-					}
-				}
-			}
-			def console = actor { 
-				decryptor.send 'lellarap si yvoorG' 
-				react { 
-					value = 'Decrypted message: ' + it 
-					decryptor.send false 
-				} 
-			}
-			[decryptor, console]*.join()
-			return value
-    	"""
-    	
-		Object result = Eval.me(gparsScript)
-		assertEquals result, "Decrypted message: Groovy is parallel"
+        String gparsScript = """
+            import static groovyx.gpars.actor.Actors.actor
+            def decryptor = actor { 
+                loop {
+                    react {message -> 
+                        if (message instanceof String) reply message.reverse() 
+                        else stop() 
+                    }
+                }
+            }
+            def console = actor { 
+                decryptor.send 'lellarap si yvoorG' 
+                react { 
+                    value = 'Decrypted message: ' + it 
+                    decryptor.send false 
+                } 
+            }
+            [decryptor, console]*.join()
+            return value
+        """
+        
+        Object result = Eval.me(gparsScript)
+        assertEquals result, "Decrypted message: Groovy is parallel"
     }
     
     void testEasyb() {
@@ -162,73 +162,57 @@ public class TestInstallation extends GroovyTestCase {
                 size << [4, 5, 6]
             }
         }
-    	org.junit.runner.JUnitCore.runClasses HelloSpock
+        org.junit.runner.JUnitCore.runClasses HelloSpock
         """
         assertTrue Eval.me(spockScript).wasSuccessful()
     }
 
     void testGMock() {
-    	String gmockScript = """
-    	import org.gmock.GMockTestCase
-    	class GMockTest extends GMockTestCase {
-    	    void testMock() {
-    	        def mockLoader = mock()
-    	        mockLoader.load('key').returns('value')
-    	        mockLoader.put(1, 2).raises(IllegalArgumentException)
-    	        play {
-    	            assert "value" == mockLoader.load('key')
-    	            shouldFail(IllegalArgumentException) {
-    	                mockLoader.put(1, 2)
-    	            }
-    	        }
-    	    }
-    	    void testMockConstructor() {
-    	        def mockLoader = mock(Loader, constructor(1, 2))
-    	        mockLoader.put(3, 4)
-    	        play {
-    	            def loader = new Loader(1, 2)
-    	            loader.put(3, 4)
-    	        }
-    	    }
-    	    void testMockStaticMethods() {
-    	        mock(Loader).static.initialise().returns(true)
-    	        play {
-    	            assert Loader.initialise()
-    	        }
-    	    }
-    	    void testStrictOrdering() {
-    	        def m = mock()
-    	        ordered {
-    	            m.a()
-    	            m.b()
-    	        }
-    	        play {
-    	            m.a()
-    	            m.b()
-    	        }
-    	    }
-    	}
+        String gmockScript = """
+        import org.gmock.GMockTestCase
+        class GMockTest extends GMockTestCase {
+            void testMock() {
+                def mockLoader = mock()
+                mockLoader.load('key').returns('value')
+                mockLoader.put(1, 2).raises(IllegalArgumentException)
+                play {
+                    assert "value" == mockLoader.load('key')
+                    shouldFail(IllegalArgumentException) {
+                        mockLoader.put(1, 2)
+                    }
+                }
+            }
+            void testMockConstructor() {
+                def mockLoader = mock(Loader, constructor(1, 2))
+                mockLoader.put(3, 4)
+                play {
+                    def loader = new Loader(1, 2)
+                    loader.put(3, 4)
+                }
+            }
+            void testMockStaticMethods() {
+                mock(Loader).static.initialise().returns(true)
+                play {
+                    assert Loader.initialise()
+                }
+            }
+            void testStrictOrdering() {
+                def m = mock()
+                ordered {
+                    m.a()
+                    m.b()
+                }
+                play {
+                    m.a()
+                    m.b()
+                }
+            }
+        }
 
-    	class Loader {}
+        class Loader {}
 
-    	org.junit.runner.JUnitCore.runClasses GMockTest
-    	"""
-    	assertTrue Eval.me(gmockScript).wasSuccessful()
-    }
-
-	void doNottestGPP() {
-		String gppScript = """
-			@Typed(TypePolicy.STATIC)
-			class GaussS {
-			    static final BigInteger calc( BigInteger n, BigInteger accu){
-			        if (n <= 1) return accu + 1G
-			        else return calc(n - 1, accu + n)
-			    }
-			}
-			
-			GaussS.calc(2500000, 0)
-		"""
-    	assertTrue Eval.me(gppScript).equals(3125001250000G)
-	}
-	
+        org.junit.runner.JUnitCore.runClasses GMockTest
+        """
+        assertTrue Eval.me(gmockScript).wasSuccessful()
+    }    
 }
