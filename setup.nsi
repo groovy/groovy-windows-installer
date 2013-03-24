@@ -273,7 +273,7 @@ SectionGroup /e Modules SecGrpModules
         SectionIn 1
         SetOutPath "$INSTDIR"
         SetOverwrite on
-        File /nonfatal /r "${DIR_PREFIX}\${SPOCK_DIR}\*"
+        File /r "${DIR_PREFIX}\${SPOCK_DIR}\*"
         WriteRegStr HKLM "${REGKEY}\Components" "${REG_SPOCK}" 1
     SectionEnd
 
