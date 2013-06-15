@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="net.sf.eclipsensis.launch.nsisLaunchConfigType">
+<intAttribute key="compressor" value="0"/>
+<booleanAttribute key="hdrInfo" value="false"/>
+<listAttribute key="instructions"/>
+<booleanAttribute key="license" value="false"/>
+<booleanAttribute key="noCD" value="false"/>
+<booleanAttribute key="noConfig" value="false"/>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
+<listEntry value="/NSIS-Groovy/setup.nsi"/>
+</listAttribute>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
+<listEntry value="1"/>
+</listAttribute>
+<stringAttribute key="pluginVersion" value="0.9.8"/>
+<intAttribute key="processPriority" value="-1"/>
+<booleanAttribute key="runInstaller" value="false"/>
+<stringAttribute key="script" value="${workspace_loc:/NSIS-Groovy/setup.nsi}"/>
+<booleanAttribute key="solidCompression" value="false"/>
+<listAttribute key="symbols">
+<listEntry value="SOURCE_VERSION­2.1.4"/>
+<listEntry value="DIR_PREFIX­D:\NSIS\NSIS-Groovy\Data\2.1\4"/>
+<listEntry value="SOURCE_DIR­groovy-2.1.4"/>
+<listEntry value="DOC_DIR­groovy-docs-2.1.4"/>
+<listEntry value="SCRIPTOM_DIR­scriptom-all-assembly-1.6.0"/>
+<listEntry value="GANT_DIR­gant-1.9.9"/>
+<listEntry value="VERSION_TXT­installed_versions.txt"/>
+<listEntry value="GRIFFON_B­builders-130326"/>
+<listEntry value="NATIVE_DIR­native"/>
+<listEntry value="JAVA_ARCH­D:\NSIS\NSIS-Groovy\Java"/>
+<listEntry value="GAELYK_DIR­Gaelyk-2.0"/>
+<listEntry value="SPOCK_DIR­spock-0.7"/>
+<listEntry value="EASYB_DIR­easyb-1.5"/>
+<listEntry value="GMOCK_DIR­gmock-0.8.2"/>
+<listEntry value="GROOVYSERV_DIR­groovyserv-0.11"/>
+<listEntry value="GPARS_LIBRARIES­gpars-libraries"/>
+</listAttribute>
+<intAttribute key="verbosity" value="-1"/>
+</launchConfiguration>
