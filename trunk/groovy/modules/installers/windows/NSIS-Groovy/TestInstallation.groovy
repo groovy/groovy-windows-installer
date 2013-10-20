@@ -51,14 +51,14 @@ public class TestInstallation extends GroovyTestCase {
     void testGroovyVersionReturnsValue() {
         def groovyVar = System.getenv("GROOVY_HOME");
         assertNotNull groovyVar
-        def result = "$groovyVar/bin/groovy.exe -v".execute().text
+        def result = "groovy.exe -v".execute().text
         assert result =~ /Groovy Version/
     }
 
     void testGantVersionReturnsValue() {
         def groovyVar = System.getenv("GROOVY_HOME");
         assertNotNull groovyVar
-        def result = "$groovyVar\\bin\\gant.exe -V".execute().text
+        def result = "gant.exe -V".execute().text
         assert result =~ /Gant version/
     }
 
