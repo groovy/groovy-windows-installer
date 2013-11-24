@@ -28,7 +28,7 @@ public class TestInstallation extends GroovyTestCase {
         nl.eachFileRecurse{
             if(it.name =~ /index.html/) count++
         }
-        assertEquals 3, count    // api, gapi, groovy-jdk
+        assertEquals 4, count    // api, documentation, gapi, groovy-jdk
         
         nl = "$groovyVar/pdf" as File
         assertEquals true, nl.exists()
