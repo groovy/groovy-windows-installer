@@ -1,0 +1,46 @@
+/* module-key = 'confluence.extra.jira:jirachart-resources', location = '/jirachart/jirachart.css' */
+#jira-chart .jira-chart-search{padding:10px 10px 0 10px}#jira-chart .jira-chart-search .search-help{font-size:10px}#jira-chart #jira-chart-content{position:relative;z-index:40;height:470px;overflow:hidden;margin-top:10px}#jira-chart #jira-chart-content .jira-chart-img{margin:0;padding:0;overflow:hidden}#chart-preview-iframe{border:0;height:375px;width:100%}.jira-chart-macro-wrapper .info,.jira-chart-macro-preview-container{text-align:center}.jira-chart-macro-img{display:block;margin-left:auto;margin-right:auto}.jira-chart-macro-wrapper{padding:10px 0;display:inline-block}.jira-chart-macro-wrapper .info a{text-decoration:none}#jira-chart-macro-preview-contaier .aui-message{margin-top:-20px;margin-left:-19px;margin-right:-19px}#jira-chart-content div.jira-chart-search-input.one-server{display:inline-block;width:535px}#jira-chart-content .jira-chart-option{background:none repeat scroll 0 0 #fff;border-top:1px solid #ccc;position:absolute;width:100%;z-index:50}#jira-chart a.jirachart-display-opts-open,#jira-chart a.jirachart-display-opts-close{font-size:14px;line-height:27px}#jira-chart a.jirachart-display-opts-open.disabled{opacity:.5;text-decoration:none;cursor:help;color:#838383}#jira-chart .dialog-panel-body{padding:0!important}#jira-chart .jira-chart-img .chart-img{text-align:center;padding-top:2px;height:375px;overflow:auto}#jira-chart .jira-chart-img .aui-message-container{margin:0 10px}#jira-chart-content div.jira-chart-search-input{display:inline-block;width:380px}#jira-chart-content #jira-chart-servers.select{margin:0 8px 1px;padding-top:5px;max-width:125px}.jirachart-border{border:1px solid #ccc}#jira-chart-content .jirachart-display-opts-close span{background:url(/s/en_GB/5510/701ab0bfc8a95d65a5559a923f8ed8badd272d36.15/5.5.4/_/download/resources/confluence.extra.jira:jirachart-resources/icon-expand-view-down.png) no-repeat;width:15px;height:15px;display:inline-block;vertical-align:middle;margin:0 5px 3px 0}#jira-chart-content a.jirachart-display-opts-open span{background:url(/s/en_GB/5510/701ab0bfc8a95d65a5559a923f8ed8badd272d36.15/5.5.4/_/download/resources/confluence.extra.jira:jirachart-resources/icon-expand-view-up.png) no-repeat;width:15px;height:15px;display:inline-block;vertical-align:middle;margin:0 5px 3px 0}#jira-chart-content .loading-data{margin-left:250px;margin-top:60px}#jira-chart .moreToCome{padding-left:10px}#jira-chart .dialog-page-menu li button::-moz-focus-inner{margin:0;padding:0}#jira-chart-inputsearch.one-server.long-field{max-width:525px}#jira-chart-inputsearch.search-text{max-width:390px}#jira-chart-content .jiraChartOption{padding:8px 10px}#jira-chart-macro-dialog-validation-error{color:red}#jira-chart .button-panel-button.disabled{background:linear-gradient(to bottom,#fff 0,#f2f2f2 100%) repeat scroll 0 0 rgba(0,0,0,0);border-color:#ccc;box-shadow:none;color:#999;cursor:default;text-shadow:none}
+/* module-key = 'com.atlassian.confluence.plugins.share-page:mail-page-resources', location = 'css/mailpage.css' */
+.content-navigation .ajs-button .share>span{padding-left:0}.content-navigation .ajs-button .share>span::before{content:"\e015"}#inline-dialog-shareContentPopup .contents{overflow:visible}.share-content-popup .button-panel{text-align:right}.share-content-popup .button-panel input:disabled{color:graytext}.share-content-popup .button-panel .close-dialog{padding-left:5px}form.share-content-popup .textarea{height:100px;padding-left:3px;padding-right:3px;max-height:260px;width:250px}.share-content-popup ol.recipients{margin:7px 0 7px 0;padding:0;list-style-type:none}.share-content-popup ol.recipients li{margin:5px 0;line-height:24px;word-wrap:normal}.share-content-popup ol.recipients li .title{overflow:hidden;text-overflow:ellipsis;max-width:185px;display:inline-block;vertical-align:middle;white-space:nowrap}.share-content-popup ol.recipients li img{height:24px;width:24px;vertical-align:middle;border-radius:3px;margin-right:5px}.progress-messages{position:absolute;left:0;max-width:110px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:left;height:30px}.share-content-popup .done{width:16px;height:16px;top:7px;background:url(/s/en_GB/5510/701ab0bfc8a95d65a5559a923f8ed8badd272d36.15/3.1.5/_/download/resources/com.atlassian.confluence.plugins.share-page:mail-page-resources/images/tick.png) no-repeat}.share-content-popup .error{width:16px;height:16px;top:7px;background:url(/s/en_GB/5510/701ab0bfc8a95d65a5559a923f8ed8badd272d36.15/3.1.5/_/download/resources/com.atlassian.confluence.plugins.share-page:mail-page-resources/images/error.png) no-repeat}.share-content-popup .autocomplete li.active a span{color:white}.share-page-progress{position:absolute;background-color:white;z-index:1;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px}.share-page-progress-container-inner{position:absolute;text-align:center}.share-content-popup .remove-recipient{float:right;background:url(/s/en_GB/5510/701ab0bfc8a95d65a5559a923f8ed8badd272d36.15/3.1.5/_/download/resources/com.atlassian.confluence.plugins.share-page:mail-page-resources/images/delete.png) no-repeat 100% 50%;text-indent:-9999px;height:24px;width:24px;cursor:pointer}.share-content-popup .aui-dd-parent,#com-atlassian-confluence .share-content-popup .aui-dd-parent .aui-dropdown{width:250px}form.aui .share-page-progress-container-inner p{margin:0;padding-bottom:0}form.share-content-popup .field-group{padding-left:0}form.share-content-popup .field-group.button-panel{padding-bottom:0;margin-bottom:0;line-height:30px}.aui-inline-dialog .contents .share-content-popup .submit{text-align:center}
+/* module-key = 'com.atlassian.confluence.plugins.confluence-software-blueprints:common-resources', location = 'com/atlassian/confluence/plugins/blueprints/common/common.css' */
+.wiki-content .jira-issue-status-no-lozenge {
+    color: #999999;
+}
+
+.wiki-content .aui-lozenge.jira-issue-status-lozenge-blue-gray {
+    background-color: #4a6785;
+    border-color: #4a6785;
+    color: #fff;
+}
+
+.wiki-content .aui-lozenge.jira-issue-status-lozenge-green {
+    background-color: #14892c;
+    border-color: #14892c;
+    color: #fff;
+}
+
+.wiki-content .aui-lozenge.jira-issue-status-lozenge-yellow {
+    background-color: #ffd351;
+    border-color: #ffd351;
+    color: #594300;
+}
+
+.wiki-content .aui-lozenge.jira-issue-status-lozenge-brown {
+    background-color: #815b3a;
+    border-color: #815b3a;
+    color: #fff;
+}
+
+.wiki-content .aui-lozenge.jira-issue-status-lozenge-warm-red {
+    background-color: #d04437;
+    border-color: #d04437;
+    color: #fff;
+}
+
+.wiki-content .aui-lozenge.jira-issue-status-lozenge-medium-gray {
+    background-color: #ccc;
+    border-color: #ccc;
+    color: #333;
+}
+/* module-key = 'com.atlassian.confluence.plugins.watch-button:watch-resources', location = 'css/watch.css' */
+.content-navigation .watch-menu.watching>span{background-image:url(data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAAA3NCSVQICAjb4U/gAAAAJFBMVEX///9wcHBwcHBwcHBwcHBwcHBwcHCCgoL////19fVwcHBwcHDPoo7sAAAADHRSTlMAESKImbvM3e7u7v97HVn+AAAACXBIWXMAAAsSAAALEgHS3X78AAAAHHRFWHRTb2Z0d2FyZQBBZG9iZSBGaXJld29ya3MgQ1M26LyyjAAAABR0RVh0Q3JlYXRpb24gVGltZQA2LzEvMTM4qUXQAAAAQUlEQVQImWNgwAdUVu9yAtHMu4HAgIGBMRrE2CrAILZ7d+X03bsTGbJ3757RuXv3NgQDLsWYDVK8TQChHWEgTgAAcnclQo9PkVIAAAAASUVORK5CYII=)}.content-navigation .watch-menu.not-watching>span{background-image:url(data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAA3NCSVQICAjb4U/gAAAAe1BMVEX///9wcHCxsbFwcHBwcHBwcHCkpKShoaGdnZ2ZmZlwcHCUlJRwcHD////7+/v29vbz8/Pw8PDt7e3r6+vj4+PX19fT09PMzMzDw8O/v7++vr65ubm3t7exsbGJiYmJiYmHh4eFhYV+fn58fHx4eHh2dnZ1dXVycnJwcHBJpy62AAAAKXRSTlMAIjMzRFWZqrvMzN3d7u7u7u7u7u7u7u7u7u7u7u7u/////////////5CXlmwAAAAJcEhZcwAACxIAAAsSAdLdfvwAAAAcdEVYdFNvZnR3YXJlAEFkb2JlIEZpcmV3b3JrcyBDUzbovLKMAAAAFHRFWHRDcmVhdGlvbiBUaW1lADYvMS8xMzipRdAAAAB3SURBVBiVnY5JEoJQDEQjfAUNUSYFGYJKILn/CRV/WbLV3r2u6gHgPwUoaoLBh3fyuKZFM0jkOZ76nNU462ZcGKUiPmzChKkS9EwWAjgjOo8IqBdvbNUbgGN95MS5V6Se3iV77U9s39Jl9taUZXvXaH1MV8d+1BNKdAn6cxUraQAAAABJRU5ErkJggg==)}.cw-status{opacity:1.0;-webkit-transition:opacity 50ms linear;-moz-transition:opacity 50ms linear;-o-transition:opacity 50ms linear;transition:opacity 50ms linear}.cw-status.loading{opacity:.4}.cw-title-description{margin-top:0;margin-bottom:10px}.cw-manage-watchers-wrapper{margin-top:10px;margin-bottom:-5px}.cw-tooltip{padding-top:5px;margin-left:-20px;padding-left:20px}#cw-notification-container{position:fixed;bottom:30px;right:30px;width:300px;z-index:5}
