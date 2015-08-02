@@ -3,7 +3,7 @@ NSIS Groovy
 
 This directory contains the NSIS installer for Groovy as a project for Eclipse.
 
-To use it, simply check it out into an Eclipse workspace. Additionally you might 
+To use it, simply check it out into an Eclipse workspace. Additionally you might
 want to install the NSISEclipse-Plugin, it helps when developing NSIS stuff.
 
 If you have worked with NSIS-scripts already there should be no big problem understanding
@@ -33,8 +33,8 @@ Most probably you only have to set these variables and you are happy to go.
 Here is a checklist what to do for a full build (or what I do at least, for 1.7.0):
 ---------------------------------------------------------------------------------------
 Setup NSIS
-- Download NSIS-2.44-setup.exe
-- Download nsis-2.44-strlen_8192.zip
+- Download NSIS-2.46-setup.exe (http://nsis.sourceforge.net/Download)
+- Download nsis-2.46-strlen_8192.zip (http://nsis.sourceforge.net/Special_Builds#Large_strings)
 - Patch NSIS installation to use long strings
 
 Setup Installer Infrastructure
@@ -56,7 +56,7 @@ Setup Directory for Groovy Files
     - Remove file startGroovy.bat from bin directory
     - Correct the jar file name in the lib directory if necessary
   - Spock (place examples into supplementary\Spock\ directory)
-  - Native Launcher and compile it with Cygwin support 
+  - Native Launcher and compile it with Cygwin support
     (place exe without Cygwin support into subdirectory NativeLauncherNoCygwinSupport)
 
 Setup Launch Script
