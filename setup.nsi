@@ -289,12 +289,6 @@ LangString ^UninstallLink ${LANG_SPANISH} "Uninstall $(^Name)"
 LangString ^UninstallLink ${LANG_FRENCH} "Uninstall $(^Name)"
 LangString ^UninstallLink ${LANG_PortugueseBR} "Desinstalar $(^Name)"
 
-LangString ^PDFLink ${LANG_ENGLISH} "PDF Documentation"
-LangString ^PDFLink ${LANG_GERMAN} "PDF-Dokumentation"
-LangString ^PDFLink ${LANG_SPANISH} "Documentación en PDF"
-LangString ^PDFLink ${LANG_FRENCH} "Documentation PDF"
-LangString ^PDFLink ${LANG_PortugueseBR} "Documentação em PDF"
-
 LangString ^HTMLLink ${LANG_ENGLISH} "GDK Documentation"
 LangString ^HTMLLink ${LANG_GERMAN} "GDK-Dokumentation"
 LangString ^HTMLLink ${LANG_SPANISH} "Documentación del GDK"
@@ -331,7 +325,6 @@ Section "-Shortcuts" SecShortcuts
         CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^HTMLLink).lnk" $INSTDIR\html\groovy-jdk\index.html
         CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^APILink).lnk" $INSTDIR\html\api\index.html
         CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^GAPILink).lnk" $INSTDIR\html\gapi\index.html
-        CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^PDFLink).lnk" $INSTDIR\pdf\wiki-snapshot.pdf
     ${EndIf}
 
     CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^GroovyConsoleLink).lnk" $INSTDIR\bin\GroovyConsole.exe
@@ -347,16 +340,11 @@ LangString DESC_SecBinaries ${LANG_SPANISH} "Ficheros principales de Groovy"
 LangString DESC_SecBinaries ${LANG_FRENCH} "Binaires principaux de Groovy"
 LangString DESC_SecBinaries ${LANG_PortugueseBR} "Main Groovy Binaries"
 
-LangString DESC_SecDocumentation ${LANG_ENGLISH} "Groovy Documentation - including  a \
-PDF Snapshot of the Wiki (ca. 900 pages)"
-LangString DESC_SecDocumentation ${LANG_GERMAN}  "Groovy-Dokumentation - inkl. \
-PDF-Abzug des Wiki (ca. 900 Seiten)"
-LangString DESC_SecDocumentation ${LANG_SPANISH} "Documentación de Groovy - incluye copia \
-del wiki en PDF (aprox. 900 páginas)"
-LangString DESC_SecDocumentation ${LANG_FRENCH}  "Documentation de Groovy - dont un PDF \
-du wiki (900 pages)"
-LangString DESC_SecDocumentation ${LANG_PortugueseBR}  "Groovy Documentation - incluindo um \
-PDF extraido da Wiki (aprox. 900 páginas)"
+LangString DESC_SecDocumentation ${LANG_ENGLISH} "Groovy Documentation"
+LangString DESC_SecDocumentation ${LANG_GERMAN}  "Groovy-Dokumentation"
+LangString DESC_SecDocumentation ${LANG_SPANISH} "Documentación de Groovy"
+LangString DESC_SecDocumentation ${LANG_FRENCH}  "Documentation de Groovy"
+LangString DESC_SecDocumentation ${LANG_PortugueseBR}  "Groovy Documentation"
 
 LangString DESC_SecVariables ${LANG_ENGLISH} "Environment Variables and File Association"
 LangString DESC_SecVariables ${LANG_GERMAN} "Umgebungsvariablen und Dateiassoziationen"
@@ -413,7 +401,7 @@ LangString DESC_SecSpock ${LANG_ENGLISH} "Spock - The Testing and Specification 
 LangString DESC_SecSpock ${LANG_GERMAN} "Spock - Das Test- und Spezifikations-Frame- work"
 LangString DESC_SecSpock ${LANG_SPANISH} "Spock - Herramienta de Pruebas y Especificaciones"
 LangString DESC_SecSpock ${LANG_FRENCH} "Le framework de tests et de spécifications"
-LangString DESC_SecSpock ${LANG_PortugueseBR} "Spock - Framework de Testes e Especificações" 
+LangString DESC_SecSpock ${LANG_PortugueseBR} "Spock - Framework de Testes e Especificações"
 
 LangString DESC_SecEasyb ${LANG_ENGLISH} "easyb - BDD with Groovy"
 LangString DESC_SecEasyb ${LANG_GERMAN} "easyb - BDD mit Groovy"
@@ -485,7 +473,6 @@ Section /o un.Shortcuts UNSEC0998
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(^HTMLLink).lnk"
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(^APILink).lnk"
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(^GAPILink).lnk"
-    Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(^PDFLink).lnk"
     DeleteRegValue HKLM "${REGKEY}\Components" "Shortcuts"
 SectionEnd
 
