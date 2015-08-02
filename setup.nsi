@@ -34,6 +34,16 @@ Name "Groovy-${Version}"
 !define REGKEY "SOFTWARE\$(^Name)"
 !define SUPPLEMENTARY "Supplementary"
 
+# Version Information for the executable
+VIProductVersion "${Version}.0"
+VIAddVersionKey "ProductName" "Groovy Installer"
+VIAddVersionKey "FileDescription" "This is the Windows Installer for the language Groovy"
+VIAddVersionKey "FileVersion" "${Version}.0"
+VIAddVersionKey "ProductVersion" "${Version}.0"
+
+# VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "1.2.3"
+
+
 # MUI defines
 !define MUI_FINISHPAGE_NOAUTOCLOSE
 !define MUI_STARTMENUPAGE_REGISTRY_ROOT HKLM
@@ -116,8 +126,8 @@ ShowUninstDetails show
 LangString NoJava ${LANG_ENGLISH} "Cannot identify Java installation. Assuming 32 bit version."
 LangString NoJava ${LANG_GERMAN} "Die Java-Installation kann nicht identifiziert werden. Gehe von einer 32-Bit Installation aus."
 LangString NoJava ${LANG_SPANISH} "Cannot identify Java installation. Assuming 32 bit version."
-LangString NoJava ${LANG_FRENCH} "Impossible d'identifier la version de Java installÈe. Version 32 bits supposÈe."
-LangString NoJava ${LANG_PortugueseBR} "N„o È possÌvel identificar a instalaÁ„o do Java. Assumindo vers„o 32 bits."
+LangString NoJava ${LANG_FRENCH} "Impossible d'identifier la version de Java install√©e. Version 32 bits suppos√©e."
+LangString NoJava ${LANG_PortugueseBR} "N√£o √© poss√≠vel identificar a instala√ß√£o do Java. Assumindo vers√£o 32 bits."
 
 # Install Types
 InstType "Full"
@@ -134,16 +144,16 @@ Section "Groovy Binaries" SecBinaries
     SetOutPath $INSTDIR\${SUPPLEMENTARY}\JavaArch
     File /r "${JAVA_ARCH}\GetArchModel.jar"
     File /r "${JAVA_ARCH}\GetArchDataModel.java"
-    
+
     # Now execute JRE
     Call GetJRE
     Pop $R0
     # StrCpy $0 '"$R0" -classpath "${CLASSPATH}" ${CLASS}'
     StrCpy $0 '"$R0" -jar "$INSTDIR\${SUPPLEMENTARY}\JavaArch\GetArchModel.jar"'
-    
+
     ExecWait $0 $JavaArchModel
-    
-    ${If} ${Errors} 
+
+    ${If} ${Errors}
     ${OrIf} $JavaArchModel == 1
         # We assume a 32-bit installation
         MessageBox MB_OK $(NoJava)
@@ -158,7 +168,7 @@ Section "Groovy Binaries" SecBinaries
         File /oname=java2groovy.exe "${DIR_PREFIX}\${NATIVE_DIR}\${SUPPLEMENTARY}\native\32bit\groovy.exe"
 
         File /oname=groovyw.exe "${DIR_PREFIX}\${NATIVE_DIR}\${SUPPLEMENTARY}\native\32bit\groovyw.exe"
-        File /oname=groovyConsole.exe "${DIR_PREFIX}\${NATIVE_DIR}\${SUPPLEMENTARY}\native\32bit\groovyw.exe"        
+        File /oname=groovyConsole.exe "${DIR_PREFIX}\${NATIVE_DIR}\${SUPPLEMENTARY}\native\32bit\groovyw.exe"
     ${else}
         File /oname=groovy.exe "${DIR_PREFIX}\${NATIVE_DIR}\${SUPPLEMENTARY}\native\64bit\groovy.exe"
         File /oname=groovyc.exe "${DIR_PREFIX}\${NATIVE_DIR}\${SUPPLEMENTARY}\native\64bit\groovy.exe"
@@ -166,9 +176,9 @@ Section "Groovy Binaries" SecBinaries
         File /oname=java2groovy.exe "${DIR_PREFIX}\${NATIVE_DIR}\${SUPPLEMENTARY}\native\64bit\groovy.exe"
 
         File /oname=groovyw.exe "${DIR_PREFIX}\${NATIVE_DIR}\${SUPPLEMENTARY}\native\64bit\groovyw.exe"
-        File /oname=groovyConsole.exe "${DIR_PREFIX}\${NATIVE_DIR}\${SUPPLEMENTARY}\native\64bit\groovyw.exe"        
+        File /oname=groovyConsole.exe "${DIR_PREFIX}\${NATIVE_DIR}\${SUPPLEMENTARY}\native\64bit\groovyw.exe"
     ${EndIf}
-    
+
     SetOutPath $INSTDIR
     File /r "${DIR_PREFIX}\${NATIVE_DIR}\*"
     File "${DIR_PREFIX}\${VERSION_TXT}"
@@ -180,7 +190,7 @@ SectionEnd
 Section "Groovy Documentation" SecDocumentation
     SectionIn 1
     SetOutPath $INSTDIR
-    
+
     SetOverwrite on
     File  /r "${DIR_PREFIX}\${DOC_DIR}\*"
     WriteRegStr HKLM "${REGKEY}\Components" "${REG_GROOVY_DOCUMENTATION}" 1
@@ -225,7 +235,7 @@ SectionGroup /e Modules SecGrpModules
             File /oname=gant.exe "${DIR_PREFIX}\${NATIVE_DIR}\${SUPPLEMENTARY}\native\64bit\groovy.exe"
             File /oname=gantw.exe "${DIR_PREFIX}\${NATIVE_DIR}\${SUPPLEMENTARY}\native\64bit\groovyw.exe"
         ${EndIf}
-        
+
         WriteRegStr HKLM "${REGKEY}\Components" "${REG_GANT}" 1
     SectionEnd
 
@@ -242,14 +252,6 @@ SectionGroup /e Modules SecGrpModules
         SetOutPath "$INSTDIR"
         SetOverwrite on
         File /r "${DIR_PREFIX}\${GROOVYSERV_DIR}\*"
-
-    ${if} $JavaArchModel == 32
-        File /r "${DIR_PREFIX}\${GROOVYSERV_DIR}\${SUPPLEMENTARY}\Groovyserv\32bit\*"
-    ${else}
-        File /r "${DIR_PREFIX}\${GROOVYSERV_DIR}\${SUPPLEMENTARY}\Groovyserv\64bit\*"
-    ${EndIf}
-
-
         WriteRegStr HKLM "${REGKEY}\Components" "${REG_GROOVYSERV}" 1
     SectionEnd
 
@@ -289,27 +291,27 @@ LangString ^UninstallLink ${LANG_PortugueseBR} "Desinstalar $(^Name)"
 
 LangString ^PDFLink ${LANG_ENGLISH} "PDF Documentation"
 LangString ^PDFLink ${LANG_GERMAN} "PDF-Dokumentation"
-LangString ^PDFLink ${LANG_SPANISH} "DocumentaciÛn en PDF"
+LangString ^PDFLink ${LANG_SPANISH} "Documentaci√≥n en PDF"
 LangString ^PDFLink ${LANG_FRENCH} "Documentation PDF"
-LangString ^PDFLink ${LANG_PortugueseBR} "DocumentaÁ„o em PDF"
+LangString ^PDFLink ${LANG_PortugueseBR} "Documenta√ß√£o em PDF"
 
 LangString ^HTMLLink ${LANG_ENGLISH} "GDK Documentation"
 LangString ^HTMLLink ${LANG_GERMAN} "GDK-Dokumentation"
-LangString ^HTMLLink ${LANG_SPANISH} "DocumentaciÛn del GDK"
+LangString ^HTMLLink ${LANG_SPANISH} "Documentaci√≥n del GDK"
 LangString ^HTMLLink ${LANG_FRENCH} "Documentation du GDK"
-LangString ^HTMLLink ${LANG_PortugueseBR} "DocumentaÁ„o do GDK"
+LangString ^HTMLLink ${LANG_PortugueseBR} "Documenta√ß√£o do GDK"
 
 LangString ^APILink ${LANG_ENGLISH} "API Documentation"
 LangString ^APILink ${LANG_GERMAN} "API-Dokumentation"
-LangString ^APILink ${LANG_SPANISH} "DocumentaciÛn del API"
+LangString ^APILink ${LANG_SPANISH} "Documentaci√≥n del API"
 LangString ^APILink ${LANG_FRENCH} "Documentation de l'API"
-LangString ^APILink ${LANG_PortugueseBR} "DocumentaÁ„o da API"
+LangString ^APILink ${LANG_PortugueseBR} "Documenta√ß√£o da API"
 
 LangString ^GAPILink ${LANG_ENGLISH} "GAPI Documentation"
 LangString ^GAPILink ${LANG_GERMAN} "GAPI-Dokumentation"
-LangString ^GAPILink ${LANG_SPANISH} "DocumentaciÛn del GAPI"
+LangString ^GAPILink ${LANG_SPANISH} "Documentaci√≥n del GAPI"
 LangString ^GAPILink ${LANG_FRENCH} "Documentation de la GAPI"
-LangString ^GAPILink ${LANG_PortugueseBR} "DocumentaÁ„o da GAPI"
+LangString ^GAPILink ${LANG_PortugueseBR} "Documenta√ß√£o da GAPI"
 
 LangString ^GroovyConsoleLink ${LANG_ENGLISH} "Start GroovyConsole"
 LangString ^GroovyConsoleLink ${LANG_GERMAN} "Starte GroovyConsole"
@@ -322,8 +324,8 @@ Section "-Shortcuts" SecShortcuts
     !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
     SetOutPath $SMPROGRAMS\$StartMenuGroup
 
-    SectionGetFlags ${SecDocumentation} $R0 
-    IntOp $R0 $R0 & ${SF_SELECTED} 
+    SectionGetFlags ${SecDocumentation} $R0
+    IntOp $R0 $R0 & ${SF_SELECTED}
 
     ${If} $R0 == ${SF_SELECTED}
         CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^HTMLLink).lnk" $INSTDIR\html\groovy-jdk\index.html
@@ -334,7 +336,7 @@ Section "-Shortcuts" SecShortcuts
 
     CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^GroovyConsoleLink).lnk" $INSTDIR\bin\GroovyConsole.exe
 
-    !insertmacro MUI_STARTMENU_WRITE_END    
+    !insertmacro MUI_STARTMENU_WRITE_END
     WriteRegStr HKLM "${REGKEY}\Components" Shortcuts 1
 SectionEnd
 
@@ -349,28 +351,28 @@ LangString DESC_SecDocumentation ${LANG_ENGLISH} "Groovy Documentation - includi
 PDF Snapshot of the Wiki (ca. 900 pages)"
 LangString DESC_SecDocumentation ${LANG_GERMAN}  "Groovy-Dokumentation - inkl. \
 PDF-Abzug des Wiki (ca. 900 Seiten)"
-LangString DESC_SecDocumentation ${LANG_SPANISH} "DocumentaciÛn de Groovy - incluye copia \
-del wiki en PDF (aprox. 900 p·ginas)"
+LangString DESC_SecDocumentation ${LANG_SPANISH} "Documentaci√≥n de Groovy - incluye copia \
+del wiki en PDF (aprox. 900 p√°ginas)"
 LangString DESC_SecDocumentation ${LANG_FRENCH}  "Documentation de Groovy - dont un PDF \
 du wiki (900 pages)"
 LangString DESC_SecDocumentation ${LANG_PortugueseBR}  "Groovy Documentation - incluindo um \
-PDF extraido da Wiki (aprox. 900 p·ginas)"
+PDF extraido da Wiki (aprox. 900 p√°ginas)"
 
 LangString DESC_SecVariables ${LANG_ENGLISH} "Environment Variables and File Association"
 LangString DESC_SecVariables ${LANG_GERMAN} "Umgebungsvariablen und Dateiassoziationen"
-LangString DESC_SecVariables ${LANG_SPANISH} "Variables de Entorno y AsociaciÛn de Ficheros"
+LangString DESC_SecVariables ${LANG_SPANISH} "Variables de Entorno y Asociaci√≥n de Ficheros"
 LangString DESC_SecVariables ${LANG_FRENCH} "Variables d'environnement et association de fichiers"
 LangString DESC_SecVariables ${LANG_PortugueseBR} "Environment Variables and File Association"
 
 LangString DESC_SecGrpModules ${LANG_ENGLISH} "Additional Modules are not strictly necessary, \
 but we recommend installing them anyway."
-LangString DESC_SecGrpModules ${LANG_GERMAN} "Zus‰tzliche Module sind nicht unbedingt notwendig, \
+LangString DESC_SecGrpModules ${LANG_GERMAN} "Zus√§tzliche Module sind nicht unbedingt notwendig, \
 wir empfehlen aber, sie trotzdem zu installieren."
-LangString DESC_SecGrpModules ${LANG_SPANISH} "Los MÛdulos Adicionales no son estrictamente \
+LangString DESC_SecGrpModules ${LANG_SPANISH} "Los M√≥dulos Adicionales no son estrictamente \
 necesarios, pero recomendamos que se instalen de todas formas."
 LangString DESC_SecGrpModules ${LANG_FRENCH}  "Les Modules aditionnels sont optionnels, \
 nous vous recommendons cependant de les installer"
-LangString DESC_SecGrpModules ${LANG_PortugueseBR}  "MÛdulos adicionais n„o s„o estritamente necess·rios, \
+LangString DESC_SecGrpModules ${LANG_PortugueseBR}  "M√≥dulos adicionais n√£o s√£o estritamente necess√°rios, \
 mesmo assim recomendamos que sejam instalados."
 
 LangString DESC_SecGant ${LANG_ENGLISH} "Gant - a build tool for scripting Ant tasks \
@@ -380,7 +382,7 @@ zu programmieren"
 LangString DESC_SecGant ${LANG_SPANISH} "Gant - una herramienta que facilita el \
 'scripting' the tareas de Ant con Groovy"
 LangString DESC_SecGant ${LANG_FRENCH}  "Gant - Outil de build permettant de manipuler \
-les t‚ches Ant avec Groovy"
+les t√¢ches Ant avec Groovy"
 LangString DESC_SecGant ${LANG_PortugueseBR}  "Gant - uma ferramenta de build para criar tarefas do Ant \
 com scripts Groovy"
 
@@ -410,8 +412,8 @@ LangString DESC_SecGaelyk ${LANG_PortugueseBR}  "Gaelyk - Desenvolva para o Goog
 LangString DESC_SecSpock ${LANG_ENGLISH} "Spock - The Testing and Specification Framework"
 LangString DESC_SecSpock ${LANG_GERMAN} "Spock - Das Test- und Spezifikations-Frame- work"
 LangString DESC_SecSpock ${LANG_SPANISH} "Spock - Herramienta de Pruebas y Especificaciones"
-LangString DESC_SecSpock ${LANG_FRENCH} "Le framework de tests et de spÈcifications"
-LangString DESC_SecSpock ${LANG_PortugueseBR} "Spock - Framework de Testes e EspecificaÁıes" 
+LangString DESC_SecSpock ${LANG_FRENCH} "Le framework de tests et de sp√©cifications"
+LangString DESC_SecSpock ${LANG_PortugueseBR} "Spock - Framework de Testes e Especifica√ß√µes" 
 
 LangString DESC_SecEasyb ${LANG_ENGLISH} "easyb - BDD with Groovy"
 LangString DESC_SecEasyb ${LANG_GERMAN} "easyb - BDD mit Groovy"
@@ -421,17 +423,17 @@ LangString DESC_SecEasyb ${LANG_PortugueseBR} "easyb - BDD para Groovy"
 
 # TODO correct language strings for spanish
 LangString DESC_SecGMock ${LANG_ENGLISH} "GMock - Mocking Framework for Groovy"
-LangString DESC_SecGMock ${LANG_GERMAN} "GMock - Mocking Framework f¸r Groovy"
+LangString DESC_SecGMock ${LANG_GERMAN} "GMock - Mocking Framework f√ºr Groovy"
 LangString DESC_SecGMock ${LANG_SPANISH} "GMock - Mocking Framework for Groovy"
 LangString DESC_SecGMock ${LANG_FRENCH} "GMock - Mocking Framework pour Groovy"
 LangString DESC_SecGMock ${LANG_PortugueseBR} "GMock - Construa Mocks utilizando Groovy"
 
 # TODO correct language strings for spanish
 LangString DESC_SecGroovyServ ${LANG_ENGLISH} "GroovyServ - A Server for Executing Groovy Programs"
-LangString DESC_SecGroovyServ ${LANG_GERMAN} "GroovyServ - Ein Server f¸r die Ausf¸hrung von Groovy-Programmen"
+LangString DESC_SecGroovyServ ${LANG_GERMAN} "GroovyServ - Ein Server f√ºr die Ausf√ºhrung von Groovy-Programmen"
 LangString DESC_SecGroovyServ ${LANG_SPANISH} "GroovyServ - A Server for Executing Groovy"
-LangString DESC_SecGroovyServ ${LANG_FRENCH} "GroovyServ - Un serveur pour exÈcuter des programmes Groovy"
-LangString DESC_SecGroovyServ ${LANG_PortugueseBR}  "GroovyServ - Servidor para execuÁ„o de programas Groovy"
+LangString DESC_SecGroovyServ ${LANG_FRENCH} "GroovyServ - Un serveur pour ex√©cuter des programmes Groovy"
+LangString DESC_SecGroovyServ ${LANG_PortugueseBR}  "GroovyServ - Servidor para execu√ß√£o de programas Groovy"
 
 
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
@@ -457,7 +459,8 @@ Section -post SEC0006
     SetOutPath $SMPROGRAMS\$StartMenuGroup
     CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^UninstallLink).lnk" $INSTDIR\uninstall.exe
     !insertmacro MUI_STARTMENU_WRITE_END
-    WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" DisplayName "$(^Name)"
+    WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" DisplayVersion "${Version}.0"
+
     WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" DisplayIcon $INSTDIR\uninstall.exe
     WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" UninstallString $INSTDIR\uninstall.exe
     WriteRegDWORD HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" NoModify 1
@@ -556,7 +559,7 @@ Function .onInit
     !insertmacro MUI_LANGDLL_DISPLAY
     File /oname=$PLUGINSDIR\variables.ini variables.ini
     File /oname=$PLUGINSDIR\fileassociation.ini fileassociation.ini
-    
+
 FunctionEnd
 
 
@@ -589,14 +592,14 @@ FunctionEnd
 LangString VField01 ${LANG_ENGLISH} "Create GROOVY_HOME"
 LangString VField01 ${LANG_GERMAN}  "Erzeuge GROOVY_HOME"
 LangString VField01 ${LANG_SPANISH} "Crear GROOVY_HOME"
-LangString VField01 ${LANG_FRENCH}  "CrÈer GROOVY_HOME"
+LangString VField01 ${LANG_FRENCH}  "Cr√©er GROOVY_HOME"
 LangString VField01 ${LANG_PortugueseBR}  "Criar GROOVY_HOME"
 
 # VField 02
 LangString VField02 ${LANG_ENGLISH} "Add to Path"
-LangString VField02 ${LANG_GERMAN}  "Zum Pfad hinzuf¸gen"
+LangString VField02 ${LANG_GERMAN}  "Zum Pfad hinzuf√ºgen"
 LangString VField02 ${LANG_SPANISH} "Agregar a la Ruta"
-LangString VField02 ${LANG_FRENCH}  "Ajouter au chemin d'accËs/au Path"
+LangString VField02 ${LANG_FRENCH}  "Ajouter au chemin d'acc√®s/au Path"
 LangString VField02 ${LANG_PortugueseBR}  "Adicionar ao Path"
 
 # VField 5
@@ -605,82 +608,82 @@ the checkbox for adding GROOVY_HOME to the path is unchecked. \
 If you know better, please set the checkbox to checked.\r\n\r\n\
 NB: The uninstaller won't restore old values (yet)."
 LangString VField05 ${LANG_GERMAN} "Wenn eine Referenz zu groovy im Pfad entdeckt wird, \
-wird die Checkbox f¸r das Hinzuf¸gen von GROOVY_HOME ausgeschaltet.\
-Wenn Sie GROOVY_HOME trotzdem zum Pfad hinzuf¸gen mˆchten, w‰hlen Sie sie wieder an.\r\n\r\n\
+wird die Checkbox f√ºr das Hinzuf√ºgen von GROOVY_HOME ausgeschaltet.\
+Wenn Sie GROOVY_HOME trotzdem zum Pfad hinzuf√ºgen m√∂chten, w√§hlen Sie sie wieder an.\r\n\r\n\
 Achtung: Der Uninstaller merkt sich keine alten Werte (noch nicht)."
 LangString VField05 ${LANG_SPANISH} "Si alguna referencia a Groovy es detectada en la ruta, \
-el botÛn para agregar GROOVY_HOME a la ruta aparecer· deseleccionado. \
-Puede dejar el botÛn seleccionado si lo desea.\r\n\r\n\
-NB: El proceso de desinstalaciÛn no restaurar· valores anteriores."
-LangString VField05 ${LANG_FRENCH} "Si une rÈfÈrence vers groovy \
-est dÈtectÈe dans le chemin d'accËs, \
-la boite  ‡ cocher d'ajout de GROOVY_HOME au chemin d'accËs est dÈcochÈe. \
-Si vous Ítes expert, cochez ici svp.\r\n\r\n\
-NB: Le dÈsinstalleur ne restaurera pas les anciennes valeurs (pas pour le moment)."
-LangString VField05 ${LANG_PortugueseBR} "Se uma referÍncia ao Groovy foi detectada, \
-o checkbox para adicionar o GROOVY_HOME ao Path estar· desmarcada. \
-Se vocÍ preferir, por favor marque esse checkbox.\r\n\r\n\
-NB: O desinstalador n„o ir· restaurar os antigos valores (por enquanto)."
+el bot√≥n para agregar GROOVY_HOME a la ruta aparecer√° deseleccionado. \
+Puede dejar el bot√≥n seleccionado si lo desea.\r\n\r\n\
+NB: El proceso de desinstalaci√≥n no restaurar√° valores anteriores."
+LangString VField05 ${LANG_FRENCH} "Si une r√©f√©rence vers groovy \
+est d√©tect√©e dans le chemin d'acc√®s, \
+la boite  √† cocher d'ajout de GROOVY_HOME au chemin d'acc√®s est d√©coch√©e. \
+Si vous √™tes expert, cochez ici svp.\r\n\r\n\
+NB: Le d√©sinstalleur ne restaurera pas les anciennes valeurs (pas pour le moment)."
+LangString VField05 ${LANG_PortugueseBR} "Se uma refer√™ncia ao Groovy foi detectada, \
+o checkbox para adicionar o GROOVY_HOME ao Path estar√° desmarcada. \
+Se voc√™ preferir, por favor marque esse checkbox.\r\n\r\n\
+NB: O desinstalador n√£o ir√° restaurar os antigos valores (por enquanto)."
 
 # VField 6
 LangString VField06 ${LANG_ENGLISH} "User Environment or\r\nSystem Environment"
 LangString VField06 ${LANG_GERMAN}  "Benutzerumgebung oder\r\nSystemumgebung"
 LangString VField06 ${LANG_SPANISH} "Entorno de Usuario o\r\nEntorno de Sistema"
-LangString VField06 ${LANG_FRENCH}  "Environnement utilisateur ou\r\nenvironnement systËme"
-LangString VField06 ${LANG_PortugueseBR}  "Apenas para esse usu·rio\r\nPara todos os usu·rios"
+LangString VField06 ${LANG_FRENCH}  "Environnement utilisateur ou\r\nenvironnement syst√®me"
+LangString VField06 ${LANG_PortugueseBR}  "Apenas para esse usu√°rio\r\nPara todos os usu√°rios"
 
 
 # VField 7
 LangString VField07 ${LANG_ENGLISH} "Add to System Environment"
-LangString VField07 ${LANG_GERMAN}  "Systemumgebung w‰hlen"
+LangString VField07 ${LANG_GERMAN}  "Systemumgebung w√§hlen"
 LangString VField07 ${LANG_SPANISH} "Agregar a Entorno de Sistema"
-LangString VField07 ${LANG_FRENCH}  "Ajouter ‡ l'environnement systËme"
-LangString VField07 ${LANG_PortugueseBR}  "Adicionar ‡s vari·veis do sistema"
+LangString VField07 ${LANG_FRENCH}  "Ajouter √† l'environnement syst√®me"
+LangString VField07 ${LANG_PortugueseBR}  "Adicionar √†s vari√°veis do sistema"
 
 # VField 8
 LangString VField08 ${LANG_ENGLISH} "Path to Groovy Home"
 LangString VField08 ${LANG_GERMAN}  "Pfad zu Groovy Home"
 LangString VField08 ${LANG_SPANISH} "Ruta a Groovy Home"
-LangString VField08 ${LANG_FRENCH}  "Chemins d'accËs au rÈpertoire standard Groovy"
-LangString VField08 ${LANG_PortugueseBR}  "Caminho para o diretÛrio raiz do Groovy"
+LangString VField08 ${LANG_FRENCH}  "Chemins d'acc√®s au r√©pertoire standard Groovy"
+LangString VField08 ${LANG_PortugueseBR}  "Caminho para o diret√≥rio raiz do Groovy"
 
 # VField 9
 LangString VField09 ${LANG_ENGLISH} "Path Extension"
 LangString VField09 ${LANG_GERMAN}  "Erweiterung des Pfades"
-LangString VField09 ${LANG_SPANISH} "ExtensiÛn de Rutas"
-LangString VField09 ${LANG_FRENCH}  "Extension du chemin d'accËs"
-LangString VField09 ${LANG_PortugueseBR}  "Extens„o do Path"
+LangString VField09 ${LANG_SPANISH} "Extensi√≥n de Rutas"
+LangString VField09 ${LANG_FRENCH}  "Extension du chemin d'acc√®s"
+LangString VField09 ${LANG_PortugueseBR}  "Extens√£o do Path"
 
 # EnvironmentTitle
 LangString EnvironmentTitle ${LANG_ENGLISH} "Environment ..."
 LangString EnvironmentTitle ${LANG_GERMAN}  "Umgebung ..."
 LangString EnvironmentTitle ${LANG_SPANISH} "Entorno ..."
 LangString EnvironmentTitle ${LANG_FRENCH}  "Environnement ..."
-LangString EnvironmentTitle ${LANG_PortugueseBR}  "Vari·veis ..."
+LangString EnvironmentTitle ${LANG_PortugueseBR}  "Vari√°veis ..."
 
 # JavaHomeWarning
 LangString JavaHomeWarning ${LANG_ENGLISH} "JAVA_HOME is not set. Please set it \
 to your Java installation, otherwise Groovy won't be able to work."
 LangString JavaHomeWarning ${LANG_GERMAN}  "JAVA_HOME ist nicht gesetzt. \
 Bitte setzen Sie die Umgebungsvariable, ansonsten kann Groovy nicht funktionieren."
-LangString JavaHomeWarning ${LANG_SPANISH} "JAVA_HOME no est· definido. Por favor defina la ruta \
-hacia la instalaciÛn de Java, de lo contrario Groovy no podr· funcionar correctamente."
-LangString JavaHomeWarning ${LANG_FRENCH}  "JAVA_HOME n'est pas positionnÈ sur le rÈpertoire \
+LangString JavaHomeWarning ${LANG_SPANISH} "JAVA_HOME no est√° definido. Por favor defina la ruta \
+hacia la instalaci√≥n de Java, de lo contrario Groovy no podr√° funcionar correctamente."
+LangString JavaHomeWarning ${LANG_FRENCH}  "JAVA_HOME n'est pas positionn√© sur le r√©pertoire \
 d'installation Java. Dans le cas contraire groovy ne fonctionnera pas."
-LangString JavaHomeWarning ${LANG_PortugueseBR}  "JAVA_HOME n„o est· configurada. Por favor, configure \
-para o diretÛrio de instalaÁ„o do Java, caso contr·rio o Groovy n„o funcionar·."
+LangString JavaHomeWarning ${LANG_PortugueseBR}  "JAVA_HOME n√£o est√° configurada. Por favor, configure \
+para o diret√≥rio de instala√ß√£o do Java, caso contr√°rio o Groovy n√£o funcionar√°."
 
 
 #Additional Page for setting GROOVY_HOME and system path
 Function ReadVariables
 
-  SectionGetFlags ${SecVariables} $R0 
-  IntOp $R0 $R0 & ${SF_SELECTED} 
-  IntCmp $R0 ${SF_SELECTED} show 
- 
-  Abort 
- 
-  show: 
+  SectionGetFlags ${SecVariables} $R0
+  IntOp $R0 $R0 & ${SF_SELECTED}
+  IntCmp $R0 ${SF_SELECTED} show
+
+  Abort
+
+  show:
 
   Push $R0
 
@@ -702,17 +705,17 @@ Function ReadVariables
   Push "roovy"
   Call StrStr
   Pop $R0
-  
-  
+
+
   # set GROOVY_HOME checkbox to unchecked if groovy is in path
   ${If} $R0 != ''
     WriteINIStr $PLUGINSDIR\variables.ini "Field 2" "state" "0"
   ${EndIf}
-  
+
   #InstallOptions::dialog $PLUGINSDIR\variables.ini
   ;If not using Modern UI use InstallOptions::dialog "iofile.ini"
   !insertmacro MUI_HEADER_TEXT "$(EnvironmentTitle)" ""
-  !insertmacro MUI_INSTALLOPTIONS_DISPLAY "variables.ini" 
+  !insertmacro MUI_INSTALLOPTIONS_DISPLAY "variables.ini"
 
   Pop $R0
 FunctionEnd
@@ -729,26 +732,27 @@ Function SetVariables
   ${Else}
     StrCpy $UserOrSystem "current"
   ${EndIf}
-  
+
   # Set GROOVY_HOME if the user checked the resp. checkbox
   ReadINIStr $R0 "$PLUGINSDIR\variables.ini" "Field 1" "State"
   ${If} $R0 == '1'
     ReadINIStr $R0 "$PLUGINSDIR\variables.ini" "Field 3" "State"
+    GetFullPathName /SHORT $0 $R0
     Push "GROOVY_HOME"
-    Push $R0
+    Push $0
     Call WriteEnvStr
   ${EndIf}
-  
+
   # Set PATH if the user checked the resp. checkbox
   ReadINIStr $R0 "$PLUGINSDIR\variables.ini" "Field 2" "State"
   ${If} $R0 == '1'
-    
+
     # Variable PATH and Mode Append
     Push "PATH"
     Push "A"
 
-    # "HKLM" = the "all users" section of the registry 
-    # "HKCU" = the "current user" section     
+    # "HKLM" = the "all users" section of the registry
+    # "HKCU" = the "current user" section
     StrCmp $UserOrSystem "current" NT_current
        Push "HKLM"
        Goto NT_resume
@@ -760,7 +764,7 @@ Function SetVariables
     Push $R0
     Call EnvVarUpdate
     Pop  $0
-    
+
   ${EndIf}
 
   # Finally, check for JAVA_HOME existence
@@ -768,7 +772,7 @@ Function SetVariables
   ${If} $R0 == ""
     MessageBox MB_ICONEXCLAMATION|MB_OK $(JavaHomeWarning)
   ${EndIf}
-  
+
   Pop $R0
 
 FunctionEnd
@@ -790,83 +794,83 @@ icon is associated with groovy files."
 LangString FAField01 ${LANG_GERMAN}  "Dateiassoziation erlaubt es uns, ein \
 Programm zu bestimmen (in unserem Fall Groovy), \
 das automatisch beim Start einer Groovy-Datei \
-ausgef¸hrt wird. Sie kˆnnen also mit Doppelklick \
+ausgef√ºhrt wird. Sie k√∂nnen also mit Doppelklick \
 im Explorer Ihre Groovy-Programme starten.\
-Sie benˆtigen den 'Native Launcher' hierf¸r.\
-\r\n\r\nZus‰tzlich wird das Groovy Icon mit \
+Sie ben√∂tigen den 'Native Launcher' hierf√ºr.\
+\r\n\r\nZus√§tzlich wird das Groovy Icon mit \
 Groovy-Dateien assoziiert."
-LangString FAField01 ${LANG_SPANISH} "AsociaciÛn de Ficheros permite definir que \
+LangString FAField01 ${LANG_SPANISH} "Asociaci√≥n de Ficheros permite definir que \
 un programa (en este caso Groovy) se ejecute al realizar \
 doble click con el puntero sobre un fichero. Esto significa \
-que usted podr· ejecutar programas Groovy directamente desde el Explorador de Windows. \
+que usted podr√° ejecutar programas Groovy directamente desde el Explorador de Windows. \
 Para ello se requiere entonces del Lanzador Nativo.\
-\r\nComo beneficio adicional habr· un Ìcono Groovy asociado a \
+\r\nComo beneficio adicional habr√° un √≠cono Groovy asociado a \
 ficheros de tipo Groovy."
-LangString FAField01 ${LANG_FRENCH}  "L'association fichier vous permet de dÈfinir \
-un programme (dans notre cas groovy) pour exÈcuter un fichier groovy \
+LangString FAField01 ${LANG_FRENCH}  "L'association fichier vous permet de d√©finir \
+un programme (dans notre cas groovy) pour ex√©cuter un fichier groovy \
 par simple double-click sur ce dernier. Ceci signifie que vous pouvez \
-exÈcuter vos programmes groovy directement ‡ partir d'un explorateur windows. \
+ex√©cuter vos programmes groovy directement √† partir d'un explorateur windows. \
 Vous avez besoin du lanceur natif pour cela. \
-\r\nUn bÈnÈfice supplÈmentaire est que l'icone \
-groovy est associÈe ‡ tout fichier de type groovy."
-LangString FAField01 ${LANG_PortugueseBR}  "AssociaÁ„o de arquivos nos permite definir \
+\r\nUn b√©n√©fice suppl√©mentaire est que l'icone \
+groovy est associ√©e √† tout fichier de type groovy."
+LangString FAField01 ${LANG_PortugueseBR}  "Associa√ß√£o de arquivos nos permite definir \
 um programa (no caso groovy) que executa com \
-um duplo clique no arquivo. Isso significa que vocÍ pode \
+um duplo clique no arquivo. Isso significa que voc√™ pode \
 executar seus programas escritos em Groovy diretamente do explorer. \
-VocÍ precisa do Native Launcher para isso.\
-\r\n\r\nUm benefÌcio adicional È que o icone do Groovy \
-ser· associado aos arquivos .groovy."
+Voc√™ precisa do Native Launcher para isso.\
+\r\n\r\nUm benef√≠cio adicional √© que o icone do Groovy \
+ser√° associado aos arquivos .groovy."
 
 # FAField 02
 LangString FAField02 ${LANG_ENGLISH} "Add File Association"
-LangString FAField02 ${LANG_GERMAN}  "F¸ge Dateiassoziation hinzu"
-LangString FAField02 ${LANG_SPANISH} "Agregar AsociaciÛn de Ficheros"
+LangString FAField02 ${LANG_GERMAN}  "F√ºge Dateiassoziation hinzu"
+LangString FAField02 ${LANG_SPANISH} "Agregar Asociaci√≥n de Ficheros"
 LangString FAField02 ${LANG_FRENCH}  "Ajouter une association fichier"
-LangString FAField02 ${LANG_PortugueseBR}  "Adicionar associaÁ„o de arquivos"
+LangString FAField02 ${LANG_PortugueseBR}  "Adicionar associa√ß√£o de arquivos"
 
 # FAField 03
 LangString FAField03 ${LANG_ENGLISH} "PATHEXT is an environment variable telling cmd.exe \
 which files are executable. If Groovy-Files are already referenced, this checkbox \
 is unchecked.  If you know better, please set the checkbox to checked."
 LangString FAField03 ${LANG_GERMAN}  "PATHEXT ist eine Umgebungsvariable, die cmd.exe \
-mitteilt, welche Dateien ausf¸hrbar sind. Wenn Groovy-Dateien schon referenziert \
-sind, ist die Checkbox nicht ausgew‰hlt. \
-Wenn Sie Groovy trotzdem hinzuf¸gen wollen, w‰hlen Sie sie wieder an."
+mitteilt, welche Dateien ausf√ºhrbar sind. Wenn Groovy-Dateien schon referenziert \
+sind, ist die Checkbox nicht ausgew√§hlt. \
+Wenn Sie Groovy trotzdem hinzuf√ºgen wollen, w√§hlen Sie sie wieder an."
 LangString FAField03 ${LANG_SPANISH} "PATHEXT es una variable de entorno que le indica \
 a cmd.exe cuales ficheros son de tipo ejecutable. Si Groovy-Files ya esta referenciado, \
-este botÛn aparecer· deseleccionado. Puede dejar el botÛn seleccionado si lo \
+este bot√≥n aparecer√° deseleccionado. Puede dejar el bot√≥n seleccionado si lo \
 desea."
 LangString FAField03 ${LANG_FRENCH}  "PATHEXT est une variable d'environnement indiquant \
-‡ la commande cmd.exe \
-quels fichiers sont des exÈcutables. Si les fichiers groovy sont dÈj‡ rÈfÈrencÈs, \
-la boite ‡ cocher est dÈcochÈe. Si vous Ítes expert, cochez ici svp."
-LangString FAField03 ${LANG_PortugueseBR}  "PATHEXT È uma vari·vel de ambiente que indica ao cmd.exe \
-quais arquivos s„o execut·veis. Se os arquivos Groovy j· est„o referenciados, este checkbox \
-estar· desmarcado. Se vocÍ preferir, por favor marque esse checkbox."
+√† la commande cmd.exe \
+quels fichiers sont des ex√©cutables. Si les fichiers groovy sont d√©j√† r√©f√©renc√©s, \
+la boite √† cocher est d√©coch√©e. Si vous √™tes expert, cochez ici svp."
+LangString FAField03 ${LANG_PortugueseBR}  "PATHEXT √© uma vari√°vel de ambiente que indica ao cmd.exe \
+quais arquivos s√£o execut√°veis. Se os arquivos Groovy j√° est√£o referenciados, este checkbox \
+estar√° desmarcado. Se voc√™ preferir, por favor marque esse checkbox."
 
 # FAField 04
 LangString FAField04 ${LANG_ENGLISH} "Add to PATHEXT"
-LangString FAField04 ${LANG_GERMAN}  "F¸ge zu PATHEXT hinzu"
+LangString FAField04 ${LANG_GERMAN}  "F√ºge zu PATHEXT hinzu"
 LangString FAField04 ${LANG_SPANISH} "Agregar a PATHEXT"
-LangString FAField04 ${LANG_FRENCH}  "Ajouter ‡ PATHEXT"
+LangString FAField04 ${LANG_FRENCH}  "Ajouter √† PATHEXT"
 LangString FAField04 ${LANG_PortugueseBR}  "Adicionar ao PATHEXT"
 
 # AssocTitle
 LangString AssocTitle ${LANG_ENGLISH} "File Associations ..."
 LangString AssocTitle ${LANG_GERMAN}  "Dateiassoziationen ..."
-LangString AssocTitle ${LANG_SPANISH} "AsociaciÛn de Ficheros ..."
+LangString AssocTitle ${LANG_SPANISH} "Asociaci√≥n de Ficheros ..."
 LangString AssocTitle ${LANG_FRENCH}  "Association de fichiers ..."
-LangString AssocTitle ${LANG_PortugueseBR}  "AssociaÁ„o de arquivos ..."
+LangString AssocTitle ${LANG_PortugueseBR}  "Associa√ß√£o de arquivos ..."
 
 Function ReadFileAssociation
 
-  SectionGetFlags ${SecVariables} $R0 
-  IntOp $R0 $R0 & ${SF_SELECTED} 
-  IntCmp $R0 ${SF_SELECTED} show 
- 
-  Abort 
- 
-  show: 
+  SectionGetFlags ${SecVariables} $R0
+  IntOp $R0 $R0 & ${SF_SELECTED}
+  IntCmp $R0 ${SF_SELECTED} show
+
+  Abort
+
+  show:
 
   Push $R0
 
@@ -876,24 +880,24 @@ Function ReadFileAssociation
   WriteINIStr $PLUGINSDIR\fileassociation.ini "Field 2" "Text" $(FAField02)
   WriteINIStr $PLUGINSDIR\fileassociation.ini "Field 3" "Text" $(FAField03)
   WriteINIStr $PLUGINSDIR\fileassociation.ini "Field 4" "Text" $(FAField04)
-  
-  
+
+
   # Check for groovy in pathext
   ReadEnvStr $R0 "PATHEXT"
   Push $R0
   Push ".groovy"
   Call StrStr
   Pop $R0
-  
+
   # set Pathext checkbox to unchecked if .groovy is already in Pathext
   ${If} $R0 != ''
     WriteINIStr $PLUGINSDIR\fileassociation.ini "Field 4" "state" "0"
   ${EndIf}
-    
+
   #InstallOptions::dialog $PLUGINSDIR\fileassociation.ini
   ;If not using Modern UI use InstallOptions::dialog "iofile.ini"
   !insertmacro MUI_HEADER_TEXT "$(AssocTitle)" ""
-  !insertmacro MUI_INSTALLOPTIONS_DISPLAY "fileassociation.ini" 
+  !insertmacro MUI_INSTALLOPTIONS_DISPLAY "fileassociation.ini"
 
   Pop $R0
 FunctionEnd
@@ -921,7 +925,7 @@ Function SetFileAssociation
     WriteRegStr HKCR "Groovy\shell\open\command" "" '"$INSTDIR\bin\groovy.exe" "%1" %*'
     #WriteRegStr HKCR "Groovy\shell\edit" "" "Edit Options File"
     #WriteRegStr HKCR "Groovy\shell\edit\command" "" '$INSTDIR\execute.exe "%1"'
- 
+
     System::Call 'Shell32::SHChangeNotify(i 0x8000000, i 0, i 0, i 0)'
     !undef Index
   ${EndIf}
@@ -951,7 +955,7 @@ Function ${UN}IsNT
   Pop $0
   Push 0
   Return
- 
+
   IsNT_yes:
     ; NT!!!
     Pop $0
@@ -975,7 +979,7 @@ Function WriteEnvStr
   Exch
   Exch $0 ; $0 has environment variable name
   Push $2
- 
+
   Call IsNT
   Pop $2
   StrCmp $2 1 WriteEnvStr_NT
@@ -987,7 +991,7 @@ Function WriteEnvStr
     FileClose $2
     SetRebootFlag true
     Goto WriteEnvStr_done
- 
+
   WriteEnvStr_NT:
 
   ${If} $UserOrSystem == "all"
@@ -1033,28 +1037,28 @@ Function GetJRE
 ;  2 - in JAVA_HOME environment variable
 ;  3 - in the registry
 ;  4 - assume javaw.exe in current dir or PATH
- 
+
   Push $R0
   Push $R1
- 
+
   ClearErrors
   StrCpy $R0 "$EXEDIR\jre\bin\javaw.exe"
   IfFileExists $R0 JreFound
   StrCpy $R0 ""
- 
+
   ClearErrors
   ReadEnvStr $R0 "JAVA_HOME"
   StrCpy $R0 "$R0\bin\javaw.exe"
   IfErrors 0 JreFound
- 
+
   ClearErrors
   ReadRegStr $R1 HKLM "SOFTWARE\JavaSoft\Java Runtime Environment" "CurrentVersion"
   ReadRegStr $R0 HKLM "SOFTWARE\JavaSoft\Java Runtime Environment\$R1" "JavaHome"
   StrCpy $R0 "$R0\bin\javaw.exe"
- 
+
   IfErrors 0 JreFound
   StrCpy $R0 "javaw.exe"
- 
+
  JreFound:
   Pop $R1
   Exch $R0
