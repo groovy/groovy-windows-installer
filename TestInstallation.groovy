@@ -16,7 +16,7 @@ public class TestInstallation extends GroovyTestCase {
         def groovyVar = System.getenv("GROOVY_HOME");
         assertNotNull groovyVar
     }
-    
+
     void testDocumentationIsInstalled() {
         def groovyVar = System.getenv("GROOVY_HOME");
         assertNotNull groovyVar
@@ -29,11 +29,8 @@ public class TestInstallation extends GroovyTestCase {
             if(it.name =~ /index.html/) count++
         }
         assertEquals 4, count    // api, documentation, gapi, groovy-jdk
-        
-        nl = "$groovyVar/pdf" as File
-        assertEquals true, nl.exists()
     }
-    
+
     void testGroovyNativeLauncherIsInstalled() {
         def groovyVar = System.getenv("GROOVY_HOME");
         assertNotNull groovyVar
@@ -66,7 +63,7 @@ public class TestInstallation extends GroovyTestCase {
         String jideBuilderScript = """
         import griffon.builder.jide.JideBuilder
         def jb = new JideBuilder()
-        """        
+        """
         assertTrue Eval.me(jideBuilderScript) != null
     }
 
@@ -74,10 +71,10 @@ public class TestInstallation extends GroovyTestCase {
         String swingXBuilderScript = """
         import groovy.swing.SwingXBuilder
         def sb = new SwingXBuilder()
-        """        
+        """
         assertTrue Eval.me(swingXBuilderScript) != null
     }
-    
+
     void testScriptomInstalled() {
         String scriptomScript = """
         import org.codehaus.groovy.scriptom.*
@@ -86,18 +83,18 @@ public class TestInstallation extends GroovyTestCase {
         {
           def scriptControl = new ActiveXObject("ScriptControl")
           assert scriptControl != null
-          
+
           scriptControl.Language = "JScript"
           def result = scriptControl.Eval('2.0 + 2.0;')
         }
         """
-        
+
         String dataModel = System.getProperty("sun.arch.data.model");
         int bits = Integer.parseInt(dataModel);
         // only evaluate when on 32 bit system
-        if(bits == 32) assertTrue Eval.me(scriptomScript) == 4        
+        if(bits == 32) assertTrue Eval.me(scriptomScript) == 4
     }
-    
+
     void testGaelykIsInstalled() {
         def groovyVar = System.getenv("GROOVY_HOME");
         assertNotNull groovyVar
@@ -111,29 +108,29 @@ public class TestInstallation extends GroovyTestCase {
     void testGPars() {
         String gparsScript = """
             import static groovyx.gpars.actor.Actors.actor
-            def decryptor = actor { 
+            def decryptor = actor {
                 loop {
-                    react {message -> 
-                        if (message instanceof String) reply message.reverse() 
-                        else stop() 
+                    react {message ->
+                        if (message instanceof String) reply message.reverse()
+                        else stop()
                     }
                 }
             }
-            def console = actor { 
-                decryptor.send 'lellarap si yvoorG' 
-                react { 
-                    value = 'Decrypted message: ' + it 
-                    decryptor.send false 
-                } 
+            def console = actor {
+                decryptor.send 'lellarap si yvoorG'
+                react {
+                    value = 'Decrypted message: ' + it
+                    decryptor.send false
+                }
             }
             [decryptor, console]*.join()
             return value
         """
-        
+
         Object result = Eval.me(gparsScript)
         assertEquals result, "Decrypted message: Groovy is parallel"
     }
-    
+
     void testEasyb() {
         String easybScript = """
             import org.easyb.*
@@ -141,13 +138,13 @@ public class TestInstallation extends GroovyTestCase {
 
             Configuration configuration = new ConsoleConfigurator().configure('easybTest.story');
             BehaviorRunner runner = new BehaviorRunner(configuration);
-            boolean success = runner.runBehaviors(BehaviorRunner.getBehaviors(configuration.getFilePaths(), 
+            boolean success = runner.runBehaviors(BehaviorRunner.getBehaviors(configuration.getFilePaths(),
                 configuration));
         """
 
         assertTrue Eval.me(easybScript) == true
     }
-    
+
     void testSpock() {
         String spockScript = """
         import spock.lang.*
@@ -214,5 +211,5 @@ public class TestInstallation extends GroovyTestCase {
         org.junit.runner.JUnitCore.runClasses GMockTest
         """
         assertTrue Eval.me(gmockScript).wasSuccessful()
-    }    
+    }
 }
