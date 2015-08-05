@@ -27,7 +27,7 @@ SetCompressor /SOLID lzma
 
 # Defines
 !define COMPANY ""
-!define URL groovy.codehaus.org
+!define URL http://groovy-lang.org/
 !define ShortName Groovy
 !define VERSION ${SOURCE_VERSION}
 Name "Groovy-${Version}"
@@ -409,14 +409,14 @@ LangString DESC_SecEasyb ${LANG_SPANISH} "easyb - BDD con Groovy"
 LangString DESC_SecEasyb ${LANG_FRENCH} "easyb - BDD avec Groovy"
 LangString DESC_SecEasyb ${LANG_PortugueseBR} "easyb - BDD para Groovy"
 
-# TODO correct language strings for spanish
+# TODO correct language strings for Spanish
 LangString DESC_SecGMock ${LANG_ENGLISH} "GMock - Mocking Framework for Groovy"
 LangString DESC_SecGMock ${LANG_GERMAN} "GMock - Mocking Framework für Groovy"
 LangString DESC_SecGMock ${LANG_SPANISH} "GMock - Mocking Framework for Groovy"
 LangString DESC_SecGMock ${LANG_FRENCH} "GMock - Mocking Framework pour Groovy"
 LangString DESC_SecGMock ${LANG_PortugueseBR} "GMock - Construa Mocks utilizando Groovy"
 
-# TODO correct language strings for spanish
+# TODO correct language strings for Spanish
 LangString DESC_SecGroovyServ ${LANG_ENGLISH} "GroovyServ - A Server for Executing Groovy Programs"
 LangString DESC_SecGroovyServ ${LANG_GERMAN} "GroovyServ - Ein Server für die Ausführung von Groovy-Programmen"
 LangString DESC_SecGroovyServ ${LANG_SPANISH} "GroovyServ - A Server for Executing Groovy"
@@ -449,6 +449,12 @@ Section -post SEC0006
     !insertmacro MUI_STARTMENU_WRITE_END
     WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" DisplayName "$(^Name)"
     WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" DisplayVersion "${Version}.0"
+    WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" Publisher "The Groovy Project"
+    WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" InstallLocation $INSTDIR
+    WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" URLInfoAbout "${URL}"
+    WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" HelpLink "${URL}"
+    WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" URLUpdateInfo "${URL}"
+    WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" Contact "users@groovy.incubator.apache.org"
     WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" DisplayIcon $INSTDIR\uninstall.exe
     WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" UninstallString $INSTDIR\uninstall.exe
     WriteRegDWORD HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" NoModify 1
