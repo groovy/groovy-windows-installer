@@ -1,2 +1,0 @@
-cadaver https://dav.codehaus.org/dist/groovy/distributions/installers/windows/nsis/
-
