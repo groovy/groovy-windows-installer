@@ -123,10 +123,9 @@ ShowInstDetails show
 InstallDirRegKey HKLM "${REGKEY}" Path
 ShowUninstDetails show
 
-# TODO correct language strings for Spanish
 LangString NoJava ${LANG_ENGLISH} "Cannot identify Java installation. Assuming 32 bit version."
 LangString NoJava ${LANG_GERMAN} "Die Java-Installation kann nicht identifiziert werden. Gehe von einer 32-Bit Installation aus."
-LangString NoJava ${LANG_SPANISH} "Cannot identify Java installation. Assuming 32 bit version."
+LangString NoJava ${LANG_SPANISH} "No se puede identificar a la instalación de Java. Suponiendo versión de 32 bits."
 LangString NoJava ${LANG_FRENCH} "Impossible d'identifier la version de Java installée. Version 32 bits supposée."
 LangString NoJava ${LANG_PortugueseBR} "Não é possível identificar a instalação do Java. Assumindo versão 32 bits."
 
@@ -410,17 +409,15 @@ LangString DESC_SecEasyb ${LANG_SPANISH} "easyb - BDD con Groovy"
 LangString DESC_SecEasyb ${LANG_FRENCH} "easyb - BDD avec Groovy"
 LangString DESC_SecEasyb ${LANG_PortugueseBR} "easyb - BDD para Groovy"
 
-# TODO correct language strings for Spanish
 LangString DESC_SecGMock ${LANG_ENGLISH} "GMock - Mocking Framework for Groovy"
 LangString DESC_SecGMock ${LANG_GERMAN} "GMock - Mocking Framework für Groovy"
-LangString DESC_SecGMock ${LANG_SPANISH} "GMock - Mocking Framework for Groovy"
+LangString DESC_SecGMock ${LANG_SPANISH} "GMock - Burlándose de Marco para Groovy"
 LangString DESC_SecGMock ${LANG_FRENCH} "GMock - Mocking Framework pour Groovy"
 LangString DESC_SecGMock ${LANG_PortugueseBR} "GMock - Construa Mocks utilizando Groovy"
 
-# TODO correct language strings for Spanish
 LangString DESC_SecGroovyServ ${LANG_ENGLISH} "GroovyServ - A Server for Executing Groovy Programs"
 LangString DESC_SecGroovyServ ${LANG_GERMAN} "GroovyServ - Ein Server für die Ausführung von Groovy-Programmen"
-LangString DESC_SecGroovyServ ${LANG_SPANISH} "GroovyServ - A Server for Executing Groovy"
+LangString DESC_SecGroovyServ ${LANG_SPANISH} "GroovyServ - Un Servidor para la Ejecución de Programas de Groovy"
 LangString DESC_SecGroovyServ ${LANG_FRENCH} "GroovyServ - Un serveur pour exécuter des programmes Groovy"
 LangString DESC_SecGroovyServ ${LANG_PortugueseBR}  "GroovyServ - Servidor para execução de programas Groovy"
 
