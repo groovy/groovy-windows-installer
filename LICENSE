@@ -254,3 +254,11 @@ normalize.css License
 The stylesheet.css file (originally normalize.css) is used by the
 groovydoc and docgenerator components for groovy-jdk/gapi documentation.
 It is made available under a MIT License. Details: licenses/normalize-stylesheet-license.txt
+
+------------------------------------------------------------------------
+
+easyb License
+
+easyb is as an optional component included in the installer for your convenience
+and is made available under the MIT license. Details can be found at:
+http://www.opensource.org/licenses/mit-license.php
