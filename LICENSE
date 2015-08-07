@@ -207,7 +207,8 @@ Asciidoc License
 
 This product uses the style.css from asciidoctor.org within
 documentation. The file is available under the MIT License.
-For details, see licenses/asciidoc-style-license.txt.
+For details, see
+https://github.com/apache/incubator-groovy/blob/master/licenses/asciidoc-style-license.txt.
 
 ------------------------------------------------------------------------
 
@@ -220,7 +221,8 @@ The following class within this product:
 was derived from JLine 2.12, and the following patch:
 https://github.com/jline/jline2/issues/90
 JLine2 is made available under a BSD License.
-For details, see licenses/jline2-license.
+For details, see
+https://github.com/apache/incubator-groovy/blob/master/licenses/jline2-license.
 
 ------------------------------------------------------------------------
 
@@ -231,7 +233,7 @@ The following file is used within documentation:
     src/spec/assets/css/jquery-2.1.1.min.js
 
 This file is made available under the following MIT license:
-licenses/jquery-js-license.txt
+https://github.com/apache/incubator-groovy/blob/master/licenses/jquery-js-license.txt
 
 ------------------------------------------------------------------------
 
@@ -245,7 +247,8 @@ The following classes within this product:
 
 were derived from reference implementation files developed by Sun in
 collaboration with the Groovy community. The reference implementation
-has a BSD-style license. Details can be found in: licenses/jsr223-license.txt
+has a BSD-style license. Details can be found in:
+https://github.com/apache/incubator-groovy/blob/master/licenses/jsr223-license.txt
 
 ------------------------------------------------------------------------
 
@@ -253,7 +256,8 @@ normalize.css License
 
 The stylesheet.css file (originally normalize.css) is used by the
 groovydoc and docgenerator components for groovy-jdk/gapi documentation.
-It is made available under a MIT License. Details: licenses/normalize-stylesheet-license.txt
+It is made available under a MIT License. Details:
+https://github.com/apache/incubator-groovy/blob/master/licenses/normalize-stylesheet-license.txt
 
 ------------------------------------------------------------------------
 
