@@ -455,6 +455,9 @@ Section -post SEC0006
     WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" Contact "users@groovy.incubator.apache.org"
     WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" DisplayIcon $INSTDIR\uninstall.exe
     WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" UninstallString $INSTDIR\uninstall.exe
+    Call GetInstalledSize
+    Pop $0
+    WriteRegDWORD HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" EstimatedSize $0
     WriteRegDWORD HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" NoModify 1
     WriteRegDWORD HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" NoRepair 1
 SectionEnd
@@ -1053,4 +1056,30 @@ Function GetJRE
  JreFound:
   Pop $R1
   Exch $R0
+FunctionEnd
+
+; Return on top of stack the total size of the selected (installed) sections, formated as DWORD
+; Assumes no more than 256 sections are defined
+Var GetInstalledSize.total
+Function GetInstalledSize
+  Push $0
+  Push $1
+  StrCpy $GetInstalledSize.total 0
+  ${ForEach} $1 0 256 + 1
+    ${if} ${SectionIsSelected} $1
+      SectionGetSize $1 $0
+      IntOp $GetInstalledSize.total $GetInstalledSize.total + $0
+    ${Endif}
+
+    ; Error flag is set when an out-of-bound section is referenced
+    ${if} ${errors}
+      ${break}
+    ${Endif}
+  ${Next}
+
+  ClearErrors
+  Pop $1
+  Pop $0
+  IntFmt $GetInstalledSize.total "0x%08X" $GetInstalledSize.total
+  Push $GetInstalledSize.total
 FunctionEnd
