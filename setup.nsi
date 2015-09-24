@@ -52,6 +52,8 @@ VIAddVersionKey "ProductVersion" "${Version}.0"
 !define MUI_STARTMENUPAGE_DEFAULTFOLDER $(^Name)
 !define MUI_FINISHPAGE_SHOWREADME $INSTDIR\${VERSION_TXT}
 !define MUI_UNFINISHPAGE_NOAUTOCLOSE
+!define MUI_ICON "${DIR_PREFIX}\${DOC_DIR}\html\groovy-jdk\groovy.ico"
+!define MUI_UNICON "uninstall-groovy.ico"
 !define MUI_HEADERIMAGE
 !define MUI_HEADERIMAGE_BITMAP "header.bmp"
 !define MUI_HEADERIMAGE_BITMAP_NOSTRETCH
@@ -453,7 +455,7 @@ Section -post SEC0006
     WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" HelpLink "${URL}"
     WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" URLUpdateInfo "${URL}"
     WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" Contact "users@groovy.incubator.apache.org"
-    WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" DisplayIcon $INSTDIR\uninstall.exe
+    WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" DisplayIcon $INSTDIR\bin\GroovyConsole.exe
     WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" UninstallString $INSTDIR\uninstall.exe
     Call GetInstalledSize
     Pop $0
