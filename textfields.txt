@@ -81,7 +81,6 @@ PDF Snapshot of the Wiki (ca. 900 pages)"
 
 # Links
 "Uninstall $(^Name)"
-"PDF Documentation"
 "GDK Documentation"
 "API Documentation"
 "GAPI Documentation"
