@@ -45,7 +45,7 @@ Setup Directory for Groovy Files
 - Download
   - Groovy
   - Groovy Docs
-  - Scriptom (place examples into supplementary\Scriptom\ directory)
+  - Scriptom (place examples into supplementary\Scriptom directory)
   - Download msvcr80.dll if you don't have it on your system
   - Add msvcr80.dll to Scriptom's bin directory
   - Griffon Builders (download using wget command in griffonbuilders.txt)
@@ -55,7 +55,11 @@ Setup Directory for Groovy Files
     - Download supplementary jars (maven-ant-tasks-2.0.10.jar)
     - Remove file startGroovy.bat from bin directory
     - Correct the jar file name in the lib directory if necessary
-  - Spock (place examples into supplementary\Spock\ directory)
+  - Spock (place examples into supplementary\Spock directory)
+  - EasyB
+  - GMock
+  - GroovyServ
+  - Grengine
   - Native Launcher and compile it with Cygwin support
     (place exe without Cygwin support into subdirectory NativeLauncherNoCygwinSupport)
 
