@@ -17,9 +17,6 @@
 # DOC_DIR          is the relative path to the doc directory
 # JAVA_ARCH        is the directory containing the architecture detection jar
 
-
-!define InstallerVersion 0.7.3
-
 # Set the compression level
 SetCompressor /SOLID lzma
 
@@ -27,7 +24,6 @@ SetCompressor /SOLID lzma
 !define SOURCEDIR "${DIR_PREFIX}\${SOURCE_DIR}"
 
 # Defines
-!define COMPANY ""
 !define URL http://groovy-lang.org/
 !define ShortName Groovy
 !define VERSION ${SOURCE_VERSION}
@@ -73,7 +69,7 @@ VIAddVersionKey "ProductVersion" "${Version}.0"
 !define REG_EASYB "easyb"
 !define REG_GMOCK "GMock"
 !define REG_GROOVYSERV "GroovyServ"
-!define REG_GRENGINE "Grengine"
+!define REG_GREGNINE "Grengine"
 
 
 # Included files
@@ -431,13 +427,13 @@ LangString DESC_SecGroovyServ ${LANG_ENGLISH} "GroovyServ - A Server for Executi
 LangString DESC_SecGroovyServ ${LANG_GERMAN} "GroovyServ - Ein Server für die Ausführung von Groovy-Programmen"
 LangString DESC_SecGroovyServ ${LANG_SPANISH} "GroovyServ - Un Servidor para la Ejecución de Programas de Groovy"
 LangString DESC_SecGroovyServ ${LANG_FRENCH} "GroovyServ - Un serveur pour exécuter des programmes Groovy"
-LangString DESC_SecGroovyServ ${LANG_PortugueseBR} "GroovyServ - Servidor para execução de programas Groovy"
+LangString DESC_SecGroovyServ ${LANG_PortugueseBR}  "GroovyServ - Servidor para execução de programas Groovy"
 
 LangString DESC_SecGrengine ${LANG_ENGLISH} "Grengine - An engine for running and embedding Groovy in a Java VM."
 LangString DESC_SecGrengine ${LANG_GERMAN} "Grengine - Ein Motor für den Betrieb und die Einbettung Groovy in Java VM."
 LangString DESC_SecGrengine ${LANG_SPANISH} "Grengine - Un motor para el funcionamiento y la incrustación de Groovy en una máquina virtual Java."
 LangString DESC_SecGrengine ${LANG_FRENCH} "Grengine - Un moteur pour la course et l'intégration Groovy dans une machine virtuelle Java."
-LangString DESC_SecGrengine ${LANG_PortugueseBR} "Grengine - Um motor para a execução e incorporação Groovy em uma máquina virtual Java."
+LangString DESC_SecGrengine ${LANG_PortugueseBR}  "Grengine - Um motor para a execução e incorporação Groovy em uma máquina virtual Java."
 
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
   !insertmacro MUI_DESCRIPTION_TEXT ${SecBinaries} $(DESC_SecBinaries)
