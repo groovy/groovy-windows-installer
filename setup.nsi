@@ -12,6 +12,7 @@
 # EASYB_DIR        is the relative path to the easyb module
 # GMOCK_DIR        is the relative path to the gmock module
 # GROOVYSERV_DIR   is the relative path to the groovyserv module
+# GRENGINE_DIR     is the relative path to the grengine module
 # VERSION_TXT      is the relative path to the installed_versions.txt
 # DOC_DIR          is the relative path to the doc directory
 # JAVA_ARCH        is the directory containing the architecture detection jar
@@ -72,6 +73,7 @@ VIAddVersionKey "ProductVersion" "${Version}.0"
 !define REG_EASYB "easyb"
 !define REG_GMOCK "GMock"
 !define REG_GROOVYSERV "GroovyServ"
+!define REG_GRENGINE "Grengine"
 
 
 # Included files
@@ -257,6 +259,14 @@ SectionGroup /e Modules SecGrpModules
         WriteRegStr HKLM "${REGKEY}\Components" "${REG_GROOVYSERV}" 1
     SectionEnd
 
+    Section Grengine SecGrengine
+        SectionIn 1
+        SetOutPath "$INSTDIR"
+        SetOverwrite on
+        File /r "${DIR_PREFIX}\${GRENGINE_DIR}\*"
+        WriteRegStr HKLM "${REGKEY}\Components" "${REG_GRENGINE}" 1
+    SectionEnd
+
     Section Griffon SecGriffon
         SectionIn 1
         SetOutPath $INSTDIR
@@ -421,8 +431,13 @@ LangString DESC_SecGroovyServ ${LANG_ENGLISH} "GroovyServ - A Server for Executi
 LangString DESC_SecGroovyServ ${LANG_GERMAN} "GroovyServ - Ein Server für die Ausführung von Groovy-Programmen"
 LangString DESC_SecGroovyServ ${LANG_SPANISH} "GroovyServ - Un Servidor para la Ejecución de Programas de Groovy"
 LangString DESC_SecGroovyServ ${LANG_FRENCH} "GroovyServ - Un serveur pour exécuter des programmes Groovy"
-LangString DESC_SecGroovyServ ${LANG_PortugueseBR}  "GroovyServ - Servidor para execução de programas Groovy"
+LangString DESC_SecGroovyServ ${LANG_PortugueseBR} "GroovyServ - Servidor para execução de programas Groovy"
 
+LangString DESC_SecGrengine ${LANG_ENGLISH} "Grengine - An engine for running and embedding Groovy in a Java VM."
+LangString DESC_SecGrengine ${LANG_GERMAN} "Grengine - Ein Motor für den Betrieb und die Einbettung Groovy in Java VM."
+LangString DESC_SecGrengine ${LANG_SPANISH} "Grengine - Un motor para el funcionamiento y la incrustación de Groovy en una máquina virtual Java."
+LangString DESC_SecGrengine ${LANG_FRENCH} "Grengine - Un moteur pour la course et l'intégration Groovy dans une machine virtuelle Java."
+LangString DESC_SecGrengine ${LANG_PortugueseBR} "Grengine - Um motor para a execução e incorporação Groovy em uma máquina virtual Java."
 
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
   !insertmacro MUI_DESCRIPTION_TEXT ${SecBinaries} $(DESC_SecBinaries)
@@ -437,6 +452,7 @@ LangString DESC_SecGroovyServ ${LANG_PortugueseBR}  "GroovyServ - Servidor para 
   !insertmacro MUI_DESCRIPTION_TEXT ${SecEasyb} $(DESC_SecEasyb)
   !insertmacro MUI_DESCRIPTION_TEXT ${SecGMock} $(DESC_SecGMock)
   !insertmacro MUI_DESCRIPTION_TEXT ${SecGroovyServ} $(DESC_SecGroovyServ)
+  !insertmacro MUI_DESCRIPTION_TEXT ${SecGrengine} $(DESC_SecGrengine)
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 Section -post SEC0006
@@ -488,6 +504,10 @@ SectionEnd
 # Uninstaller sections
 Section /o un.GroovyServ UNSEC0010
     DeleteRegValue HKLM "${REGKEY}\Components" "${REG_GROOVYSERV}"
+SectionEnd
+
+Section /o un.Grengine UNSEC0011
+    DeleteRegValue HKLM "${REGKEY}\Components" "${REG_GRENGINE}"
 SectionEnd
 
 Section /o un.GMock UNSEC0009
@@ -574,6 +594,7 @@ Function un.onInit
     !insertmacro SELECT_UNSECTION Easyb ${UNSEC0008}
     !insertmacro SELECT_UNSECTION GMock ${UNSEC0009}
     !insertmacro SELECT_UNSECTION GroovyServ ${UNSEC0010}
+    !insertmacro SELECT_UNSECTION Grengine ${UNSEC0011}
     !insertmacro SELECT_UNSECTION Shortcuts ${UNSEC0998}
 FunctionEnd
 
