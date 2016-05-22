@@ -123,6 +123,18 @@ ShowInstDetails show
 InstallDirRegKey HKLM "${REGKEY}" Path
 ShowUninstDetails show
 
+LangString Java32 ${LANG_ENGLISH} "Detected 32 bit Java. Copying 32 bit Groovy binaries."
+LangString Java32 ${LANG_GERMAN} "Erkannt 32-Bit-Java. Kopieren 32-Bit-Groovy Binärdateien."
+LangString Java32 ${LANG_SPANISH} "Detectó 64 bits de Java. Copia de archivos binarios Groovy 32 bits."
+LangString Java32 ${LANG_FRENCH} "Détecté 32 bits de Java. Copie 32 bits binaires Groovy."
+LangString Java32 ${LANG_PortugueseBR} "Detectado 32 bits Java. Copiando binários Groovy 32 bits."
+
+LangString Java64 ${LANG_ENGLISH} "Detected 64 bit Java. Copying 64 bit Groovy binaries."
+LangString Java64 ${LANG_GERMAN} "Erkannt 64-Bit-Java. Kopieren 64-Bit-Groovy Binärdateien."
+LangString Java64 ${LANG_SPANISH} "Detectó 64 bits de Java. Copia de archivos binarios Groovy 64 bits."
+LangString Java64 ${LANG_FRENCH} "Détecté 64 bits de Java. Copie 64 bits binaires Groovy."
+LangString Java64 ${LANG_PortugueseBR} "Detectado 64 bits Java. Copiando binários Groovy 64 bits."
+
 LangString NoJava ${LANG_ENGLISH} "Cannot identify Java installation. Assuming 32 bit version."
 LangString NoJava ${LANG_GERMAN} "Die Java-Installation kann nicht identifiziert werden. Gehe von einer 32-Bit Installation aus."
 LangString NoJava ${LANG_SPANISH} "No se puede identificar a la instalación de Java. Suponiendo versión de 32 bits."
@@ -153,6 +165,12 @@ Section "Groovy Binaries" SecBinaries
 
     ExecWait $0 $JavaArchModel
 
+    ${If} $JavaArchModel == 32
+        MessageBox MB_OK $(Java32)
+    ${Else}
+        MessageBox MB_OK $(Java64)
+    ${EndIf}
+
     ${If} ${Errors}
     ${OrIf} $JavaArchModel == 1
         # We assume a 32-bit installation
@@ -161,7 +179,7 @@ Section "Groovy Binaries" SecBinaries
     ${EndIf}
 
     SetOutPath $INSTDIR\bin
-    ${if} $JavaArchModel == 32
+    ${If} $JavaArchModel == 32
         File /oname=groovy.exe "${DIR_PREFIX}\${NATIVE_DIR}\${SUPPLEMENTARY}\native\32bit\groovy.exe"
         File /oname=groovyc.exe "${DIR_PREFIX}\${NATIVE_DIR}\${SUPPLEMENTARY}\native\32bit\groovy.exe"
         File /oname=groovysh.exe "${DIR_PREFIX}\${NATIVE_DIR}\${SUPPLEMENTARY}\native\32bit\groovy.exe"
@@ -169,7 +187,7 @@ Section "Groovy Binaries" SecBinaries
 
         File /oname=groovyw.exe "${DIR_PREFIX}\${NATIVE_DIR}\${SUPPLEMENTARY}\native\32bit\groovyw.exe"
         File /oname=groovyConsole.exe "${DIR_PREFIX}\${NATIVE_DIR}\${SUPPLEMENTARY}\native\32bit\groovyw.exe"
-    ${else}
+    ${Else}
         File /oname=groovy.exe "${DIR_PREFIX}\${NATIVE_DIR}\${SUPPLEMENTARY}\native\64bit\groovy.exe"
         File /oname=groovyc.exe "${DIR_PREFIX}\${NATIVE_DIR}\${SUPPLEMENTARY}\native\64bit\groovy.exe"
         File /oname=groovysh.exe "${DIR_PREFIX}\${NATIVE_DIR}\${SUPPLEMENTARY}\native\64bit\groovy.exe"
@@ -228,10 +246,10 @@ SectionGroup /e Modules SecGrpModules
         File /r "${DIR_PREFIX}\${GANT_DIR}\*"
 
         SetOutPath $INSTDIR\bin
-        ${if} $JavaArchModel == 32
+        ${If} $JavaArchModel == 32
             File /oname=gant.exe "${DIR_PREFIX}\${NATIVE_DIR}\${SUPPLEMENTARY}\native\32bit\groovy.exe"
             File /oname=gantw.exe "${DIR_PREFIX}\${NATIVE_DIR}\${SUPPLEMENTARY}\native\32bit\groovyw.exe"
-        ${else}
+        ${Else}
             File /oname=gant.exe "${DIR_PREFIX}\${NATIVE_DIR}\${SUPPLEMENTARY}\native\64bit\groovy.exe"
             File /oname=gantw.exe "${DIR_PREFIX}\${NATIVE_DIR}\${SUPPLEMENTARY}\native\64bit\groovyw.exe"
         ${EndIf}
@@ -844,7 +862,7 @@ LangString FAField02 ${LANG_PortugueseBR}  "Adicionar associação de arquivos"
 # FAField 03
 LangString FAField03 ${LANG_ENGLISH} "PATHEXT is an environment variable telling cmd.exe \
 which files are executable. If Groovy-Files are already referenced, this checkbox \
-is unchecked.  If you know better, please set the checkbox to checked."
+is unchecked. If you know better, please set the checkbox to checked."
 LangString FAField03 ${LANG_GERMAN}  "PATHEXT ist eine Umgebungsvariable, die cmd.exe \
 mitteilt, welche Dateien ausführbar sind. Wenn Groovy-Dateien schon referenziert \
 sind, ist die Checkbox nicht ausgewählt. \
@@ -1085,13 +1103,13 @@ Function GetInstalledSize
   Push $1
   StrCpy $GetInstalledSize.total 0
   ${ForEach} $1 0 256 + 1
-    ${if} ${SectionIsSelected} $1
+    ${If} ${SectionIsSelected} $1
       SectionGetSize $1 $0
       IntOp $GetInstalledSize.total $GetInstalledSize.total + $0
     ${Endif}
 
     ; Error flag is set when an out-of-bound section is referenced
-    ${if} ${errors}
+    ${If} ${errors}
       ${break}
     ${Endif}
   ${Next}
