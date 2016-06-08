@@ -78,7 +78,7 @@ VIAddVersionKey "ProductVersion" "${Version}.0"
 !include logiclib.nsh
 !include WinMessages.NSH
 !include FileFunc.nsh
-!include  EnvVarUpdate.nsh
+!include EnvVarUpdate.nsh
 
 
 # Reserved Files
