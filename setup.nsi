@@ -166,9 +166,9 @@ Section "Groovy Binaries" SecBinaries
     ExecWait $0 $JavaArchModel
 
     ${If} $JavaArchModel == 32
-        MessageBox MB_OK $(Java32)
+            MessageBox MB_OK $(Java32) /SD IDOK
     ${Else}
-        MessageBox MB_OK $(Java64)
+        MessageBox MB_OK $(Java64) /SD IDOK
     ${EndIf}
 
     ${If} ${Errors}
