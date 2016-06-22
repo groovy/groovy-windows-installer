@@ -34,12 +34,9 @@ Name "Groovy-${Version}"
 # Version Information for the executable
 VIProductVersion "${Version}.0"
 VIAddVersionKey "ProductName" "Groovy Installer"
-VIAddVersionKey "FileDescription" "This is the Windows Installer for the language Groovy"
+VIAddVersionKey "FileDescription" "Windows Installer for the Groovy language"
 VIAddVersionKey "FileVersion" "${Version}.0"
 VIAddVersionKey "ProductVersion" "${Version}.0"
-
-# VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "1.2.3"
-
 
 # MUI defines
 !define MUI_FINISHPAGE_NOAUTOCLOSE
@@ -69,8 +66,7 @@ VIAddVersionKey "ProductVersion" "${Version}.0"
 !define REG_EASYB "easyb"
 !define REG_GMOCK "GMock"
 !define REG_GROOVYSERV "GroovyServ"
-!define REG_GREGNINE "Grengine"
-
+!define REG_GRENGINE "Grengine"
 
 # Included files
 !include Sections.nsh
@@ -79,7 +75,6 @@ VIAddVersionKey "ProductVersion" "${Version}.0"
 !include WinMessages.NSH
 !include FileFunc.nsh
 !include EnvVarUpdate.nsh
-
 
 # Reserved Files
 #ReserveFile "${NSISDIR}\Plugins\AdvSplash.dll"
@@ -112,7 +107,6 @@ Page custom ReadFileAssociation SetFileAssociation
 !insertmacro MUI_LANGUAGE Spanish
 !insertmacro MUI_LANGUAGE French
 !insertmacro MUI_LANGUAGE PortugueseBR
-
 
 # Installer attributes
 OutFile "groovy-${SOURCE_VERSION}-installer.exe"
@@ -166,7 +160,7 @@ Section "Groovy Binaries" SecBinaries
     ExecWait $0 $JavaArchModel
 
     ${If} $JavaArchModel == 32
-            MessageBox MB_OK $(Java32) /SD IDOK
+        MessageBox MB_OK $(Java32) /SD IDOK
     ${Else}
         MessageBox MB_OK $(Java64) /SD IDOK
     ${EndIf}
@@ -184,7 +178,6 @@ Section "Groovy Binaries" SecBinaries
         File /oname=groovyc.exe "${DIR_PREFIX}\${NATIVE_DIR}\${SUPPLEMENTARY}\native\32bit\groovy.exe"
         File /oname=groovysh.exe "${DIR_PREFIX}\${NATIVE_DIR}\${SUPPLEMENTARY}\native\32bit\groovy.exe"
         File /oname=java2groovy.exe "${DIR_PREFIX}\${NATIVE_DIR}\${SUPPLEMENTARY}\native\32bit\groovy.exe"
-
         File /oname=groovyw.exe "${DIR_PREFIX}\${NATIVE_DIR}\${SUPPLEMENTARY}\native\32bit\groovyw.exe"
         File /oname=groovyConsole.exe "${DIR_PREFIX}\${NATIVE_DIR}\${SUPPLEMENTARY}\native\32bit\groovyw.exe"
     ${Else}
@@ -192,7 +185,6 @@ Section "Groovy Binaries" SecBinaries
         File /oname=groovyc.exe "${DIR_PREFIX}\${NATIVE_DIR}\${SUPPLEMENTARY}\native\64bit\groovy.exe"
         File /oname=groovysh.exe "${DIR_PREFIX}\${NATIVE_DIR}\${SUPPLEMENTARY}\native\64bit\groovy.exe"
         File /oname=java2groovy.exe "${DIR_PREFIX}\${NATIVE_DIR}\${SUPPLEMENTARY}\native\64bit\groovy.exe"
-
         File /oname=groovyw.exe "${DIR_PREFIX}\${NATIVE_DIR}\${SUPPLEMENTARY}\native\64bit\groovyw.exe"
         File /oname=groovyConsole.exe "${DIR_PREFIX}\${NATIVE_DIR}\${SUPPLEMENTARY}\native\64bit\groovyw.exe"
     ${EndIf}
@@ -222,7 +214,6 @@ Section "Modify Variables" SecVariables
 SectionEnd
 
 SectionGroup /e Modules SecGrpModules
-
     Section Easyb SecEasyb
         SectionIn 1
         SetOutPath "$INSTDIR"
@@ -304,7 +295,6 @@ SectionGroup /e Modules SecGrpModules
         File /r "${DIR_PREFIX}\${SPOCK_DIR}\*"
         WriteRegStr HKLM "${REGKEY}\Components" "${REG_SPOCK}" 1
     SectionEnd
-
 SectionGroupEnd
 
 # Links in Start Menu
@@ -340,7 +330,6 @@ LangString ^GroovyConsoleLink ${LANG_FRENCH} "Start GroovyConsole"
 LangString ^GroovyConsoleLink ${LANG_PortugueseBR} "Iniciar GroovyConsole"
 
 Section "-Shortcuts" SecShortcuts
-
     !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
     SetOutPath $SMPROGRAMS\$StartMenuGroup
 
@@ -589,9 +578,7 @@ Function .onInit
     !insertmacro MUI_LANGDLL_DISPLAY
     File /oname=$PLUGINSDIR\variables.ini variables.ini
     File /oname=$PLUGINSDIR\fileassociation.ini fileassociation.ini
-
 FunctionEnd
-
 
 # Uninstaller functions
 Function un.onInit
@@ -612,11 +599,8 @@ Function un.onInit
     !insertmacro SELECT_UNSECTION Shortcuts ${UNSEC0998}
 FunctionEnd
 
-
 #################################################################################################
-
 ### Environment
-
 #################################################################################################
 
 # VField 01
@@ -663,7 +647,6 @@ LangString VField06 ${LANG_SPANISH} "Entorno de Usuario o\r\nEntorno de Sistema"
 LangString VField06 ${LANG_FRENCH}  "Environnement utilisateur ou\r\nenvironnement système"
 LangString VField06 ${LANG_PortugueseBR}  "Apenas para esse usuário\r\nPara todos os usuários"
 
-
 # VField 7
 LangString VField07 ${LANG_ENGLISH} "Add to System Environment"
 LangString VField07 ${LANG_GERMAN}  "Systemumgebung wählen"
@@ -704,10 +687,8 @@ d'installation Java. Dans le cas contraire groovy ne fonctionnera pas."
 LangString JavaHomeWarning ${LANG_PortugueseBR}  "JAVA_HOME não está configurada. Por favor, configure \
 para o diretório de instalação do Java, caso contrário o Groovy não funcionará."
 
-
 #Additional Page for setting GROOVY_HOME and system path
 Function ReadVariables
-
   SectionGetFlags ${SecVariables} $R0
   IntOp $R0 $R0 & ${SF_SELECTED}
   IntCmp $R0 ${SF_SELECTED} show
@@ -736,7 +717,6 @@ Function ReadVariables
   Push "roovy"
   Call StrStr
   Pop $R0
-
 
   # set GROOVY_HOME checkbox to unchecked if groovy is in path
   ${If} $R0 != ''
@@ -777,7 +757,6 @@ Function SetVariables
   # Set PATH if the user checked the resp. checkbox
   ReadINIStr $R0 "$PLUGINSDIR\variables.ini" "Field 2" "State"
   ${If} $R0 == '1'
-
     # Variable PATH and Mode Append
     Push "PATH"
     Push "A"
@@ -795,7 +774,6 @@ Function SetVariables
     Push $R0
     Call EnvVarUpdate
     Pop  $0
-
   ${EndIf}
 
   # Finally, check for JAVA_HOME existence
@@ -805,13 +783,10 @@ Function SetVariables
   ${EndIf}
 
   Pop $R0
-
 FunctionEnd
 
 #################################################################################################
-
 ### File Associations
-
 #################################################################################################
 
 # FAField 01
@@ -894,7 +869,6 @@ LangString AssocTitle ${LANG_FRENCH}  "Association de fichiers ..."
 LangString AssocTitle ${LANG_PortugueseBR}  "Associação de arquivos ..."
 
 Function ReadFileAssociation
-
   SectionGetFlags ${SecVariables} $R0
   IntOp $R0 $R0 & ${SF_SELECTED}
   IntCmp $R0 ${SF_SELECTED} show
@@ -911,7 +885,6 @@ Function ReadFileAssociation
   WriteINIStr $PLUGINSDIR\fileassociation.ini "Field 2" "Text" $(FAField02)
   WriteINIStr $PLUGINSDIR\fileassociation.ini "Field 3" "Text" $(FAField03)
   WriteINIStr $PLUGINSDIR\fileassociation.ini "Field 4" "Text" $(FAField04)
-
 
   # Check for groovy in pathext
   ReadEnvStr $R0 "PATHEXT"
@@ -971,9 +944,7 @@ Function SetFileAssociation
     Call WriteEnvStr
   ${EndIf}
 
-
   Pop $R0
-
 FunctionEnd
 
 !macro IsNT UN
@@ -1040,7 +1011,6 @@ Function WriteEnvStr
     WriteEnvStr_all_failed:
   ${EndIf}
 
-
   ${If} $UserOrSystem == "current"
     ClearErrors
     WriteRegExpandStr ${NT_current_env} $0 $1
@@ -1059,7 +1029,6 @@ Function WriteEnvStr
     Pop $0
     Pop $1
 FunctionEnd
-
 
 Function GetJRE
 ;
