@@ -30,11 +30,11 @@ They are explained at the head of the setup.nsi file.
 
 Most probably you only have to set these variables and you are happy to go.
 
-Here is a checklist what to do for a full build (or what I do at least, for 1.7.0):
+Here is a checklist what to do for a full build
 ---------------------------------------------------------------------------------------
 Setup NSIS
-- Download NSIS-2.46-setup.exe (http://nsis.sourceforge.net/Download)
-- Download nsis-2.46-strlen_8192.zip (http://nsis.sourceforge.net/Special_Builds#Large_strings)
+- Download nsis-3.0-setup.exe (http://nsis.sourceforge.net/Download)
+- Download nsis-3.0-strlen_8192.zip (http://nsis.sourceforge.net/Special_Builds#Large_strings)
 - Patch NSIS installation to use long strings
 
 Setup Installer Infrastructure
@@ -85,7 +85,3 @@ Test local installation
 - Execute tridentbuilder.groovy in GroovyConsole
 - Uninstall, verify that menu has been deleted fully and that the installation directory is removed
 ---------------------------------------------------------------------------------------
-
-Have fun, Joachim
-
-Contact: joachim.baumann@xinaris.de
