@@ -5,8 +5,8 @@
 # NATIVE_DIR       is the relative path to the native launcher
 # SCRIPTOM_DIR     is the relative path to the scriptom module
 # GANT_DIR         is the relative path to the gant module
-# GPARS_LIBRARIES  is the relative path to the optional libraries for gpars
-# GRIFFON_B        is the relative path to the griffon builders module
+# GPARS_DIR        is the relative path to the optional libraries for gpars
+# GRIFFON_B_DIR    is the relative path to the griffon builders module
 # GAELYK_DIR       is the relative path to the Gaelyk module
 # SPOCK_DIR        is the relative path to the Spock module
 # EASYB_DIR        is the relative path to the easyb module
@@ -192,7 +192,7 @@ Section "Groovy Binaries" SecBinaries
     SetOutPath $INSTDIR
     File /r "${DIR_PREFIX}\${NATIVE_DIR}\*"
     File "${DIR_PREFIX}\${VERSION_TXT}"
-    File /r "${DIR_PREFIX}\${GPARS_LIBRARIES}\*"
+    File /r "${DIR_PREFIX}\${GPARS_DIR}\*"
 
     WriteRegStr HKLM "${REGKEY}\Components" "${REG_GROOVY_BINARIES}" 1
 SectionEnd
@@ -276,7 +276,7 @@ SectionGroup /e Modules SecGrpModules
         SectionIn 1
         SetOutPath $INSTDIR
         SetOverwrite on
-        File /r "${DIR_PREFIX}\${GRIFFON_B}\*"
+        File /r "${DIR_PREFIX}\${GRIFFON_B_DIR}\*"
         WriteRegStr HKLM "${REGKEY}\Components" "${REG_GRIFFON}" 1
     SectionEnd
 
