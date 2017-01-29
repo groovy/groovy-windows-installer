@@ -33,8 +33,8 @@ Most probably you only have to set these variables and you are happy to go.
 Here is a checklist what to do for a full build
 ---------------------------------------------------------------------------------------
 Setup NSIS
-- Download nsis-3.0-setup.exe (http://nsis.sourceforge.net/Download)
-- Download nsis-3.0-strlen_8192.zip (http://nsis.sourceforge.net/Special_Builds#Large_strings)
+- Download nsis-3.01-setup.exe (http://nsis.sourceforge.net/Download)
+- Download nsis-3.01-strlen_8192.zip (http://nsis.sourceforge.net/Special_Builds#Large_strings)
 - Patch NSIS installation to use long strings
 
 Setup Installer Infrastructure
