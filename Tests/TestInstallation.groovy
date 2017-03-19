@@ -13,12 +13,12 @@ import groovy.util.Eval
 public class TestInstallation extends GroovyTestCase {
 
     void testGroovyVariableIsSet() {
-        def groovyVar = System.getenv("GROOVY_HOME");
+        def groovyVar = System.getenv("GROOVY_HOME")
         assertNotNull groovyVar
     }
 
     void testDocumentationIsInstalled() {
-        def groovyVar = System.getenv("GROOVY_HOME");
+        def groovyVar = System.getenv("GROOVY_HOME")
         assertNotNull groovyVar
 
         File nl = "$groovyVar/html" as File
@@ -32,28 +32,28 @@ public class TestInstallation extends GroovyTestCase {
     }
 
     void testGroovyNativeLauncherIsInstalled() {
-        def groovyVar = System.getenv("GROOVY_HOME");
+        def groovyVar = System.getenv("GROOVY_HOME")
         assertNotNull groovyVar
         File nl = "$groovyVar/bin/groovy.exe" as File
         assertEquals true, nl.exists()
     }
 
     void testGantIsInstalled() {
-        def groovyVar = System.getenv("GROOVY_HOME");
+        def groovyVar = System.getenv("GROOVY_HOME")
         assertNotNull groovyVar
         File nl = "$groovyVar/bin/gant.exe" as File
         assertEquals true, nl.exists()
     }
 
     void testGroovyVersionReturnsValue() {
-        def groovyVar = System.getenv("GROOVY_HOME");
+        def groovyVar = System.getenv("GROOVY_HOME")
         assertNotNull groovyVar
         def result = "groovy.exe -v".execute().text
         assert result =~ /Groovy Version/
     }
 
     void testGantVersionReturnsValue() {
-        def groovyVar = System.getenv("GROOVY_HOME");
+        def groovyVar = System.getenv("GROOVY_HOME")
         assertNotNull groovyVar
         def result = "gant.exe -V".execute().text
         assert result =~ /Gant version/
@@ -85,18 +85,18 @@ public class TestInstallation extends GroovyTestCase {
           assert scriptControl != null
 
           scriptControl.Language = "JScript"
-          def result = scriptControl.Eval('2.0 + 2.0;')
+          def result = scriptControl.Eval('2.0 + 2.0')
         }
         """
 
-        String dataModel = System.getProperty("sun.arch.data.model");
-        int bits = Integer.parseInt(dataModel);
+        String dataModel = System.getProperty("sun.arch.data.model")
+        int bits = Integer.parseInt(dataModel)
         // only evaluate when on 32 bit system
         if(bits == 32) assertTrue Eval.me(scriptomScript) == 4
     }
 
     void testGaelykIsInstalled() {
-        def groovyVar = System.getenv("GROOVY_HOME");
+        def groovyVar = System.getenv("GROOVY_HOME")
         assertNotNull groovyVar
         File gd = "$groovyVar/Supplementary/Gaelyk" as File
         assertEquals true, gd.exists()
@@ -136,10 +136,10 @@ public class TestInstallation extends GroovyTestCase {
             import org.easyb.*
             import org.easyb.listener.ResultsCollector
 
-            Configuration configuration = new ConsoleConfigurator().configure('easybTest.story');
-            BehaviorRunner runner = new BehaviorRunner(configuration);
+            Configuration configuration = new ConsoleConfigurator().configure('easybTest.story')
+            BehaviorRunner runner = new BehaviorRunner(configuration)
             boolean success = runner.runBehaviors(BehaviorRunner.getBehaviors(configuration.getFilePaths(),
-                configuration));
+                configuration))
         """
 
         assertTrue Eval.me(easybScript) == true
