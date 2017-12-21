@@ -199,6 +199,14 @@ the examples. If you are using a 64-bit version of Windows and Java, you might n
 install the respective runtime libraries.
 
 
+Spock
+-----
+lib:
+    spock-core-1.2-groovy-2.4-20171211.142320-34.jar
+Supplementary/Spock:
+    spock-example-1.1.zip
+
+
 Final Words
 ===========
 If you have any questions, feel free to ask me personally or on the mailing lists.
