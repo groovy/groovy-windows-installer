@@ -26,7 +26,7 @@ public class TestInstallation extends GroovyTestCase {
 
         def count = 0
         nl.eachFileRecurse{
-            if(it.name =~ /index.html/) count++
+            if(it.name == 'index.html') count++
         }
         assertEquals 4, count    // api, documentation, gapi, groovy-jdk
     }
